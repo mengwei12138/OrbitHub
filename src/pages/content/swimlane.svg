@@ -1,0 +1,514 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 2850">
+  <title>内容发布 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff4d4f"/>
+    </marker>
+    <marker id="arrowhead-disabled" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d9d9d9"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="2850" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">内容发布 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <!-- 用户 -->
+  <rect x="10" y="45" width="140" height="2795" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="80" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <!-- 前端组件 -->
+  <rect x="160" y="45" width="260" height="2795" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="290" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <!-- 后端API -->
+  <rect x="430" y="45" width="260" height="2795" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="560" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <!-- 数据库/外部服务 -->
+  <rect x="700" y="45" height="2795" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="850" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">外部服务</text>
+
+  <!-- ========== 1. 内容发布流程 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">1. 内容发布</text>
+
+  <!-- Step 1: 选择发布模式 -->
+  <circle cx="80" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="125" text-anchor="middle" font-size="10">ModeTabBar</text>
+  <line x1="98" y1="120" x2="180" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: 获取账号列表 -->
+  <circle cx="80" cy="165" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="170" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="150" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="170" text-anchor="middle" font-size="10">PlatformFilter</text>
+  <line x1="300" y1="120" x2="300" y2="165" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="165" x2="450" y2="165" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="450" y="150" width="180" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="170" text-anchor="middle" font-size="10">GET /api/v1/accounts</text>
+  <line x1="690" y1="165" x2="720" y2="165" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="720" y="150" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="170" text-anchor="middle" font-size="10">查询账号列表</text>
+
+  <!-- Step 3: 检测进行中任务 -->
+  <circle cx="80" cy="210" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="215" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="450" y="195" width="220" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="215" text-anchor="middle" font-size="10">GET /publish/jobs/active</text>
+  <line x1="300" y1="165" x2="450" y2="210" stroke="#666" stroke-width="1.5"/>
+  <line x1="450" y1="210" x2="450" y2="195" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: 选择账号 -->
+  <circle cx="80" cy="255" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="260" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="240" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="260" text-anchor="middle" font-size="10">selectAccounts</text>
+  <line x1="780" y1="180" x2="450" y2="210" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="98" y1="255" x2="180" y2="255" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5: 平台规范校验 -->
+  <circle cx="80" cy="300" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="305" text-anchor="middle" font-size="10" fill="white">5</text>
+  <rect x="180" y="285" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="305" text-anchor="middle" font-size="10">PublishConfig</text>
+  <line x1="98" y1="300" x2="180" y2="300" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 6: 提交发布 -->
+  <circle cx="80" cy="345" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="350" text-anchor="middle" font-size="10" fill="white">6</text>
+  <rect x="180" y="330" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="350" text-anchor="middle" font-size="10">BottomActionBar</text>
+  <line x1="300" y1="300" x2="300" y2="345" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="345" x2="450" y2="345" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="450" y="330" width="220" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="350" text-anchor="middle" font-size="10">POST /api/v1/content/publish/submit</text>
+
+  <!-- Step 7: 发布成功 -->
+  <circle cx="80" cy="390" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="395" text-anchor="middle" font-size="10" fill="white">7</text>
+  <rect x="180" y="375" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="395" text-anchor="middle" font-size="10">PublishProgressModal</text>
+  <line x1="690" y1="345" x2="180" y2="390" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 8: 发布失败 -->
+  <circle cx="80" cy="435" r="18" fill="#ff4d4f" stroke="#cf1322" stroke-width="2"/>
+  <text x="80" y="440" text-anchor="middle" font-size="10" fill="white">8</text>
+  <rect x="180" y="420" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="240" y="440" text-anchor="middle" font-size="10">Message.error</text>
+  <line x1="690" y1="360" x2="180" y2="435" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+
+  <!-- ========== 2. 素材上传 ========== -->
+  <line x1="10" y1="490" x2="990" y2="490" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="485" font-size="11" fill="#8c8c8c">2. 素材上传</text>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="520" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="525" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="505" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="525" text-anchor="middle" font-size="10">UploadZone</text>
+  <line x1="98" y1="520" x2="180" y2="520" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2 -->
+  <circle cx="80" cy="565" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="570" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="550" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="570" text-anchor="middle" font-size="10">MediaUploader</text>
+  <line x1="98" y1="565" x2="180" y2="565" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3 -->
+  <circle cx="80" cy="610" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="615" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="450" y="595" width="220" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="615" text-anchor="middle" font-size="10">POST /media/upload-sessions</text>
+  <line x1="300" y1="565" x2="450" y2="610" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4 -->
+  <circle cx="80" cy="655" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="660" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="640" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="660" text-anchor="middle" font-size="10">uploadChunks</text>
+  <line x1="300" y1="610" x2="300" y2="655" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="655" x2="180" y2="655" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 5 -->
+  <circle cx="80" cy="700" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="705" text-anchor="middle" font-size="10" fill="white">5</text>
+  <rect x="180" y="685" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="705" text-anchor="middle" font-size="10">setProgress</text>
+  <line x1="98" y1="700" x2="180" y2="700" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 6 -->
+  <circle cx="80" cy="745" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="750" text-anchor="middle" font-size="10" fill="white">6</text>
+  <rect x="450" y="730" width="220" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="750" text-anchor="middle" font-size="10">POST .../upload-sessions/{id}/complete</text>
+  <line x1="300" y1="700" x2="450" y2="745" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 7 -->
+  <circle cx="80" cy="790" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="795" text-anchor="middle" font-size="10" fill="white">7</text>
+  <rect x="180" y="775" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="795" text-anchor="middle" font-size="10">setPreview</text>
+  <line x1="690" y1="745" x2="180" y2="790" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 3. AI 内容生成 ========== -->
+  <line x1="10" y1="850" x2="990" y2="850" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="845" font-size="11" fill="#8c8c8c">3. AI 内容生成（统一入口）</text>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="880" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="885" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="865" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="885" text-anchor="middle" font-size="10">AIInputBox</text>
+  <line x1="98" y1="880" x2="180" y2="880" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2 -->
+  <circle cx="80" cy="925" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="930" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="450" y="910" width="220" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="930" text-anchor="middle" font-size="10">POST /ai/suggestions (scope=ALL)</text>
+  <line x1="300" y1="880" x2="450" y2="925" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="720" y="910" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="930" text-anchor="middle" font-size="10">AI 服务</text>
+  <line x1="690" y1="925" x2="720" y2="925" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3 -->
+  <circle cx="80" cy="970" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="975" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="955" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="975" text-anchor="middle" font-size="10">AIResultsList</text>
+  <line x1="780" y1="925" x2="300" y2="970" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 4 -->
+  <circle cx="80" cy="1015" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1020" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="1000" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1020" text-anchor="middle" font-size="10">onResultSelect</text>
+  <line x1="98" y1="1015" x2="180" y2="1015" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4a -->
+  <circle cx="80" cy="1060" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1065" text-anchor="middle" font-size="10" fill="white">4a</text>
+  <rect x="180" y="1045" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1065" text-anchor="middle" font-size="10">AIContentPreviewModal</text>
+  <line x1="98" y1="1060" x2="180" y2="1060" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b: 用户在弹窗内编辑 -->
+  <circle cx="80" cy="1105" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1110" text-anchor="middle" font-size="10" fill="white">4b</text>
+  <rect x="180" y="1090" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1110" text-anchor="middle" font-size="10">AIContentPreviewModal</text>
+  <line x1="98" y1="1105" x2="180" y2="1105" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-1: 编辑标题 -->
+  <circle cx="80" cy="1150" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1155" text-anchor="middle" font-size="10" fill="white">4b-1</text>
+  <rect x="180" y="1135" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1155" text-anchor="middle" font-size="10">onTitleChange</text>
+  <line x1="98" y1="1150" x2="180" y2="1150" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-2: 编辑正文 -->
+  <circle cx="80" cy="1195" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1200" text-anchor="middle" font-size="10" fill="white">4b-2</text>
+  <rect x="180" y="1180" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1200" text-anchor="middle" font-size="10">onBodyChange</text>
+  <line x1="98" y1="1195" x2="180" y2="1195" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-2a: 设置平台正文可用性 -->
+  <circle cx="80" cy="1220" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1225" text-anchor="middle" font-size="10" fill="white">4b-2a</text>
+  <rect x="180" y="1205" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1225" text-anchor="middle" font-size="10">setBodyPlatform</text>
+  <line x1="300" y1="1195" x2="300" y2="1220" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1220" x2="180" y2="1220" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-2b: 正文字数校验 -->
+  <circle cx="80" cy="1265" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1270" text-anchor="middle" font-size="10" fill="white">4b-2b</text>
+  <rect x="180" y="1250" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1270" text-anchor="middle" font-size="10">validateBody</text>
+  <line x1="300" y1="1220" x2="300" y2="1265" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1265" x2="180" y2="1265" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-3: 添加话题 -->
+  <circle cx="80" cy="1310" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1315" text-anchor="middle" font-size="10" fill="white">4b-3</text>
+  <rect x="180" y="1295" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1315" text-anchor="middle" font-size="10">onTopicsChange</text>
+  <line x1="300" y1="1265" x2="300" y2="1310" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1310" x2="180" y2="1310" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-4: 话题数量校验 -->
+  <circle cx="80" cy="1355" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1360" text-anchor="middle" font-size="10" fill="white">4b-4</text>
+  <rect x="180" y="1340" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1360" text-anchor="middle" font-size="10">validateTopics</text>
+  <line x1="300" y1="1310" x2="300" y2="1355" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1355" x2="180" y2="1355" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4b-5: 话题超限提示 -->
+  <circle cx="80" cy="1400" r="18" fill="#ff4d4f" stroke="#cf1322" stroke-width="2"/>
+  <text x="80" y="1405" text-anchor="middle" font-size="10" fill="white">4b-5</text>
+  <rect x="180" y="1385" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="240" y="1405" text-anchor="middle" font-size="10">Message.error</text>
+  <line x1="300" y1="1355" x2="450" y2="1400" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+  <text x="500" y="1400" font-size="9" fill="#ff4d4f">"话题超过{limit}个，请精简"</text>
+
+  <!-- Step 4b-6: 设置应用按钮状态 -->
+  <circle cx="80" cy="1445" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1450" text-anchor="middle" font-size="10" fill="white">4b-6</text>
+  <rect x="180" y="1430" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1450" text-anchor="middle" font-size="10">setApplyDisabled</text>
+  <line x1="450" y1="1400" x2="180" y2="1445" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 4c: 取消 -->
+  <circle cx="80" cy="1490" r="18" fill="#8c8c8c" stroke="#595959" stroke-width="2"/>
+  <text x="80" y="1495" text-anchor="middle" font-size="10" fill="white">4c</text>
+  <rect x="180" y="1475" width="120" height="30" rx="5" fill="#d9d9d9" stroke="#8c8c8c" stroke-width="2"/>
+  <text x="240" y="1495" text-anchor="middle" font-size="10">close (cancel)</text>
+  <line x1="300" y1="1445" x2="300" y2="1490" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1490" x2="180" y2="1490" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4d: 应用 -->
+  <circle cx="80" cy="1535" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="1540" text-anchor="middle" font-size="10" fill="white">4d</text>
+  <rect x="180" y="1520" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1540" text-anchor="middle" font-size="10">ContentForm</text>
+  <line x1="300" y1="1490" x2="450" y2="1535" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 4d-1: 更新AI结果列表 -->
+  <circle cx="560" cy="1535" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="560" y="1540" text-anchor="middle" font-size="10" fill="white">4d-1</text>
+  <rect x="660" y="1520" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="720" y="1540" text-anchor="middle" font-size="10">AIResultsList</text>
+  <line x1="560" y1="1535" x2="660" y2="1535" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="720" y="1560" font-size="9" fill="#52c41a">updateTopics</text>
+
+  <!-- Step 5: 失败 -->
+  <circle cx="80" cy="1195" r="18" fill="#ff4d4f" stroke="#cf1322" stroke-width="2"/>
+  <text x="80" y="1200" text-anchor="middle" font-size="10" fill="white">5</text>
+  <rect x="180" y="1180" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="240" y="1200" text-anchor="middle" font-size="10">Message.error</text>
+  <line x1="690" y1="925" x2="180" y2="1195" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+
+  <!-- ========== 4. 账号选择 ========== -->
+  <line x1="10" y1="1600" x2="990" y2="1600" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1595" font-size="11" fill="#8c8c8c">4. 账号选择</text>
+
+  <!-- Step 1: 切换平台筛选 -->
+  <circle cx="80" cy="1630" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1635" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="1615" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1635" text-anchor="middle" font-size="10">PlatformFilter</text>
+  <line x1="98" y1="1630" x2="180" y2="1630" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 1 → Step 3 (跳过Step2) -->
+  <line x1="300" y1="1630" x2="300" y2="1780" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1780" x2="180" y2="1780" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: 获取所有在线账号（初始加载，前端按平台过滤） -->
+  <circle cx="80" cy="1675" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1680" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="1660" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1680" text-anchor="middle" font-size="10">setLoading</text>
+  <line x1="98" y1="1675" x2="180" y2="1675" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="300" y1="1675" x2="450" y2="1675" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="450" y="1660" width="180" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="1680" text-anchor="middle" font-size="10">GET /api/v1/accounts</text>
+  <text x="540" y="1695" text-anchor="middle" font-size="8" fill="#8c8c8c">(status=ONLINE)</text>
+
+  <!-- Step 3: 更新账号列表（前端按平台过滤显示） -->
+  <circle cx="80" cy="1720" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1725" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="1705" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1725" text-anchor="middle" font-size="10">PublishConfig</text>
+  <line x1="690" y1="1675" x2="180" y2="1720" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 4: 更多展开 - 加载全部账号（包括在线、已停止、失效） -->
+  <circle cx="80" cy="1765" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1770" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="1745" width="120" height="40" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1760" text-anchor="middle" font-size="9">onToggleExpand</text>
+  <text x="240" y="1775" text-anchor="middle" font-size="8" fill="#52c41a">+ loading</text>
+  <line x1="98" y1="1765" x2="180" y2="1765" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <!-- API调用 -->
+  <line x1="300" y1="1765" x2="450" y2="1765" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="450" y="1745" width="200" height="40" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="550" y="1760" text-anchor="middle" font-size="10">GET /api/v1/accounts</text>
+  <text x="550" y="1775" text-anchor="middle" font-size="8" fill="#52c41a">(不传status，获取所有)</text>
+
+  <!-- Step 5: 滚动加载 -->
+  <circle cx="80" cy="1855" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1860" text-anchor="middle" font-size="10" fill="white">5</text>
+  <rect x="180" y="1840" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1860" text-anchor="middle" font-size="10">handleScroll</text>
+  <line x1="690" y1="1785" x2="180" y2="1855" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="300" y1="1785" x2="300" y2="1855" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="1855" x2="180" y2="1855" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 6: 加载下一页（全部状态账号） -->
+  <circle cx="80" cy="1900" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="1905" text-anchor="middle" font-size="10" fill="white">6</text>
+  <rect x="180" y="1885" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1905" text-anchor="middle" font-size="10">setLoadingMore</text>
+  <line x1="300" y1="1855" x2="450" y2="1900" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <rect x="450" y="1885" width="200" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="550" y="1905" text-anchor="middle" font-size="10">GET /accounts (page+1)</text>
+  <text x="550" y="1920" text-anchor="middle" font-size="8" fill="#52c41a">(不传status)</text>
+
+  <!-- Step 7: 追加账号 -->
+  <circle cx="80" cy="1945" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="1950" text-anchor="middle" font-size="10" fill="white">7</text>
+  <rect x="180" y="1930" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="1950" text-anchor="middle" font-size="10">appendAccounts</text>
+  <line x1="690" y1="1900" x2="180" y2="1945" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 5. 发布进度弹窗 ========== -->
+  <line x1="10" y1="2015" x2="990" y2="2015" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="2010" font-size="11" fill="#8c8c8c">5. 发布进度弹窗</text>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="2045" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2050" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="2030" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2050" text-anchor="middle" font-size="10">PublishProgressModal</text>
+  <line x1="98" y1="2045" x2="180" y2="2045" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2 -->
+  <circle cx="80" cy="2090" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2095" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="450" y="2075" width="200" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="550" y="2095" text-anchor="middle" font-size="10">GET /publish/jobs/{jobId}</text>
+  <line x1="300" y1="2045" x2="450" y2="2090" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3 -->
+  <circle cx="80" cy="2135" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2140" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="2120" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2140" text-anchor="middle" font-size="10">updateRecords</text>
+  <line x1="690" y1="2090" x2="180" y2="2135" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="300" y1="2090" x2="300" y2="2135" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="2135" x2="180" y2="2135" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4 -->
+  <circle cx="80" cy="2180" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="2185" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="2165" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2185" text-anchor="middle" font-size="10">onComplete</text>
+  <line x1="98" y1="2180" x2="180" y2="2180" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="300" y1="2135" x2="300" y2="2180" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="300" y1="2180" x2="180" y2="2180" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 6. 后台运行 ========== -->
+  <line x1="10" y1="2245" x2="990" y2="2245" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="2240" font-size="11" fill="#8c8c8c">6. 后台运行</text>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="2275" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2280" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="2260" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2280" text-anchor="middle" font-size="10">close</text>
+  <line x1="98" y1="2275" x2="180" y2="2275" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2 -->
+  <circle cx="80" cy="2320" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2325" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="2305" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2325" text-anchor="middle" font-size="10">continuePolling</text>
+  <line x1="98" y1="2320" x2="180" y2="2320" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3 -->
+  <circle cx="80" cy="2365" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="2370" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="2350" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2370" text-anchor="middle" font-size="10">Message.info</text>
+  <line x1="98" y1="2365" x2="180" y2="2365" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 7. 模式切换 ========== -->
+  <line x1="10" y1="2425" x2="990" y2="2425" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="2420" font-size="11" fill="#8c8c8c">7. 视频/图文模式切换</text>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="2455" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2460" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="2440" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2460" text-anchor="middle" font-size="10">ModeTabBar</text>
+  <line x1="98" y1="2455" x2="180" y2="2455" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2 -->
+  <circle cx="80" cy="2500" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2505" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="2485" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2505" text-anchor="middle" font-size="10">MediaUploader</text>
+  <line x1="98" y1="2500" x2="180" y2="2500" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3 -->
+  <circle cx="80" cy="2545" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="2550" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="2530" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2550" text-anchor="middle" font-size="10">PublishConfig</text>
+  <line x1="98" y1="2545" x2="180" y2="2545" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 8. 提示词模板 ========== -->
+  <line x1="10" y1="2605" x2="990" y2="2605" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="2600" font-size="11" fill="#8c8c8c">8. 提示词模板</text>
+
+  <!-- Step 0 -->
+  <circle cx="80" cy="2635" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2640" text-anchor="middle" font-size="10" fill="white">0</text>
+  <rect x="450" y="2620" width="200" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="550" y="2640" text-anchor="middle" font-size="10">GET /ai/prompt-templates</text>
+  <line x1="300" y1="2635" x2="450" y2="2635" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 1 -->
+  <circle cx="80" cy="2680" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2685" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="180" y="2665" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2685" text-anchor="middle" font-size="10">PromptTemplates</text>
+  <line x1="690" y1="2635" x2="180" y2="2680" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- Step 2: 选择模板 -->
+  <circle cx="80" cy="2725" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2730" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="180" y="2710" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2730" text-anchor="middle" font-size="10">selectTemplate</text>
+  <line x1="98" y1="2725" x2="180" y2="2725" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 3: 展开模板详情 -->
+  <circle cx="80" cy="2770" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="2775" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="180" y="2755" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2775" text-anchor="middle" font-size="10">PromptDetailCard</text>
+  <line x1="98" y1="2770" x2="180" y2="2770" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 4: 填充到编辑区 -->
+  <circle cx="80" cy="2815" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="2820" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="180" y="2800" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="2820" text-anchor="middle" font-size="10">AIInputBox</text>
+  <line x1="98" y1="2815" x2="180" y2="2815" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="750" y="2645" width="230" height="100" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="760" y="2663" font-size="10" font-weight="bold">图例</text>
+  <circle cx="775" cy="2683" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="790" y="2686" font-size="9">步骤</text>
+  <line x1="820" y1="2683" x2="850" y2="2683" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="860" y="2686" font-size="9">正常流程</text>
+  <line x1="820" y1="2703" x2="850" y2="2703" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="860" y="2706" font-size="9">成功流程</text>
+  <line x1="820" y1="2723" x2="850" y2="2723" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+  <text x="860" y="2726" font-size="9">失败/错误流程</text>
+</svg>

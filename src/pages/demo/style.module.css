@@ -1,0 +1,37 @@
+.container {
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.progress {
+  margin-top: 16px;
+}
+
+.result {
+  padding: 16px;
+  margin-top: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+.preview {
+  margin-top: 16px;
+}
+
+.video {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 8px;
+}
+
+.image {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 8px;
+}

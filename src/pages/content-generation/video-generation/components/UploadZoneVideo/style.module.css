@@ -1,0 +1,127 @@
+.dragger-slot {
+  width: 100%;
+  height: 100%;
+}
+
+.dragger-slot-filled {
+  width: 100%;
+}
+
+.dragger-slot-filled :global(.ant-upload) {
+  display: block;
+  width: 100%;
+}
+
+.dragger-slot-filled :global(.ant-upload-drag) {
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.dragger-slot-hidden {
+  display: none;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Figma 3349:5995 空态外壳：与可上传态同尺寸，试用禁用时仅降透明度 */
+.empty-shell {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+}
+
+.draggerSlotDisabled :global(.ant-upload.ant-upload-drag) {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.draggerSlotDisabled :global(.ant-upload.ant-upload-drag:hover) {
+  border-color: #d9d9d9;
+}
+
+.zone-inner-video {
+  justify-content: flex-start;
+  padding: 0;
+}
+
+.empty-layout-video {
+  padding: 16px 16px 10px;
+}
+
+.empty-main-video {
+  gap: 8px;
+}
+
+.upload-icon {
+  display: block;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+/* 预留第三行高度，切换试用/标准质量时上传区高度不变 */
+.disabled-hint {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  line-height: 18px;
+  color: #bfbfbf;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.disabled-hint-hidden {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.thumb-item {
+  width: 120px;
+  height: 72px;
+}
+
+.progress-bar {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  z-index: 1;
+}
+
+.thumb-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.thumb-add {
+  width: 120px;
+  height: 72px;
+}
+
+.thumb-add-inner {
+  width: 120px;
+  height: 72px;
+}
+
+.file-name {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 2px 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: #fff;
+  white-space: nowrap;
+  background: rgb(0 0 0 / 45%);
+}

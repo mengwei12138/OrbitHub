@@ -1,0 +1,23 @@
+.delete-original-checkbox {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.label-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--figma-color-gray-10);
+}
+
+.hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--figma-color-gray-8);
+}

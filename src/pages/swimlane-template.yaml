@@ -1,0 +1,887 @@
+# 交互泳道图模板库
+# 本文件包含 8 种常见交互类型的模板和案例
+# 新建页面时，可按需复制对应交互类型到页面 swimlane.yaml 中
+
+# =============================================
+# 快速参考
+# =============================================
+# 交互类型速查：
+#   form        - 表单交互（登录、注册、表单提交）
+#   list        - 列表交互（数据列表、表格）
+#   confirm     - 确认交互（删除确认、危险操作）
+#   state       - 状态切换（开关、手风琴）
+#   async       - 异步交互（文件上传、异步任务）
+#   file        - 文件交互（文件选择、上传）
+#   modal       - 弹窗交互（弹窗打开/关闭）
+#   navigation  - 导航交互（页面跳转、列表到详情）
+
+# =============================================
+# Schema 完整字段说明
+# =============================================
+# 通用字段：
+#   interaction.type      - 交互类型（form/list/confirm/state/async/file/modal/navigation）
+#   interaction.name      - 交互名称
+#   interaction.trigger    - 触发源 { component, action }
+#   mainFlow              - 主流程步骤数组
+#   randomEvents          - 随机事件处理数组
+#   states                - 状态定义数组
+
+# 步骤字段（step）：
+#   step                  - 步骤对象
+#   step.description      - 步骤描述
+#   step.type             - 步骤类型：
+#                            空值/async = 同步/异步步骤
+#                            interactive = 等待用户操作步骤
+#   step.async            - 是否异步（已废弃，用 step.type: async）
+#   step.parallel         - 并行执行的动作数组
+#   step.onSuccess        - 成功时跳转步骤
+#   step.onFail           - 失败时跳转步骤
+#   step.onDone           - 完成后跳转步骤（用于 async 或 interactive 类型）
+#   step.condition        - 执行条件（支持比较运算符：==、!=、>、<）
+#   step.waitFor          - 等待用户操作（用于 interactive 类型，格式：action1 | action2）
+
+# randomEvents 字段：
+#   trigger               - 触发描述
+#   condition             - 触发条件（可选）
+#   name                  - 动作名称
+#   component             - 目标组件
+#   action                - 组件方法调用 { method, props }
+
+# parallel 列表项：
+#   使用 name: 描述动作（不是 action:），action: 保留给组件方法调用
+
+# =============================================
+# 规范
+# =============================================
+#   - 第一个 interaction 用 `interaction:` 根 key
+#   - 后续 interactions 用 `{name}:` 格式命名
+#   - parallel 列表项用 `name:` 描述动作（不是 action:）
+#   - 占位符用 {xxx} 无引号格式
+#   - 使用 --- 分隔多个 interaction
+#   - condition 支持比较运算符：==（等于）、!=（不等于）、>（大于）、<（小于）
+
+---
+# 1. 表单交互 - 模板
+interaction:
+  type: form
+  name: '{表单名称}'
+  trigger:
+    component: '{FormComponent}'
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: '{FormComponent}'
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 提交数据
+      async: true
+      parallel:
+        - name: 调用 {METHOD} {url}
+          api:
+            method: '{METHOD}'
+            url: '{url}'
+            request: '{request}'
+        - name: 显示 loading
+          component: '{LoadingComponent}'
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 成功处理
+      parallel:
+        - name: 关闭表单
+          component: '{FormComponent}'
+          action:
+            method: reset
+        - name: 刷新列表
+          component: '{ListComponent}'
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: '{message}'
+
+    - step: 4
+      description: 失败处理
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 保留表单数据
+
+  randomEvents:
+    - trigger: 用户点击取消
+      condition: form.isDirty
+      name: 离开页面确认
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认离开？
+          content: 表单有未保存的更改
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: form_data
+      type: object
+      default: {}
+    - name: is_submitting
+      type: boolean
+      default: false
+
+---
+# 1. 表单交互 - 登录流程案例
+interaction:
+  type: form
+  name: 用户登录
+  trigger:
+    component: LoginForm
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: LoginForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 调用登录接口
+      async: true
+      parallel:
+        - name: 调用 POST /api/login
+          api:
+            method: POST
+            url: /api/login
+            request: LoginRequest
+            response: LoginResponse
+        - name: 显示 loading
+          component: Button
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 登录成功
+      parallel:
+        - name: 保存 Token
+          component: storage
+          action:
+            method: setItem
+            props:
+              key: token
+              value: '{response.token}'
+        - name: 跳转首页
+          component: router
+          action:
+            method: replace
+            props:
+              path: /home
+        - name: 显示欢迎提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 登录成功
+
+    - step: 4
+      description: 登录失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{response.message}'
+        - name: 清空密码
+          component: LoginForm
+          action:
+            method: setFieldValue
+            props:
+              field: password
+              value: ''
+
+  randomEvents:
+    - trigger: 用户点击注册
+      name: 跳转注册页
+      component: router
+      action:
+        method: push
+        props:
+          path: /register
+
+    - trigger: 用户点击忘记密码
+      name: 跳转找回密码页
+      component: router
+      action:
+        method: push
+        props:
+          path: /forgot-password
+
+  states:
+    - name: login_form
+      type: object
+      default:
+        username: ''
+        password: ''
+    - name: is_loading
+      type: boolean
+      default: false
+
+---
+# 2. 列表交互 - 模板
+interaction:
+  type: list
+  name: '{列表名称}'
+  trigger:
+    component: '{ListComponent}'
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载数据
+      async: true
+      parallel:
+        - name: 调用 GET {url}
+          api:
+            method: GET
+            url: '{url}'
+            params: '{params}'
+        - name: 显示 loading
+          component: '{ListComponent}'
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染列表
+      component: '{ListComponent}'
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: '{ListComponent}'
+      action:
+        method: setError
+        props:
+          error: '{error.message}'
+
+    - step: 4
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: '{response.total}'
+
+  randomEvents:
+    - trigger: 用户切换分页
+      name: 重新加载数据
+      component: '{ListComponent}'
+      action:
+        method: reload
+      params:
+        page: '{pagination.current}'
+        pageSize: '{pagination.pageSize}'
+
+    - trigger: 用户筛选
+      name: 重新加载数据
+      component: '{ListComponent}'
+      action:
+        method: reload
+      params:
+        filters: '{filters}'
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: list_data
+      type: array
+      default: []
+    - name: loading
+      type: boolean
+      default: false
+    - name: pagination
+      type: object
+      default:
+        current: 1
+        pageSize: 10
+        total: 0
+    - name: filters
+      type: object
+      default: {}
+
+---
+# 3. 确认交互 - 模板
+interaction:
+  type: confirm
+  name: '{确认操作名称}'
+  trigger:
+    component: '{TriggerComponent}'
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: '{title}'
+          content: '{content}'
+          okText: '{okText}'
+          cancelText: 取消
+          okType: '{okType}'
+
+    - step: 2
+      description: 等待用户操作
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用 {METHOD} {url}
+          api:
+            method: '{METHOD}'
+            url: '{url}'
+            request: '{request}'
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 操作成功
+      parallel:
+        - name: 刷新列表
+          component: '{ListComponent}'
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: '{successMessage}'
+
+    - step: 5
+      description: 操作失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+  randomEvents:
+    - trigger: 点击遮罩层
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: confirm_visible
+      type: boolean
+      default: false
+    - name: is_executing
+      type: boolean
+      default: false
+
+---
+# 4. 状态切换 - 模板
+interaction:
+  type: state
+  name: '{状态切换名称}'
+  trigger:
+    component: '{Component}'
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 更新状态
+      async: true
+      parallel:
+        - name: 调用 {METHOD} {url}
+          api:
+            method: '{METHOD}'
+            url: '{url}'
+            request: '{request}'
+        - name: 显示 loading
+          component: '{Component}'
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 更新成功
+      parallel:
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: '{successMessage}'
+        - name: 刷新数据
+          component: '{DataComponent}'
+          action:
+            method: reload
+
+    - step: 3
+      description: 更新失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 回滚状态
+          component: '{Component}'
+          action:
+            method: setValue
+            props:
+              value: '{previousValue}'
+
+  states:
+    - name: current_state
+      type: string | boolean
+      default: '{default}'
+    - name: loading
+      type: boolean
+      default: false
+
+---
+# 5. 异步交互 - 模板
+interaction:
+  type: async
+  name: '{异步操作名称}'
+  trigger:
+    component: '{TriggerComponent}'
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 开始异步操作
+      component: '{Component}'
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 执行异步请求
+      async: true
+      api:
+        method: '{METHOD}'
+        url: '{url}'
+        request: '{request}'
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 处理成功结果
+      component: '{Component}'
+      action:
+        method: onSuccess
+        props:
+          data: '{response}'
+      onDone: step_5
+
+    - step: 4
+      description: 处理失败结果
+      component: '{Component}'
+      action:
+        method: onError
+        props:
+          error: '{error}'
+      onDone: step_5
+
+    - step: 5
+      description: 结束 loading
+      component: '{Component}'
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  randomEvents:
+    - trigger: 用户点击取消
+      condition: cancellable == true
+      name: 取消请求
+      component: RequestController
+      action:
+        method: abort
+      onDone: step_5
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: loading
+      type: boolean
+      default: false
+    - name: result
+      type: object
+      default: null
+    - name: error
+      type: object
+      default: null
+
+---
+# 6. 文件交互 - 模板
+interaction:
+  type: file
+  name: '{文件操作名称}'
+  trigger:
+    component: '{FileComponent}'
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 选择文件
+      component: '{FileComponent}'
+      action:
+        method: select
+      onDone: step_2
+
+    - step: 2
+      description: 文件校验
+      component: '{FileComponent}'
+      action:
+        method: validate
+        props:
+          maxSize: '{maxSize}'
+          accept: '{accept}'
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 开始上传
+      component: '{FileComponent}'
+      action:
+        method: setUploading
+        props:
+          uploading: true
+      onDone: step_4
+
+    - step: 4
+      description: 上传文件
+      async: true
+      api:
+        method: POST
+        url: '{url}'
+        request:
+          type: FormData
+          field: file
+        onProgress: step_5
+      onSuccess: step_6
+      onFail: step_7
+
+    - step: 5
+      description: 更新上传进度
+      component: '{FileComponent}'
+      action:
+        method: setProgress
+        props:
+          percent: '{progress.percent}'
+
+    - step: 6
+      description: 上传成功
+      parallel:
+        - name: 显示预览
+          component: '{FileComponent}'
+          action:
+            method: setPreview
+            props:
+              url: '{response.url}'
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 上传成功
+
+    - step: 7
+      description: 上传失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 重置组件状态
+          component: '{FileComponent}'
+          action:
+            method: reset
+
+  randomEvents:
+    - trigger: 文件类型不支持
+      name: 显示错误提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 不支持的文件格式
+
+    - trigger: 文件超过大小限制
+      name: 显示错误提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 文件大小不能超过 '{maxSize}'
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: file
+      type: object
+      default: null
+    - name: uploading
+      type: boolean
+      default: false
+    - name: progress
+      type: number
+      default: 0
+    - name: preview_url
+      type: string
+      default: ''
+
+---
+# 7. 弹窗交互 - 模板
+interaction:
+  type: modal
+  name: '{弹窗名称}'
+  trigger:
+    component: '{TriggerComponent}'
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 打开弹窗
+      component: '{ModalComponent}'
+      action:
+        method: open
+        props: '{props}'
+
+    - step: 2
+      description: 用户操作
+      type: interactive
+      waitFor: user_action
+
+    - step: 3
+      description: 关闭弹窗
+      component: '{ModalComponent}'
+      action:
+        method: close
+      onDone: handle_result
+
+  randomEvents:
+    - trigger: 点击遮罩层关闭
+      condition: modal.closable == true
+      name: 关闭弹窗
+      component: '{ModalComponent}'
+      action:
+        method: close
+
+    - trigger: 点击取消按钮
+      name: 关闭弹窗
+      component: '{ModalComponent}'
+      action:
+        method: close
+
+    - trigger: ESC 按键
+      condition: modal.keyboard == true
+      name: 关闭弹窗
+      component: '{ModalComponent}'
+      action:
+        method: close
+
+  states:
+    - name: modal_visible
+      type: boolean
+      default: false
+    - name: modal_data
+      type: object
+      default: null
+
+---
+# 8. 导航交互 - 模板
+interaction:
+  type: navigation
+  name: '{导航名称}'
+  trigger:
+    component: '{NavComponent}'
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 保存当前状态
+      component: '{CurrentPage}'
+      action:
+        method: saveState
+      params: '{state}'
+
+    - step: 2
+      description: 跳转目标页面
+      component: router
+      action:
+        method: push
+        props:
+          path: '{path}'
+          params: '{params}'
+
+    - step: 3
+      description: 加载目标页面
+      async: true
+      parallel:
+        - name: 调用 GET {url}
+          api:
+            method: GET
+            url: '{url}'
+        - name: 显示 loading
+          component: '{TargetPage}'
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 4
+      description: 渲染详情
+      component: '{TargetPage}'
+      action:
+        method: setData
+        props:
+          data: '{response.data}'
+
+    - step: 5
+      description: 加载失败
+      component: '{TargetPage}'
+      action:
+        method: setError
+        props:
+          error: '{error.message}'
+
+  randomEvents:
+    - trigger: 用户点击返回
+      name: 返回列表页并恢复状态
+      component: router
+      action:
+        method: push
+        props:
+          path: '{fromPath}'
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: replace
+        props:
+          path: /login
+
+    - trigger: 无权限访问
+      name: 跳转无权限页
+      component: router
+      action:
+        method: replace
+        props:
+          path: /403
+
+  states:
+    - name: current_path
+      type: string
+      default: ''
+    - name: detail_data
+      type: object
+      default: null
+    - name: loading
+      type: boolean
+      default: false

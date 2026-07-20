@@ -1,0 +1,128 @@
+version: "1.0"
+
+name: 图片生成页面
+description: AI 图片生成配置与结果展示页面
+
+actors:
+  - name: 用户
+    description: 使用图片生成功能的用户
+
+swimlanes:
+  - name: 用户
+    alias: User
+  - name: 图片生成页面
+    alias: Page
+  - name: AI 服务
+    alias: AIService
+  - name: 结果展示
+    alias: Result
+
+states:
+  - name: 初始状态
+    alias: Initial
+    description: 用户打开图片生成页面，表单为空
+
+  - name: 填写配置
+    alias: FillingForm
+    description: 用户填写生成配置（产品信息、风格等）
+
+  - name: 提交生成
+    alias: Submitting
+    description: 用户点击"立即生成"按钮
+
+  - name: 生成中
+    alias: Generating
+    description: AI 服务正在生成内容，显示进度
+
+  - name: 生成完成
+    alias: Completed
+    description: AI 生成完成，展示结果
+
+  - name: 生成失败
+    alias: Failed
+    description: AI 生成失败，展示错误
+
+transitions:
+  - name: 打开页面
+    from: null
+    to: Initial
+    condition: 用户访问 /content-generation/image-generation
+    action: 初始化表单
+
+  - name: 填写表单
+    from: Initial
+    to: FillingForm
+    trigger: User
+    action: 填写各项配置
+
+  - name: 提交生成
+    from: FillingForm
+    to: Submitting
+    trigger: User
+    action: 点击"立即生成图文内容 · 50 积分"按钮
+
+  - name: 开始生成
+    from: Submitting
+    to: Generating
+    trigger: Page
+    action: 调用 AI 图片生成接口，显示生成中弹窗
+
+  - name: 轮询进度
+    from: Generating
+    to: Generating
+    trigger: AIService
+    condition: 生成未完成
+    action: 更新进度条
+
+  - name: 生成完成
+    from: Generating
+    to: Completed
+    trigger: AIService
+    condition: 生成完成
+    action: 关闭生成中弹窗，显示结果卡片
+
+  - name: 生成失败
+    from: Generating
+    to: Failed
+    trigger: AIService
+    condition: 生成失败
+    action: 显示错误信息
+
+  - name: 重新生成
+    from: Completed
+    to: FillingForm
+    trigger: User
+    action: 点击"重新生成"按钮
+
+  - name: 去发布
+    from: Completed
+    to: Result
+    trigger: User
+    action: 点击"去发布"按钮，跳转发布页面
+
+  - name: 复制内容
+    from: Completed
+    trigger: User
+    action: 点击"复制内容"按钮，复制结果到剪贴板
+
+  - name: 去作品管理
+    from: Completed
+    to: Result
+    trigger: User
+    action: 点击"去作品管理"按钮，跳转作品管理页面
+
+components:
+  - name: ImageGenerationPage
+    description: 主页组件，包含表单和生成按钮
+    path: src/pages/content-generation/image-generation/index.tsx
+    figmaAnchor: "3096-2500"
+
+  - name: GeneratingModal
+    description: 生成中弹窗组件，显示生成进度
+    path: src/pages/content-generation/image-generation/components/GeneratingModal/index.tsx
+    figmaAnchor: "3130-2620"
+
+  - name: GenerationResultCard
+    description: 生成结果卡片组件，展示生成结果
+    path: src/pages/content-generation/image-generation/components/GenerationResultCard/index.tsx
+    figmaAnchor: "3131-2723"

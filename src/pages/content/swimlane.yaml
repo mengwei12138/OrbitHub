@@ -1,0 +1,861 @@
+# 内容发布 - 表单交互
+interaction:
+  type: form
+  name: 内容发布
+  trigger:
+    component: BottomActionBar
+    action: onPublishClick
+
+  mainFlow:
+    - step: 1
+      description: 选择发布模式
+      component: ModeTabBar
+      action:
+        method: getActiveMode
+      onDone: step_2
+
+    - step: 2
+      description: 获取账号列表
+      parallel:
+        - name: 调用 GET /api/v1/accounts
+          api:
+            method: GET
+            url: /api/v1/accounts
+            params:
+              status: ONLINE
+        - name: 显示 loading
+          component: PlatformFilter
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 检测进行中的发布任务
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/jobs/active
+          api:
+            method: GET
+            url: /api/v1/content/publish/jobs/active
+        - name: 显示 loading
+          component: PlatformFilter
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_4
+      onFail: step_4
+
+    - step: 4
+      description: 选择账号
+      component: PlatformFilter
+      action:
+        method: selectAccounts
+      onDone: step_5
+
+    - step: 5
+      description: 平台规范校验
+      component: PublishConfig
+      action:
+        method: validate
+      onSuccess: step_6
+      onFail: show_validation_error
+
+    - step: 6
+      description: 提交发布
+      parallel:
+        - name: 调用 POST /api/v1/content/publish/submit
+          api:
+            method: POST
+            url: /api/v1/content/publish/submit
+            request:
+              accountIds: { accountIds }
+              contentMode: { contentMode }
+              caption: { caption }
+              titleByPlatform: { titleByPlatform }
+              topicTags: { topicTags }
+              mentions: { mentions }
+              primaryMediaAssetId: { primaryMediaAssetId }
+              imageMediaAssetIds: { imageMediaAssetIds }
+        - name: 禁用发布按钮
+          component: BottomActionBar
+          action:
+            method: setDisabled
+            props:
+              disabled: true
+              text: 发布中...
+      onSuccess: step_7
+      onFail: step_8
+
+    - step: 7
+      description: 发布成功，显示进度弹窗
+      parallel:
+        - name: 显示进度弹窗
+          component: PublishProgressModal
+          action:
+            method: open
+        - name: 启动轮询
+          component: PublishProgressModal
+          action:
+            method: startPolling
+          params:
+            jobId: { response.data.jobId }
+
+    - step: 8
+      description: 发布失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 恢复发布按钮
+          component: BottomActionBar
+          action:
+            method: setDisabled
+            props:
+              disabled: false
+              text: 确认发布
+
+---
+# 素材上传 - 文件交互
+media_upload:
+  type: file
+  name: 素材上传
+  trigger:
+    component: UploadZone
+    action: onFileSelect
+
+  mainFlow:
+    - step: 1
+      description: 选择文件
+      component: UploadZone
+      action:
+        method: selectFile
+      onDone: step_2
+
+    - step: 2
+      description: 文件校验
+      component: MediaUploader
+      action:
+        method: validate
+        props:
+          maxSize: 500 * 1024 * 1024
+          accept:
+            [
+              'image/jpeg',
+              'image/png',
+              'image/webp',
+              'video/mp4',
+              'video/quicktime',
+            ]
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 创建上传会话
+      api:
+        method: POST
+        url: /api/v1/content/media/upload-sessions
+        request:
+          fileName: { fileName }
+          fileSizeBytes: { fileSizeBytes }
+          mimeType: { mimeType }
+          purpose: { purpose }
+      onSuccess: step_4
+      onFail: show_error
+
+    - step: 4
+      description: 分片上传
+      component: MediaUploader
+      action:
+        method: uploadChunks
+      params:
+        uploadSessionId: { response.data.uploadSessionId }
+      onProgress: step_5
+      onSuccess: step_6
+
+    - step: 5
+      description: 更新上传进度
+      component: MediaUploader
+      action:
+        method: setProgress
+        props:
+          percent: { progress.percent }
+
+    - step: 6
+      description: 完成上传
+      api:
+        method: POST
+        url: /api/v1/content/media/upload-sessions/{uploadSessionId}/complete
+      onSuccess: step_7
+      onFail: show_error
+
+    - step: 7
+      description: 上传成功
+      parallel:
+        - name: 显示预览
+          component: MediaUploader
+          action:
+            method: setPreview
+          props:
+            mediaAssetId: { response.data.mediaAssetId }
+
+    - step: 7a
+      description: 并发状态安全处理
+      note: 使用函数式更新确保多文件并发完成时状态正确，避免竞态条件覆盖
+      component: ImageUpload
+      action:
+        method: onFilesChange
+      updateType: functional
+
+---
+# AI 内容生成 - 异步交互（统一入口）
+ai_content_generate:
+  type: async
+  name: AI 内容生成
+  trigger:
+    component: AIInputBox
+    action: onGenerateClick
+
+  mainFlow:
+    - step: 1
+      description: 获取用户提示词和上下文
+      component: AIInputBox
+      action:
+        method: getContent
+      onDone: step_2
+
+    - step: 2
+      description: 调用统一 AI 生成接口
+      parallel:
+        - name: 调用 POST /api/v1/content/ai/suggestions
+          api:
+            method: POST
+            url: /api/v1/content/ai/suggestions
+            request:
+              scope: ALL
+              platform: { platform }
+              contentMode: { contentMode }
+              userPrompt: { userPrompt }
+              templateCode: { templateCode }
+              currentTitle: { currentTitle }
+              currentCaption: { currentCaption }
+              currentTopicTags: { currentTopicTags }
+              maxVariants: 5
+        - name: 显示 loading
+          component: AIInputBox
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_5
+
+    - step: 3
+      description: 生成成功，展示结果列表
+      parallel:
+        - name: 展示生成结果列表
+          component: AIResultsList
+          action:
+            method: setResults
+          props:
+            results: { response.data.contentSuggestions }
+        - name: 停止 loading
+          component: AIInputBox
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 用户点击候选，打开预览编辑弹窗
+      component: AIResultsList
+      action:
+        method: onResultSelect
+      onDone: step_4a
+
+    - step: 4a
+      description: 打开预览编辑弹窗
+      component: AIContentPreviewModal
+      action:
+        method: open
+      onDone: step_4b
+
+    - step: 4b
+      description: 用户在弹窗内编辑并确认
+      type: interactive
+      waitFor: apply | cancel
+      subSteps:
+        - name: 编辑标题
+          component: AIContentPreviewModal
+          action:
+            method: onTitleChange
+          onDone: step_4b_validate_title
+
+        - name: 标题字数校验
+          description: 校验抖音标题是否超过55字
+          step: step_4b_validate_title
+          component: AIContentPreviewModal
+          action:
+            method: validateTitle
+          onSuccess: step_4b_continue
+          onFail: step_4b_title_overlimit
+
+        - name: 标题超限提示
+          description: 标题超限
+          step: step_4b_title_overlimit
+          parallel:
+            - name: 显示错误提示
+              component: Message
+              action:
+                method: error
+              props:
+                content: 抖音标题超过55字，请精简
+            - name: 恢复标题内容
+              component: AIContentPreviewModal
+              action:
+                method: revertTitle
+
+        - name: 编辑正文
+          component: AIContentPreviewModal
+          action:
+            method: onBodyChange
+          onDone: step_4b_continue
+
+        - name: 添加话题
+          description: 添加新话题标签
+          component: AIContentPreviewModal
+          action:
+            method: onTopicsChange
+          onDone: step_4b_validate_topics
+
+        - name: 话题数量校验
+          description: 校验话题数量是否超限
+          step: step_4b_validate_topics
+          component: AIContentPreviewModal
+          action:
+            method: validateTopics
+          onSuccess: step_4b_continue
+          onFail: step_4b_topic_overlimit
+
+        - name: 话题超限提示
+          description: 话题超限，拦截添加
+          step: step_4b_topic_overlimit
+          parallel:
+            - name: 显示错误提示
+              component: Message
+              action:
+                method: error
+              props:
+                content: 话题超过{limit}个，请精简
+            - name: 恢复话题列表
+              component: AIContentPreviewModal
+              action:
+                method: revertTopics
+
+        - name: 设置平台正文可用性
+          description: 根据selectedAccountIds动态设置各平台正文字段可用性（仅选抖音时小红书显示无正文字段）
+          step: step_4b_set_body_platform
+          component: Content
+          action:
+            method: setBodyPlatformAvailable
+
+        - name: 正文字数校验
+          description: 校验所选平台正文字数是否超限（仅抖音选时仅校验抖音5000字，仅小红书选时仅校验小红书1000字，同时选中时校验两者）
+          step: step_4b_validate_body
+          component: AIContentPreviewModal
+          action:
+            method: validateBody
+          onSuccess: step_4b_set_button
+          onFail: step_4b_body_overlimit
+
+        - name: 正文超限提示
+          description: 正文超限
+          step: step_4b_body_overlimit
+          parallel:
+            - name: 显示错误提示
+              component: Message
+              action:
+                method: error
+              props:
+                content: 正文超过{limit}字，请精简
+            - name: 恢复正文内容
+              component: AIContentPreviewModal
+              action:
+                method: revertBody
+
+        - name: 设置应用按钮状态
+          description: 根据话题数量和正文字数设置应用按钮是否禁用
+          step: step_4b_set_button
+          component: AIContentPreviewModal
+          action:
+            method: setApplyButtonDisabled
+          params:
+            disabled: '{isTopicsOverLimit || isBodyOverLimit || isTitleOverLimit}'
+
+      onDone: step_4c
+
+    - step: 4c
+      description: 用户点击取消
+      condition: user_action == cancel
+      name: 关闭弹窗不保存
+      component: AIContentPreviewModal
+      action:
+        method: close
+
+    - step: 4d
+      description: 用户点击应用
+      condition: user_action == apply
+      parallel:
+        - name: 关闭弹窗
+          component: AIContentPreviewModal
+          action:
+            method: close
+        - name: 填充编辑后的内容到表单
+          component: ContentForm
+          action:
+            method: setContent
+          props:
+            title: '{editedTitle}'
+            body: '{editedBody}'
+            topics: '{editedTopics}'
+        - name: 更新AI结果列表中的话题
+          component: AIResultsList
+          action:
+            method: updateTopics
+          props:
+            captionId: '{editingCaptionId}'
+            topicTags: '{editedTopics}'
+
+    - step: 5
+      description: 生成失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 停止 loading
+          component: AIInputBox
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+---
+# 账号选择 - 状态切换
+account_select:
+  type: state
+  name: 账号选择
+  trigger:
+    component: PlatformFilter
+    action: onAccountChange
+
+  mainFlow:
+    - step: 1
+      description: 切换平台筛选
+      component: PlatformFilter
+      action:
+        method: onPlatformChange
+      onDone: step_3
+
+    - step: 2
+      description: 获取所有在线账号（前端按平台过滤）
+      parallel:
+        - name: 调用 GET /api/v1/accounts
+          api:
+            method: GET
+            url: /api/v1/accounts
+            params:
+              status: ONLINE
+        - name: 显示 loading
+          component: PlatformFilter
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 更新账号列表
+      component: PublishConfig
+      action:
+        method: setAccounts
+      onDone: step_4
+
+    - step: 4
+      description: 用户点击更多展开列表，加载全部账号（包括在线、已停止、失效）
+      component: PublishConfig
+      action:
+        method: onToggleExpand
+      parallel:
+        - name: 调用 GET /api/v1/accounts（不传status，获取所有状态账号）
+          api:
+            method: GET
+            url: /api/v1/accounts
+        - name: 显示 loading
+          component: PublishConfig
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_5
+      onFail: show_error
+
+    - step: 5
+      description: 用户滚动到底部
+      component: PublishConfig
+      action:
+        method: handleScroll
+      onDone: step_6
+
+    - step: 6
+      description: 加载下一页（全部状态账号）
+      parallel:
+        - name: 调用 GET /api/v1/accounts (page+1，不传status)
+          api:
+            method: GET
+            url: /api/v1/accounts
+            params:
+              page: { nextPage }
+              pageSize: 10
+        - name: 显示 loading
+          component: PublishConfig
+          action:
+            method: setLoadingMore
+            props:
+              isLoadingMore: true
+      onSuccess: step_7
+      onFail: step_8
+
+    - step: 7
+      description: 追加账号到列表
+      parallel:
+        - name: 追加到账号列表
+          component: PublishConfig
+          action:
+            method: appendAccounts
+        - name: 隐藏 loading
+          component: PublishConfig
+          action:
+            method: setLoadingMore
+            props:
+              isLoadingMore: false
+      onDone: step_5
+
+    - step: 8
+      description: 加载失败
+      component: PublishConfig
+      action:
+        method: setLoadingMore
+        props:
+          isLoadingMore: false
+
+---
+# 发布进度弹窗 - 弹窗交互
+publish_progress:
+  type: modal
+  name: 发布进度弹窗
+  trigger:
+    component: PublishProgressModal
+    action: onOpen
+
+  mainFlow:
+    - step: 1
+      description: 打开弹窗
+      component: PublishProgressModal
+      action:
+        method: open
+      onDone: step_2
+
+    - step: 2
+      description: 轮询发布状态
+      parallel:
+        - name: 轮询 GET /api/v1/content/publish/jobs/{jobId}
+          api:
+            method: GET
+            url: /api/v1/content/publish/jobs/{jobId}
+        - name: 更新进度条
+          component: PublishProgressModal
+          action:
+            method: updateProgress
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 更新状态列表
+      component: PublishProgressModal
+      action:
+        method: updateRecords
+        props:
+          records: { response.data.records }
+      onDone: step_2
+
+    - step: 4
+      description: 轮询结束
+      component: PublishProgressModal
+      action:
+        method: onComplete
+
+---
+# 后台运行 - 状态切换
+background_run:
+  type: state
+  name: 后台运行
+  trigger:
+    component: PublishProgressModal
+    action: onBackgroundRun
+
+  mainFlow:
+    - step: 1
+      description: 关闭弹窗
+      component: PublishProgressModal
+      action:
+        method: close
+      onDone: step_2
+
+    - step: 2
+      description: 继续后台轮询
+      component: publishProgress
+      action:
+        method: continuePolling
+      onDone: step_3
+
+    - step: 3
+      description: 显示轻提示
+      component: Message
+      action:
+        method: info
+        props:
+          content: 有发布任务正在进行中...
+
+---
+# 模式切换 - 状态切换
+mode_switch:
+  type: state
+  name: 视频/图文模式切换
+  trigger:
+    component: ModeTabBar
+    action: onTabChange
+
+  mainFlow:
+    - step: 1
+      description: 切换模式
+      component: ModeTabBar
+      action:
+        method: setActiveTab
+        props:
+          mode: { mode }
+      onDone: step_2
+
+    - step: 2
+      description: 清空已上传素材
+      component: MediaUploader
+      action:
+        method: clear
+      onDone: step_3
+
+    - step: 3
+      description: 更新发布配置
+      component: PublishConfig
+      action:
+        method: updateMode
+        props:
+          mode: { mode }
+
+---
+# 提示词模板 - 状态切换
+prompt_template:
+  type: state
+  name: 提示词模板选择
+  trigger:
+    component: PromptTemplates
+    action: onTemplateSelect
+
+  mainFlow:
+    - step: 0
+      description: 获取提示词模板列表
+      parallel:
+        - name: 调用 GET /api/v1/content/ai/prompt-templates
+          api:
+            method: GET
+            url: /api/v1/content/ai/prompt-templates
+            params:
+              contentMode: { contentMode }
+              includeDisabled: false
+        - name: 显示 loading
+          component: PromptTemplates
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_1
+      onFail: show_error
+
+    - step: 1
+      description: 渲染模板列表
+      component: PromptTemplates
+      action:
+        method: setTemplates
+        props:
+          templates: { response.data.templates }
+      onDone: step_2
+
+    - step: 2
+      description: 选择模板
+      component: PromptTemplates
+      action:
+        method: selectTemplate
+        props:
+          templateId: { templateId }
+      onDone: step_3
+
+    - step: 3
+      description: 展开模板详情
+      component: PromptDetailCard
+      action:
+        method: expand
+        props:
+          template: { template }
+
+    - step: 4
+      description: 填充到编辑区
+      component: AIInputBox
+      action:
+        method: setPrompt
+        props:
+          prompt: { template.defaultPromptByMode }
+      onDone: step_5
+
+    - step: 5
+      description: 用户点击收起按钮
+      component: PromptDetailCard
+      action:
+        method: onToggleCollapse
+      onDone: step_5a
+
+    - step: 5a
+      description: 收起模板详情
+      parallel:
+        - name: 隐藏详情内容
+          component: PromptDetailCard
+          action:
+            method: setVisible
+            props:
+              visible: false
+        - name: 按钮文案变为展开
+          component: PromptDetailCard
+          action:
+            method: setButtonText
+            props:
+              text: 展开
+
+  randomEvents:
+    - trigger: 用户点击取消
+      condition: form.isDirty
+      name: 离开页面确认
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认离开？
+          content: 表单有未保存的更改
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+    - trigger: 发布中禁止新发布
+      condition: hasActiveJob == true
+      name: 禁用发布按钮
+      component: BottomActionBar
+      action:
+        method: setDisabled
+        props:
+          disabled: true
+          reason: 有发布任务正在进行中，请稍后再试
+
+---
+states:
+  - name: active_mode
+    type: string
+    default: IMAGE
+    enum: [IMAGE, VIDEO]
+
+  - name: primary_media_asset_id
+    type: string
+    default: null
+
+  - name: image_media_asset_ids
+    type: array
+    default: []
+
+  - name: selected_accounts
+    type: array
+    default: []
+
+  - name: is_publishing
+    type: boolean
+    default: false
+
+  - name: publish_job_id
+    type: string
+    default: null
+
+  - name: has_active_job
+    type: boolean
+    default: false
+
+  - name: upload_progress
+    type: number
+    default: 0
+
+  - name: ai_results
+    type: array
+    default: []
+
+  - name: validation_errors
+    type: array
+    default: []
+
+  - name: is_topics_over_limit
+    type: boolean
+    default: false
+
+  - name: is_title_over_limit
+    type: boolean
+    default: false
+
+  - name: is_body_over_limit
+    type: boolean
+    default: false
+
+  - name: editing_caption_id
+    type: string
+    default: null
+
+  - name: topic_limits
+    type: object
+    default:
+      xiaohongshu: 10
+      douyin: 5

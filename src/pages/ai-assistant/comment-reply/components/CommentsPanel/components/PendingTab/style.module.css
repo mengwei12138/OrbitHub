@@ -1,0 +1,157 @@
+.wrapper {
+  padding: 0;
+}
+
+:global(.ant-pro-table-list-toolbar-search) {
+  width: 100%;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.filter-inputs {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #595959;
+  white-space: nowrap;
+}
+
+.filter-select {
+  width: 120px;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.search-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.account-cell {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.comment-badge {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.type-tag {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.type-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.type-text {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.action-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.ai-suggestion {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.ai-badge {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  font-size: 12px;
+  color: #1677ff;
+}
+
+.ai-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.ai-text {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+  color: #262626;
+  white-space: nowrap;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-primary {
+  padding: 4px 12px;
+  font-size: 13px;
+}
+
+.btn-ghost {
+  padding: 4px 12px;
+  font-size: 13px;
+  color: #595959;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+}
+
+.btn-danger {
+  padding: 4px 12px;
+  font-size: 13px;
+}

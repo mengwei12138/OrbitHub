@@ -1,0 +1,159 @@
+.balance-section {
+  padding: 20px 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f1f1f;
+}
+
+.balance-cards {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.balance-card {
+  position: relative;
+  flex: 1;
+  padding: 24px 28px;
+  background: linear-gradient(
+    90deg,
+    rgb(232 242 255 / 100%) 0%,
+    rgb(199 224 255 / 100%) 100%
+  );
+  border-radius: 10px;
+}
+
+.card-icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.card-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #595959;
+}
+
+.card-value {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.big-number {
+  font-size: 44px;
+  font-weight: 700;
+  color: #0a45b2;
+}
+
+.unit {
+  font-size: 16px;
+  color: #8c8c8c;
+}
+
+.card-divider {
+  height: 1px;
+  margin-bottom: 16px;
+  background: rgb(22 119 255 / 15%);
+}
+
+.breakdown {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.breakdown-label {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.breakdown-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f1f1f;
+}
+
+.breakdown-divider {
+  width: 1px;
+  height: 16px;
+  background: rgb(22 119 255 / 20%);
+}
+
+.tip {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.free-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 360px;
+  padding: 24px;
+  overflow: hidden;
+  background: linear-gradient(
+    90deg,
+    rgb(255 247 229 / 100%) 0%,
+    rgb(255 235 189 / 100%) 100%
+  );
+  border-radius: 10px;
+}
+
+.free-card-bg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 360px;
+}
+
+.free-card > .card-label {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 0;
+}
+
+.free-times-value {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.free-times-value .big-number {
+  font-size: 44px;
+  font-weight: 700;
+  color: #99630d;
+}
+
+.free-times-total {
+  font-size: 20px;
+  color: #bd8c29;
+}
+
+.free-times-tip {
+  position: relative;
+  z-index: 1;
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.dots-icon {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+}

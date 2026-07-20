@@ -1,0 +1,1217 @@
+# 私信AI自动回复 - 交互逻辑定义
+# 基于需求验收 + OpenAPI（见 AGENTS.md 索引的 contract/openapi/assistant/assistant-api.yaml）对齐
+# 交互类型：list, selection, state, async, confirm, modal
+
+# =============================================
+# 1. 页面加载
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 页面加载
+  trigger:
+    component: MessageReplyPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 显示骨架屏
+      parallel:
+        - name: 显示页面骨架屏
+          component: MessageReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 显示账号选择骨架
+          component: AccountSelector
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载页面数据
+      async: true
+      parallel:
+        - name: 获取账号列表
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/message-reply/accounts
+            params:
+              status: online
+        - name: 获取分类规则
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/message-reply/categories
+        - name: 获取抓取设置
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/message-reply/scrape-settings
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染页面数据
+      parallel:
+        - name: 渲染账号列表
+          component: AccountSelector
+          action:
+            method: setData
+            props:
+              dataSource: { response.accounts }
+        - name: 渲染分类规则
+          component: ClassificationRules
+          action:
+            method: setData
+            props:
+              rules: { response.rules }
+        - name: 渲染抓取设置
+          component: FetchSettings
+          action:
+            method: setData
+            props:
+              frequency: { response.frequency }
+              messageType: { response.messageType }
+        - name: 关闭骨架屏
+          component: MessageReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      parallel:
+        - name: 显示错误
+          component: MessageReplyPage
+          action:
+            method: setError
+            props:
+              error: { error.message }
+        - name: 关闭骨架屏
+          component: MessageReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: loading
+      type: boolean
+      default: true
+
+
+# =============================================
+# 2. 账号选择
+# =============================================
+---
+interaction:
+  type: selection
+  name: 账号选择
+  trigger:
+    component: AccountCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击账号卡片
+      component: AccountCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 切换选中状态
+      component: AccountCard
+      action:
+        method: toggleSelection
+        props:
+          accountId: { account.id }
+      onDone: step_3
+
+    - step: 3
+      description: 更新选中列表
+      component: AccountSelector
+      action:
+        method: updateSelectedAccounts
+
+  randomEvents:
+    - trigger: 全选
+      name: 全选账号
+      component: SelectAllButton
+      action: onClick
+
+    - trigger: 按平台筛选
+      name: 按平台筛选账号
+      component: PlatformFilter
+      action: onClick
+      props:
+        platform: { platform }
+
+  states:
+    - name: selected_account_ids
+      type: array
+      default: []
+
+
+# =============================================
+# 3. 设置抓取频率
+# =============================================
+---
+interaction:
+  type: state
+  name: 设置抓取频率
+  trigger:
+    component: FrequencySelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取选择的频率
+      component: FrequencySelector
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 保存抓取频率设置
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/message-reply/scrape-settings
+        request:
+          frequency: { frequency }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 抓取频率设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: fetch_frequency
+      type: string
+      default: '5'
+
+
+# =============================================
+# 4. 设置私信类型筛选
+# =============================================
+---
+interaction:
+  type: state
+  name: 设置私信类型筛选
+  trigger:
+    component: MessageTypeSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取选择的类型
+      component: MessageTypeSelector
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 保存筛选条件（合并到 scrape-settings）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/message-reply/scrape-settings
+        request:
+          messageType: { messageType }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 筛选条件已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: message_type_filter
+      type: string
+      default: all
+
+
+# =============================================
+# 5. 立即抓取
+# =============================================
+---
+interaction:
+  type: async
+  name: 立即抓取
+  trigger:
+    component: FetchButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 检查CD状态
+      component: FetchButton
+      action:
+        method: getCooldown
+      onDone: step_2
+
+    - step: 2a
+      description: CD中
+      condition: cooldown > 0
+      component: FetchButton
+      action:
+        method: showCooldown
+        props:
+          remaining: { cooldown }
+
+    - step: 2b
+      description: CD完成，执行抓取
+      condition: cooldown == 0
+      async: true
+      parallel:
+        - name: 调用抓取接口
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/message-reply/scrape
+            request:
+              accountId: { selectedAccountId }
+        - name: 启动60秒CD
+          component: FetchButton
+          action:
+            method: startCooldown
+            props:
+              duration: 60
+        - name: 显示Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 抓取成功
+      parallel:
+        - name: 关闭Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 抓取成功，获取{count}条新私信
+        - name: 刷新列表
+          component: MessageTable
+          action:
+            method: reload
+
+    - step: 4
+      description: 抓取失败
+      parallel:
+        - name: 关闭Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+
+  states:
+    - name: cooldown_remaining
+      type: number
+      default: 0
+    - name: is_fetching
+      type: boolean
+      default: false
+
+
+# =============================================
+# 6. 自动回复开关
+# =============================================
+---
+interaction:
+  type: state
+  name: 自动回复开关
+  trigger:
+    component: AutoReplySwitch
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取开关状态
+      component: AutoReplySwitch
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 保存自动回复设置（合并到 scrape-settings）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/message-reply/scrape-settings
+        request:
+          autoReplyEnabled: { enabled }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 自动回复设置已保存
+
+    - step: 4
+      description: 保存失败
+      parallel:
+        - name: 回滚开关状态
+          component: AutoReplySwitch
+          action:
+            method: setValue
+            props:
+              value: { previousValue }
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+
+  states:
+    - name: auto_reply_enabled
+      type: boolean
+      default: true
+
+
+# =============================================
+# 7. 分类规则显示
+# =============================================
+---
+interaction:
+  type: list
+  name: 分类规则显示
+  trigger:
+    component: ClassificationRules
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载分类规则
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/message-reply/categories
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染4种分类规则
+      parallel:
+        - name: 渲染合作咨询规则
+          component: ClassificationRuleItem
+          action:
+            method: render
+            props:
+              type: cooperation
+              name: 合作咨询
+              keywords: { response.rules.cooperation.keywords }
+              template: { response.rules.cooperation.template }
+        - name: 渲染投诉建议规则
+          component: ClassificationRuleItem
+          action:
+            method: render
+            props:
+              type: complaint
+              name: 投诉建议
+              keywords: { response.rules.complaint.keywords }
+              template: { response.rules.complaint.template }
+        - name: 渲染产品咨询规则
+          component: ClassificationRuleItem
+          action:
+            method: render
+            props:
+              type: inquiry
+              name: 产品咨询
+              keywords: { response.rules.inquiry.keywords }
+              template: { response.rules.inquiry.template }
+        - name: 渲染垃圾信息规则
+          component: ClassificationRuleItem
+          action:
+            method: render
+            props:
+              type: spam
+              name: 垃圾信息
+              keywords: { response.rules.spam.keywords }
+              template: 自动标记为垃圾，不回复
+
+    - step: 3
+      description: 加载失败
+      component: ClassificationRules
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  states:
+    - name: classification_rules
+      type: array
+      default: []
+
+
+# =============================================
+# 8. 新增分类规则
+# =============================================
+---
+interaction:
+  type: modal
+  name: 新增分类规则
+  trigger:
+    component: AddClassificationButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示新增弹窗
+      component: AddClassificationModal
+      action:
+        method: open
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户填写
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 批量更新分类规则（含新增项）
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/message-reply/categories
+            request:
+              categories: { form.categoriesWithNew }
+        - name: 关闭弹窗
+          component: AddClassificationModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: AddClassificationModal
+      action:
+        method: close
+
+    - step: 4
+      description: 创建成功
+      parallel:
+        - name: 刷新规则列表
+          component: ClassificationRules
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 分类规则创建成功
+
+    - step: 5
+      description: 创建失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 9. 编辑分类规则
+# =============================================
+---
+interaction:
+  type: modal
+  name: 编辑分类规则
+  trigger:
+    component: EditClassificationButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示编辑弹窗
+      component: EditClassificationModal
+      action:
+        method: open
+        props:
+          rule: { rule }
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户修改确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用批量分类规则更新接口
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/message-reply/categories
+            request:
+              categories: { form.categoriesEdited }
+        - name: 关闭弹窗
+          component: EditClassificationModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: EditClassificationModal
+      action:
+        method: close
+
+    - step: 4
+      description: 更新成功
+      parallel:
+        - name: 刷新规则列表
+          component: ClassificationRules
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 分类规则更新成功
+
+    - step: 5
+      description: 更新失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 10. 分类规则内部滚动
+# =============================================
+---
+interaction:
+  type: state
+  name: 分类规则内部滚动
+  trigger:
+    component: ClassificationRules
+    action: onOverflow
+
+  mainFlow:
+    - step: 1
+      description: 检查规则数量
+      component: ClassificationRules
+      action:
+        method: getItemCount
+      onDone: step_2
+
+    - step: 2
+      description: 超过6条启用滚动
+      condition: itemCount > 6
+      component: ClassificationRules
+      action:
+        method: enableScroll
+        props:
+          maxHeight: 300
+          overflowY: auto
+
+  states:
+    - name: rule_count
+      type: number
+      default: 0
+    - name: is_scrollable
+      type: boolean
+      default: false
+
+
+# =============================================
+# 11. 设置重要私信标记
+# =============================================
+---
+interaction:
+  type: state
+  name: 设置重要私信标记
+  trigger:
+    component: ImportantCheckbox
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取标记设置
+      component: ImportantSettings
+      action:
+        method: getValues
+      onDone: step_2
+
+    - step: 2
+      description: 保存重要私信设置（合并到回复规则 rules）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/message-reply/rules
+        request:
+          importantTypes: { importantTypes }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 重要私信标记设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: important_types
+      type: array
+      default: []
+
+
+# =============================================
+# 12. 设置重要私信通知方式
+# =============================================
+---
+interaction:
+  type: state
+  name: 设置重要私信通知方式
+  trigger:
+    component: NotificationMethodSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取通知方式设置
+      component: NotificationMethodSelector
+      action:
+        method: getValues
+      onDone: step_2
+
+    - step: 2
+      description: 保存通知设置（合并到回复规则 rules）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/message-reply/rules
+        request:
+          notificationMethods: { methods }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 通知方式设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: notification_methods
+      type: array
+      default: []
+
+
+# =============================================
+# 13. 待处理私信列表
+# =============================================
+---
+interaction:
+  type: list
+  name: 待处理私信列表
+  trigger:
+    component: PendingMessageList
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: PendingMessageList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载待处理私信
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/message-reply/pending
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+          accountId: { primaryAccountId }
+          classification: { filters.classification }
+          status: { filters.status }
+          keyword: { filters.keyword }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染私信列表
+      parallel:
+        - name: 渲染数据
+          component: PendingMessageList
+          action:
+            method: setQueryOptions
+            props:
+              queryOptions: { response.list }
+        - name: 关闭Loading
+          component: PendingMessageList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      component: PendingMessageList
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  randomEvents:
+    - trigger: 无数据
+      condition: response.list.length == 0
+      name: 显示空状态
+      component: Empty
+      action:
+        method: show
+        props:
+          description: 暂无待处理私信
+
+    - trigger: 重要私信
+      condition: message.isImportant == true
+      name: 显示⭐标记
+      component: MessageItem
+      action:
+        method: showImportantBadge
+
+  states:
+    - name: pending_messages
+      type: array
+      default: []
+    - name: primary_account_id
+      type: string
+      default: ''
+
+
+# =============================================
+# 14. 按账号筛选待处理私信
+# =============================================
+---
+interaction:
+  type: state
+  name: 按账号筛选待处理私信
+  trigger:
+    component: AccountSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取顶部选中的账号
+      component: AccountSelector
+      action:
+        method: getSelectedIds
+      onDone: step_2
+
+    - step: 2
+      description: 更新 primaryAccountId
+      component: PendingMessageCard
+      action:
+        method: setPrimaryAccountId
+        props:
+          primaryAccountId: { selectedIds[0] }
+      onDone: step_3
+
+    - step: 3
+      description: 重新加载待处理私信
+      component: PendingMessageCard
+      action:
+        method: reload
+        props:
+          filters:
+            accountId: { selectedIds[0] }
+
+
+# =============================================
+# 14. AI建议回复
+# =============================================
+---
+interaction:
+  type: state
+  name: AI建议回复
+  trigger:
+    component: MessageItem
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示AI建议
+      component: MessageItem
+      action:
+        method: showSuggestedReply
+        props:
+          suggestedReply: { message.suggestedReply }
+
+  states:
+    - name: suggested_reply
+      type: string
+      default: ''
+
+
+# =============================================
+# 15. 自动回复私信
+# =============================================
+---
+interaction:
+  type: async
+  name: 自动回复私信
+  trigger:
+    component: AutoReplyButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 调用自动回复接口
+      async: true
+      api:
+        method: POST
+        url: /api/v1/ai-assistant/message-reply/{messageId}/auto-reply
+        request:
+          messageId: { message.id }
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 回复成功
+      parallel:
+        - name: 刷新列表
+          component: MessageTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 自动回复成功
+
+    - step: 3
+      description: 回复失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 16. 手动回复私信
+# =============================================
+---
+interaction:
+  type: modal
+  name: 手动回复私信
+  trigger:
+    component: ManualReplyButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示手动回复弹窗
+      component: ManualReplyModal
+      action:
+        method: open
+        props:
+          message: { message }
+          suggestedReply: { message.suggestedReply }
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户编辑确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用手动回复接口
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/message-reply/{messageId}/reply
+            request:
+              messageId: { message.id }
+              content: { replyContent }
+        - name: 关闭弹窗
+          component: ManualReplyModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: ManualReplyModal
+      action:
+        method: close
+
+    - step: 4
+      description: 回复成功
+      parallel:
+        - name: 刷新列表
+          component: MessageTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 回复成功
+
+    - step: 5
+      description: 回复失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  randomEvents:
+    - trigger: 平台不支持
+      condition: platformNotSupported == true
+      name: 显示平台不支持提示
+      component: ManualReplyModal
+      action:
+        method: showPlatformWarning
+        props:
+          message: 该平台暂不支持系统内操作，请前往官方App完成
+
+
+# =============================================
+# 17. 私信记录列表
+# =============================================
+---
+interaction:
+  type: list
+  name: 私信记录列表
+  trigger:
+    component: MessageHistoryList
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: MessageHistoryList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载私信记录
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/message-reply/history
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+          startDate: { filters.startDate }
+          endDate: { filters.endDate }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染私信记录
+      parallel:
+        - name: 渲染数据
+          component: MessageHistoryList
+          action:
+            method: setQueryOptions
+            props:
+              queryOptions: { response.list }
+        - name: 关闭Loading
+          component: MessageHistoryList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      component: MessageHistoryList
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+
+# =============================================
+# 18. 私信记录按日期筛选
+# =============================================
+---
+interaction:
+  type: list
+  name: 私信记录按日期筛选
+  trigger:
+    component: DateRangePicker
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取日期范围
+      component: DateRangePicker
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 重新加载列表
+      component: MessageHistoryList
+      action:
+        method: reload
+        props:
+          filters:
+            startDate: { startDate }
+            endDate: { endDate }
+
+
+# =============================================
+# 19. 查看私信详情
+# =============================================
+---
+interaction:
+  type: modal
+  name: 查看私信详情
+  trigger:
+    component: ViewMessageButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示详情弹窗
+      component: MessageDetailModal
+      action:
+        method: open
+        props:
+          message: { message }
+      onDone: step_2
+
+    - step: 2
+      description: 渲染本地详情数据（契约未提供独立详情查询，使用列表项数据）
+      component: MessageDetailModal
+      action:
+        method: setData
+        props:
+          message: { message }
+      onDone: step_3
+
+    - step: 3
+      description: 渲染详情内容
+      component: MessageDetailModal
+      action:
+        method: setData
+        props:
+          sender: { response.sender }
+          content: { response.content }
+          status: { response.status }
+          reply: { response.reply }
+
+  randomEvents:
+    - trigger: 关闭弹窗
+      name: 关闭详情弹窗
+      component: MessageDetailModal
+      action: onClose
+
+  states:
+    - name: current_message
+      type: object
+      default: null

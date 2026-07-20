@@ -1,0 +1,289 @@
+# 历史发布记录 - 列表交互
+interaction:
+  type: list
+  name: 历史发布记录列表
+  trigger:
+    component: HistoryTable
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载历史列表
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/records
+          api:
+            method: GET
+            url: /api/v1/content/publish/records
+            params:
+              page: 1
+              pageSize: 20
+              startAt: { startAt }
+              endAt: { endAt }
+              platform: { platform }
+              status: { status }
+        - name: 显示 loading
+          component: HistoryTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染列表
+      component: HistoryTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.data.list }
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: HistoryTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+    - step: 4
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: { response.data.page }
+          pageSize: { response.data.pageSize }
+          total: { response.data.total }
+
+---
+# 筛选查询 - 表单交互
+filter_query:
+  type: form
+  name: 筛选查询
+  trigger:
+    component: FilterCard
+    action: onSearch
+
+  mainFlow:
+    - step: 1
+      description: 获取筛选条件
+      component: FilterCard
+      action:
+        method: getFilters
+      onDone: step_2
+
+    - step: 2
+      description: 调用查询接口
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/records
+          api:
+            method: GET
+            url: /api/v1/content/publish/records
+            params:
+              page: 1
+              pageSize: 20
+              startAt: { startAt }
+              endAt: { endAt }
+              platform: { platform }
+              status: { status }
+        - name: 显示 loading
+          component: HistoryTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 更新列表
+      parallel:
+        - name: 渲染新列表
+          component: HistoryTable
+          action:
+            method: setData
+          props:
+            dataSource: { response.data.list }
+        - name: 重置分页
+          component: Pagination
+          action:
+            method: setCurrent
+          props:
+            current: 1
+
+---
+# 重置筛选 - 状态切换
+filter_reset:
+  type: state
+  name: 重置筛选条件
+  trigger:
+    component: FilterCard
+    action: onReset
+
+  mainFlow:
+    - step: 1
+      description: 清空筛选条件
+      component: FilterCard
+      action:
+        method: reset
+      onDone: step_2
+
+    - step: 2
+      description: 重新加载列表
+      component: HistoryTable
+      action:
+        method: reload
+
+---
+# 分页导航 - 导航交互
+pagination:
+  type: navigation
+  name: 分页导航
+  trigger:
+    component: Pagination
+    action: onPageChange
+
+  mainFlow:
+    - step: 1
+      description: 获取目标页码
+      component: Pagination
+      action:
+        method: getCurrent
+      onDone: step_2
+
+    - step: 2
+      description: 加载目标页数据
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/records
+          api:
+            method: GET
+            url: /api/v1/content/publish/records
+            params:
+              page: { targetPage }
+              pageSize: 20
+        - name: 显示 loading
+          component: HistoryTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 更新列表
+      component: HistoryTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.data.list }
+
+---
+# 查看详情 - 导航交互
+view_detail:
+  type: navigation
+  name: 查看发布详情
+  trigger:
+    component: HistoryTable
+    action: onViewDetail
+
+  mainFlow:
+    - step: 1
+      description: 获取记录 ID
+      component: HistoryTable
+      action:
+        method: getRecordId
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到详情页
+      component: router
+      action:
+        method: push
+        props:
+          path: /content/detail
+          params:
+            recordId: { recordId }
+
+---
+# 重新发布入口 - 导航交互
+republish_entry:
+  type: navigation
+  name: 重新发布入口
+  trigger:
+    component: HistoryTable
+    action: onRepublish
+
+  mainFlow:
+    - step: 1
+      description: 获取记录 ID
+      component: HistoryTable
+      action:
+        method: getRecordId
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到重新发布页
+      component: router
+      action:
+        method: push
+        props:
+          path: /content/republish
+          params:
+            recordId: { recordId }
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+    - trigger: 筛选条件无结果
+      condition: response.data.list.length == 0
+      name: 显示空状态
+      component: HistoryTable
+      action:
+        method: showEmpty
+
+states:
+  - name: list_data
+    type: array
+    default: []
+
+  - name: loading
+    type: boolean
+    default: false
+
+  - name: pagination
+    type: object
+    default:
+      current: 1
+      size: 20
+      total: 0
+
+  - name: filters
+    type: object
+    default:
+      startAt: null
+      endAt: null
+      platform: ''
+      status: ''
+
+  - name: error
+    type: string
+    default: null

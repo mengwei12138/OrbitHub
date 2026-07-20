@@ -1,0 +1,19 @@
+.wrapper {
+  display: flex;
+  gap: var(--page-header-gap, 16px);
+  align-items: center;
+  height: 48px;
+}
+
+.title {
+  flex: 0 0 auto;
+  font-size: var(--figma-font-size-display);
+}
+
+.center {
+  flex: 1;
+}
+
+.toolbar {
+  flex: 0 0 auto;
+}

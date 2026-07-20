@@ -1,0 +1,39 @@
+.card {
+  /* 卡片基础样式 */
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.label {
+  flex-shrink: 0;
+  min-width: 65px;
+  font-size: 13px;
+  color: #999;
+}
+
+.value {
+  font-size: 13px;
+  color: #212121;
+}
+
+.tips {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #faab26;
+}
+
+.cover-image {
+  object-fit: cover;
+  border-radius: 4px;
+}

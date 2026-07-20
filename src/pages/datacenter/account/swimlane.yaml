@@ -1,0 +1,495 @@
+# 账号详情页 - 交互逻辑定义
+# 本文件定义账号详情页的交互逻辑
+# OpenAPI 文件暂无，API 路径为占位符
+
+# =============================================
+# 1. 账号详情页加载
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 账号详情页加载
+  trigger:
+    component: AccountDetailPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 解析路由参数获取账号ID
+      component: AccountDetailPage
+      action:
+        method: getAccountId
+      onDone: step_2
+
+    - step: 2
+      description: 加载账号详情数据
+      async: true
+      parallel:
+        - name: 调用账号基本信息接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/accounts/{accountId}
+        - name: 调用今日核心指标接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/accounts/{accountId}/today-metrics
+        - name: 调用近7天趋势接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/accounts/{accountId}/trend
+          params:
+            timeRange: LAST_7_DAYS
+        - name: 调用近期内容列表接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/accounts/{accountId}/contents
+          params:
+            page: 1
+            pageSize: 10
+        - name: 显示 loading
+          component: AccountDetailPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_6
+
+    - step: 3
+      description: 渲染账号基本信息
+      component: AccountBasicInfo
+      action:
+        method: setData
+        props:
+          nickname: '{response.basicInfo.nickname}'
+          platform: '{response.basicInfo.platform}'
+          fansCount: '{response.basicInfo.fansCount}'
+          status: '{response.basicInfo.status}'
+          lastSyncTime: '{response.basicInfo.lastSyncTime}'
+      onDone: step_4
+
+    - step: 4
+      description: 渲染今日核心指标
+      component: TodayMetrics
+      action:
+        method: setData
+        props:
+          playCount: '{response.todayMetrics.playCount}'
+          likeCount: '{response.todayMetrics.likeCount}'
+          commentCount: '{response.todayMetrics.commentCount}'
+          shareCount: '{response.todayMetrics.shareCount}'
+      onDone: step_5
+
+    - step: 5
+      description: 渲染近7天趋势图
+      component: TrendChart
+      action:
+        method: setData
+        props:
+          data: '{response.trendData}'
+      onDone: step_6
+
+    - step: 6
+      description: 渲染近期内容列表
+      component: ContentList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.contents.list}'
+          total: '{response.contents.total}'
+      onDone: step_7
+
+    - step: 7
+      description: 渲染分页器
+      component: ContentList
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: '{response.contents.total}'
+      onDone: step_8
+
+    - step: 8
+      description: 停止 loading
+      component: AccountDetailPage
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  randomEvents:
+    - trigger: 用户切换内容分页
+      name: 加载指定页内容
+      component: ContentList
+      action:
+        method: reload
+      params:
+        page: '{pagination.current}'
+        pageSize: '{pagination.pageSize}'
+
+    - trigger: 用户点击返回数据中心
+      name: 返回数据中心并恢复状态
+      component: router
+      action:
+        method: push
+        props:
+          path: /datacenter
+          state:
+            preserved: true
+
+    - trigger: 账号已删除
+      condition: response.code == 404
+      name: 显示404提示页
+      component: AccountDetailPage
+      action:
+        method: show404
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+  states:
+    - name: account_id
+      type: string
+      default: ''
+    - name: basic_info
+      type: object
+      default: {}
+    - name: today_metrics
+      type: object
+      default: {}
+    - name: trend_data
+      type: array
+      default: []
+    - name: contents
+      type: array
+      default: []
+    - name: pagination
+      type: object
+      default:
+        current: 1
+        pageSize: 10
+        total: 0
+    - name: loading
+      type: boolean
+      default: false
+---
+# 2. 返回数据中心
+interaction:
+  type: navigation
+  name: 返回数据中心
+  trigger:
+    component: AccountDetailPage
+    action: onBack
+
+  mainFlow:
+    - step: 1
+      description: 读取并恢复主页状态
+      component: sessionStorage
+      action:
+        method: getItem
+        props:
+          key: datacenter_state
+      onDone: step_2
+
+    - step: 2
+      description: 跳转数据中心主页
+      component: router
+      action:
+        method: push
+        props:
+          path: /datacenter
+          state:
+            restored: true
+
+    - step: 3
+      description: 恢复主页筛选条件和分页
+      condition: state.restored == true
+      component: DataCentrePage
+      action:
+        method: restoreState
+      params:
+        timeRange: '{state.timeRange}'
+        platform: '{state.platform}'
+        contentPage: '{state.contentPage}'
+        contentSortBy: '{state.contentSortBy}'
+        contentType: '{state.contentType}'
+        scrollPosition: '{state.scrollPosition}'
+
+  states:
+    - name: datacenter_state
+      type: object
+      default: null
+
+---
+# 3. 内容列表分页
+interaction:
+  type: list
+  name: 内容列表分页
+  trigger:
+    component: ContentList
+    action: onPageChange
+
+  mainFlow:
+    - step: 1
+      description: 显示 loading
+      component: ContentList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载指定页内容
+      async: true
+      api:
+        method: GET
+        url: /api/v1/datacenter/accounts/{accountId}/contents
+        params:
+          page: '{page}'
+          pageSize: '{pageSize}'
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 渲染新列表
+      component: ContentList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+          total: '{response.total}'
+      onDone: step_4
+
+    - step: 4
+      description: 更新分页器
+      component: ContentList
+      action:
+        method: setPagination
+        props:
+          current: '{page}'
+          pageSize: '{pageSize}'
+          total: '{response.total}'
+      onDone: step_5
+
+    - step: 5
+      description: 停止 loading
+      component: ContentList
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: account_id
+      type: string
+      default: ''
+    - name: pagination
+      type: object
+      default:
+        current: 1
+        pageSize: 10
+        total: 0
+    - name: loading
+      type: boolean
+      default: false
+
+---
+# 4. 内容列表切换每页条数
+interaction:
+  type: state
+  name: 切换每页条数
+  trigger:
+    component: ContentList
+    action: onPageSizeChange
+
+  mainFlow:
+    - step: 1
+      description: 更新每页条数并重置到第1页
+      parallel:
+        - name: 设置新的每页条数
+          component: ContentList
+          action:
+            method: setPageSize
+            props:
+              pageSize: '{pageSize}'
+        - name: 重置页码为1
+          component: ContentList
+          action:
+            method: setPagination
+            props:
+              current: 1
+        - name: 显示 loading
+          component: ContentList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载第1页数据
+      async: true
+      api:
+        method: GET
+        url: /api/v1/datacenter/accounts/{accountId}/contents
+        params:
+          page: 1
+          pageSize: '{pageSize}'
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 渲染新列表
+      component: ContentList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+          total: '{response.total}'
+      onDone: step_4
+
+    - step: 4
+      description: 停止 loading
+      component: ContentList
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  states:
+    - name: page_size
+      type: number
+      default: 10
+
+---
+# 5. 异地登录预警去处理
+interaction:
+  type: navigation
+  name: 异地登录预警去处理
+  trigger:
+    component: WarningCard
+    action: onHandle
+
+  condition:
+    eventType: REMOTE_LOGIN
+
+  mainFlow:
+    - step: 1
+      description: 跳转到账号详情页（安全Tab）
+      component: router
+      action:
+        method: push
+        props:
+          path: /datacenter/account/{accountId}
+          params:
+            from: datacenter
+            tab: security
+
+    - step: 2
+      description: 账号详情页检测到异地登录提示参数
+      component: AccountDetailPage
+      action:
+        method: checkAlertParams
+      onDone: step_3
+
+    - step: 3
+      description: 显示异地登录安全提示
+      component: AccountDetailPage
+      action:
+        method: showRemoteLoginAlert
+      onDone: step_4
+
+    - step: 4
+      description: 渲染账号详情页内容
+      component: AccountDetailPage
+      action:
+        method: render
+
+  states:
+    - name: account_id
+      type: string
+      default: ''
+    - name: from
+      type: string
+      default: ''
+    - name: tab
+      type: string
+      default: ''
+---
+# 6. 账号被禁言预警去处理
+interaction:
+  type: navigation
+  name: 账号被禁言预警去处理
+  trigger:
+    component: WarningCard
+    action: onHandle
+
+  condition:
+    eventType: ACCOUNT_BANNED
+
+  mainFlow:
+    - step: 1
+      description: 跳转到账号详情页
+      component: router
+      action:
+        method: push
+        props:
+          path: /datacenter/account/{accountId}
+          params:
+            from: datacenter
+            alertType: ACCOUNT_BANNED
+
+    - step: 2
+      description: 账号详情页检测到禁言提示参数
+      component: AccountDetailPage
+      action:
+        method: checkAlertParams
+      onDone: step_3
+
+    - step: 3
+      description: 显示账号被禁言提示
+      component: AccountDetailPage
+      action:
+        method: showBannedAlert
+      onDone: step_4
+
+    - step: 4
+      description: 渲染账号详情页内容
+      component: AccountDetailPage
+      action:
+        method: render
+
+  states:
+    - name: account_id
+      type: string
+      default: ''
+    - name: from
+      type: string
+      default: ''

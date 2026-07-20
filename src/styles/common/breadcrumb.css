@@ -1,0 +1,20 @@
+/**
+ * Breadcrumb 组件样式变量
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 357-320 (UI 设计规范)
+ */
+
+:root {
+  /* ===== 面包屑组件变量 (Breadcrumb) ===== */
+
+  /* fill_LIGS0Y: 父级路径 */
+  --figma-component-breadcrumb-color-parent: var(--figma-color-gray-8);
+
+  /* fill_E3VY3Z: 分隔符 */
+  --figma-component-breadcrumb-color-separator: var(--figma-color-gray-6);
+
+  /* fill_M8SXB2: 当前页面 */
+  --figma-component-breadcrumb-color-current: var(--figma-color-gray-10);
+}

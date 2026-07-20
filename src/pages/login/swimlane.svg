@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <rect width="800" height="400" fill="#f5f5f5"/>
+  <text x="400" y="40" text-anchor="middle" font-family="Arial" font-size="16" fill="#333">用户登录交互泳道图</text>
+
+  <!-- 泳道标题 -->
+  <rect x="20" y="70" width="150" height="30" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="95" y="90" text-anchor="middle" font-size="12">用户</text>
+
+  <rect x="190" y="70" width="150" height="30" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="265" y="90" text-anchor="middle" font-size="12">LoginForm</text>
+
+  <rect x="360" y="70" width="150" height="30" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="435" y="90" text-anchor="middle" font-size="12">API</text>
+
+  <rect x="530" y="70" width="150" height="30" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="605" y="90" text-anchor="middle" font-size="12">Router</text>
+
+  <rect x="680" y="70" width="100" height="30" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="730" y="90" text-anchor="middle" font-size="12">Message</text>
+
+  <!-- 步骤 1: 表单验证 -->
+  <line x1="95" y1="110" x2="265" y2="110" stroke="#666" stroke-width="1"/>
+  <polygon points="260,105 270,110 260,115" fill="#666"/>
+  <text x="180" y="105" text-anchor="middle" font-size="10" fill="#666">1. 表单验证</text>
+
+  <!-- 步骤 2: 调用登录接口 -->
+  <line x1="265" y1="130" x2="435" y2="130" stroke="#666" stroke-width="1"/>
+  <polygon points="430,125 440,130 430,135" fill="#666"/>
+  <text x="350" y="125" text-anchor="middle" font-size="10" fill="#666">2. POST /api/v1/auth/login</text>
+
+  <line x1="265" y1="130" x2="730" y2="130" stroke="#666" stroke-width="1"/>
+  <polygon points="725,125 735,130 725,135" fill="#666"/>
+  <text x="500" y="125" text-anchor="middle" font-size="10" fill="#666">显示 loading</text>
+
+  <!-- 步骤 3: 登录成功 -->
+  <line x1="435" y1="150" x2="605" y2="150" stroke="#4caf50" stroke-width="2"/>
+  <polygon points="600,145 610,150 600,155" fill="#4caf50"/>
+  <text x="520" y="145" text-anchor="middle" font-size="10" fill="#4caf50">3. 跳转首页</text>
+
+  <line x1="605" y1="150" x2="730" y2="150" stroke="#4caf50" stroke-width="2"/>
+  <polygon points="725,145 735,150 725,155" fill="#4caf50"/>
+  <text x="670" y="145" text-anchor="middle" font-size="10" fill="#4caf50">显示成功</text>
+
+  <!-- 步骤 4: 登录失败 -->
+  <line x1="435" y1="170" x2="730" y2="170" stroke="#f44336" stroke-width="2"/>
+  <polygon points="725,165 735,170 725,175" fill="#f44336"/>
+  <text x="580" y="165" text-anchor="middle" font-size="10" fill="#f44336">4. 显示错误提示</text>
+
+  <!-- 随机事件 -->
+  <line x1="95" y1="190" x2="605" y2="190" stroke="#999" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="350" y="200" text-anchor="middle" font-size="10" fill="#999">随机事件: Token 过期 → 跳转登录页</text>
+
+  <!-- 图例 -->
+  <rect x="20" y="220" width="20" height="20" fill="#e6e6e6" stroke="#ccc"/>
+  <text x="50" y="235" font-size="10">泳道</text>
+
+  <line x1="100" y1="230" x2="130" y2="230" stroke="#666" stroke-width="1"/>
+  <polygon points="125,225 135,230 125,235" fill="#666"/>
+  <text x="150" y="235" font-size="10">同步步骤</text>
+
+  <line x1="220" y1="230" x2="250" y2="230" stroke="#4caf50" stroke-width="2"/>
+  <polygon points="245,225 255,230 245,235" fill="#4caf50"/>
+  <text x="270" y="235" font-size="10">成功</text>
+
+  <line x1="320" y1="230" x2="350" y2="230" stroke="#f44336" stroke-width="2"/>
+  <polygon points="345,225 355,230 345,235" fill="#f44336"/>
+  <text x="370" y="235" font-size="10">失败</text>
+
+  <line x1="420" y1="230" x2="450" y2="230" stroke="#999" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="470" y="235" font-size="10">随机事件</text>
+</svg>

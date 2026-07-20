@@ -1,0 +1,102 @@
+/**
+ * Figma Design System Variables - 账号管理模块
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 账号管理-UI设计稿 (285-2)
+ */
+
+/* ===== 账号管理模块颜色 ===== */
+
+:root {
+  /* ===== 主色和功能色 - 引用 vars.css ===== */
+
+  /* fill_LUEYE7: 主题蓝，按钮背景 */
+  --figma-account-color-primary: var(--figma-color-primary);
+
+  /* fill_433BCW: 成功绿，状态标签文字 */
+  --figma-account-color-success: var(--figma-color-success);
+
+  /* fill_LG5KS5: 警告黄，警示图标背景 */
+  --figma-account-color-warning: var(--figma-color-warning);
+
+  /* fill_ELOO0P: 错误红，删除按钮边框 */
+  --figma-account-color-error: var(--figma-color-error);
+
+  /* fill_D168EG: 特殊红 */
+  --figma-account-color-special-red: var(--figma-color-xhs-red);
+
+  /* ===== 文字颜色 - 引用 vars.css ===== */
+
+  /* fill_D9ZYHM: 页面标题文字 */
+  --figma-account-color-text-primary: var(--figma-color-text-heading);
+
+  /* fill_0NUOZL: 正文内容文字 */
+  --figma-account-color-text: var(--figma-color-text-body);
+
+  /* fill_CIBLJZ: 面包屑路径、次要说明 */
+  --figma-account-color-text-secondary: var(--figma-color-text-secondary);
+
+  /* fill_7CPO7Y: 输入框占位符文字 */
+  --figma-account-color-text-placeholder: var(--figma-color-text-placeholder);
+
+  /* fill_STM71S: 深色背景上的白色文字 */
+  --figma-account-color-text-inverse: var(--figma-color-text-inverse);
+
+  /* ===== 背景色 - 引用 vars.css ===== */
+
+  /* fill_LO85K0: 页面布局背景 */
+  --figma-account-color-bg-layout: var(--figma-color-bg-page);
+
+  /* fill_USFSJQ: 侧边栏背景 */
+  --figma-account-color-bg-sidebar: var(--figma-color-bg-sidebar);
+
+  /* fill_STM71S: 卡片、弹窗容器背景 */
+  --figma-account-color-bg-container: var(--figma-color-bg-card);
+
+  /* fill_I1PLGZ: 表格表头背景 */
+  --figma-account-color-bg-header: var(--figma-color-bg-header);
+
+  /* fill_M9XMIH: 表格选中行背景 */
+  --figma-account-color-bg-selected: var(--figma-color-primary-light);
+
+  /* fill_HSQKWZ: 在线状态标签背景 */
+  --figma-account-color-bg-success: var(--figma-color-success-light);
+
+  /* fill_VTNYXU: 失效状态标签背景 */
+  --figma-account-color-bg-error: var(--figma-color-error-light);
+
+  /* fill_4VO3V3: 已停止状态标签背景 */
+  --figma-account-color-bg-stopped: var(--figma-color-gray-2);
+
+  /* ===== 边框和分割线 - 引用 vars.css ===== */
+
+  /* fill_Q1RNO0: 输入框、按钮边框 */
+  --figma-account-color-border: var(--figma-color-border);
+
+  /* fill_666R8C: 头部工具栏分割线 */
+  --figma-account-color-border-secondary: var(--figma-color-border-light);
+
+  /* fill_K03R7W: 表格行分割线 */
+  --figma-account-color-divider: var(--figma-color-border-strong);
+
+  /* ===== 阴影 - 保持原有值（vars.css 中未定义） ===== */
+
+  /* effect_4Y0HGE: 卡片轻阴影 */
+  --figma-account-shadow-sm: 0px 1px 6px -1px rgb(0 0 0 / 6%);
+
+  /* effect_UKR3JU: 弹窗阴影 */
+  --figma-account-shadow-lg:
+    0px 6px 16px 0px rgb(0 0 0 / 8%), 0px 3px 6px -4px rgb(0 0 0 / 10%);
+
+  /* ===== 圆角 ===== */
+
+  /* 输入框、按钮圆角 */
+  --figma-account-border-radius-sm: 4px;
+
+  /* 卡片、弹窗圆角 */
+  --figma-account-border-radius-md: 8px;
+
+  /* 状态标签圆角 */
+  --figma-account-border-radius-lg: 12px;
+}

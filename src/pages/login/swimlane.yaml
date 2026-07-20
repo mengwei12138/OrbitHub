@@ -1,0 +1,112 @@
+# 交互逻辑定义
+# 用户登录表单交互
+
+---
+interaction:
+  type: form
+  name: 用户登录
+  trigger:
+    component: LoginForm
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: LoginForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 调用登录接口
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/auth/login
+          api:
+            method: POST
+            url: /api/v1/auth/login
+            request: LoginRequest
+            response: ResultTokenResponse
+        - name: 显示 loading
+          component: Button
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 登录成功
+      parallel:
+        - name: 保存用户信息
+          component: storage
+          action:
+            method: setItem
+            props:
+              key: user
+              value: '{response.data.user}'
+        - name: 跳转首页
+          component: router
+          action:
+            method: replace
+            props:
+              path: /home
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 登录成功
+
+    - step: 4
+      description: 登录失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 清空密码
+          component: LoginForm
+          action:
+            method: setFieldValue
+            props:
+              field: password
+              value: ''
+        - name: 关闭 loading
+          component: Button
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+  randomEvents:
+    - trigger: 用户点击忘记密码
+      name: 跳转找回密码页
+      component: router
+      action:
+        method: push
+        props:
+          path: /forgot-password
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: replace
+        props:
+          path: /login
+
+  states:
+    - name: login_form
+      type: object
+      default:
+        username: ''
+        password: ''
+    - name: is_loading
+      type: boolean
+      default: false

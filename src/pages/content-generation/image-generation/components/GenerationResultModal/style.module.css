@@ -1,0 +1,142 @@
+.modal :global(.ant-modal-content) {
+  padding: 0;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+.results-area {
+  padding: 16px;
+  background: #f7faff;
+  border-radius: 8px;
+}
+
+.results-title {
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #434343;
+}
+
+.section {
+  padding: 12px;
+  margin-bottom: 8px;
+  background: #fff;
+  border-radius: 6px;
+}
+
+.section-tag {
+  display: inline-block;
+  padding: 2px 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #1677ff;
+  background: #e6f4ff;
+  border-radius: 4px;
+}
+
+.section-content {
+  font-size: 14px;
+  line-height: 1.57;
+  color: #1f1f1f;
+}
+
+.content-text {
+  font-size: 14px;
+  line-height: 1.71;
+  color: #434343;
+}
+
+.tags-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.tag {
+  padding: 5px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1677ff;
+  background: #e6f4ff;
+  border: 1px solid #1677ff;
+  border-radius: 4px;
+}
+
+.card-footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.button {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.primary-button {
+  font-weight: 500;
+  color: #fff;
+  background: #1677ff;
+  border-color: #1677ff;
+}
+
+.layout-with-image {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.image-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.image-preview {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  width: 280px;
+  height: 280px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #c2a8ff, #f5b3ff);
+  border-radius: 8px;
+}
+
+.image-el {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-download-btn {
+  width: 100%;
+}

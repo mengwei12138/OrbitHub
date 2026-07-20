@@ -1,0 +1,20 @@
+.card {
+  /* 卡片基础样式 */
+}
+
+.sync-time {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+  font-size: 12px;
+  color: #999;
+}
+
+.tips {
+  margin-top: 16px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #faab26;
+}

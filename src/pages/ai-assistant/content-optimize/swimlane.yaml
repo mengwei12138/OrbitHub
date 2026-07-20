@@ -1,0 +1,1097 @@
+# 内容优化与重发布 - 交互逻辑定义
+# 基于需求验收 + OpenAPI（见 AGENTS.md 索引的 contract/openapi/assistant/assistant-api.yaml）对齐
+# 交互类型：list, form, state, async, confirm
+
+# =============================================
+# 1. 页面加载
+# =============================================
+---
+interaction:
+  type: list
+  name: 页面加载
+  trigger:
+    component: ContentOptimizePage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 显示骨架屏
+      parallel:
+        - name: 显示页面骨架屏
+          component: ContentOptimizePage
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 显示阈值设置骨架
+          component: ThresholdForm
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 显示列表骨架屏
+          component: ContentTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载阈值与低数据内容列表
+      async: true
+      parallel:
+        - name: 调用获取阈值接口
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/content-optimize/threshold
+        - name: 调用获取低数据内容接口
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/content-optimize/low-data
+            params:
+              page: 1
+              pageSize: 10
+              playCountThreshold: 500
+              likeRateThreshold: 2
+        - name: 显示列表Loading
+          component: ContentTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染内容列表
+      parallel:
+        - name: 渲染表格数据
+          component: ContentTable
+          action:
+            method: setData
+            props:
+              dataSource: { response.list }
+              total: { response.total }
+        - name: 关闭骨架屏
+          component: ContentOptimizePage
+          action:
+            method: setLoading
+            props:
+              loading: false
+      onDone: step_5
+
+    - step: 4
+      description: 加载失败
+      parallel:
+        - name: 显示错误
+          component: ContentTable
+          action:
+            method: setError
+            props:
+              error: { error.message }
+        - name: 关闭骨架屏
+          component: ContentOptimizePage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 5
+      description: 检查空数据
+      component: ContentTable
+      action:
+        method: checkEmpty
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: error.code >= 500
+      name: 显示重试按钮
+      component: ContentTable
+      action:
+        method: showRetry
+        props:
+          message: 数据加载失败，点击重试
+
+  states:
+    - name: loading
+      type: boolean
+      default: true
+    - name: list_data
+      type: array
+      default: []
+    - name: pagination
+      type: object
+      default:
+        current: 1
+        pageSize: 10
+        total: 0
+
+
+# =============================================
+# 2. 阈值设置
+# =============================================
+---
+interaction:
+  type: form
+  name: 阈值设置
+  trigger:
+    component: ThresholdForm
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 获取阈值输入
+      component: ThresholdForm
+      action:
+        method: getValues
+      onDone: step_2
+
+    - step: 2
+      description: 校验播放量阈值范围
+      component: ThresholdForm
+      action:
+        method: validate
+        props:
+          field: playCount
+          min: 100
+          max: 10000
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 校验点赞率阈值范围
+      component: ThresholdForm
+      action:
+        method: validate
+        props:
+          field: likeRate
+          min: 0.5
+          max: 10
+      onSuccess: step_4
+      onFail: show_error
+
+    - step: 4
+      description: 重新筛选列表
+      component: ContentTable
+      action:
+        method: reload
+        props:
+          filters: { thresholdValues }
+
+  randomEvents:
+    - trigger: 输入超出范围
+      condition: value < min || value > max
+      name: 显示格式错误提示
+      component: ThresholdForm
+      action:
+        method: setError
+        props:
+          field: { field }
+          error: 超出有效范围
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: threshold_values
+      type: object
+      default:
+        playCount: 500
+        likeRate: 2
+
+
+# =============================================
+# 3. 内容列表筛选重载
+# =============================================
+---
+interaction:
+  type: list
+  name: 内容列表筛选重载
+  trigger:
+    component: ContentTable
+    action: onReload
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: ContentTable
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 保存阈值并调用筛选接口
+      async: true
+      parallel:
+        - name: 持久化阈值
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/content-optimize/threshold
+            request:
+              playCountThreshold: { thresholdValues.playCount }
+              likeRateThreshold: { thresholdValues.likeRate }
+        - name: 调用低数据内容接口
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/content-optimize/low-data
+            params:
+              page: { pagination.current }
+              pageSize: { pagination.pageSize }
+              playCountThreshold: { thresholdValues.playCount }
+              likeRateThreshold: { thresholdValues.likeRate }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染筛选结果
+      parallel:
+        - name: 更新表格数据
+          component: ContentTable
+          action:
+            method: setData
+            props:
+              dataSource: { response.list }
+              total: { response.total }
+        - name: 关闭Loading
+          component: ContentTable
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 筛选失败
+      component: ContentTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+
+# =============================================
+# 4. AI优化触发
+# =============================================
+---
+interaction:
+  type: async
+  name: AI优化触发
+  trigger:
+    component: AiOptimizeButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 按钮进入Loading
+      component: AiOptimizeButton
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 显示AI优化建议骨架屏
+      component: OptimizeSuggestionCard
+      action:
+        method: showSkeleton
+      onDone: step_3
+
+    - step: 3
+      description: 调用AI优化接口
+      async: true
+      api:
+        method: POST
+        url: /api/v1/ai-assistant/content-optimize/{contentId}/optimize
+        request:
+          contentId: { content.id }
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 4
+      description: 渲染优化建议
+      parallel:
+        - name: 关闭按钮Loading
+          component: AiOptimizeButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示建议卡片
+          component: OptimizeSuggestionCard
+          action:
+            method: show
+            props:
+              suggestion: { response.suggestion }
+              suggestedTitle: { response.suggestedTitle }
+              suggestedTags: { response.suggestedTags }
+      onDone: step_6
+
+    - step: 5
+      description: AI优化失败
+      parallel:
+        - name: 关闭按钮Loading
+          component: AiOptimizeButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示错误
+          component: OptimizeSuggestionCard
+          action:
+            method: showError
+            props:
+              error: { error.message }
+
+    - step: 6
+      description: 检测敏感词
+      component: OptimizeSuggestionCard
+      action:
+        method: checkSensitiveWord
+        props:
+          content: { response.suggestion }
+
+  randomEvents:
+    - trigger: 包含敏感词
+      condition: hasSensitiveWord == true
+      name: 显示敏感词警告
+      component: OptimizeSuggestionCard
+      action:
+        method: showSensitiveWarning
+        props:
+          sensitiveWords: { response.sensitiveWords }
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: is_optimizing
+      type: boolean
+      default: false
+    - name: current_suggestion
+      type: object
+      default: null
+
+
+# =============================================
+# 5. 应用AI建议
+# =============================================
+---
+interaction:
+  type: async
+  name: 应用AI建议
+  trigger:
+    component: ApplyButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 调用应用建议接口
+      async: true
+      api:
+        method: POST
+        url: /api/v1/ai-assistant/content-optimize/{contentId}/apply
+        request:
+          contentId: { content.id }
+          title: { suggestion.title }
+          tags: { suggestion.tags }
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 显示重发布配置
+      component: RepublishConfig
+      action:
+        method: show
+
+    - step: 3
+      description: 更新内容状态为已应用待发布
+      component: ContentTable
+      action:
+        method: updateRow
+        props:
+          contentId: { content.id }
+          status: applied-pending
+
+  states:
+    - name: applied_content
+      type: object
+      default: null
+    - name: content_status
+      type: string
+      default: 'applied-pending'
+
+
+# =============================================
+# 6. 恢复原标题
+# =============================================
+---
+interaction:
+  type: state
+  name: 恢复原标题
+  trigger:
+    component: RestoreTitleButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 恢复原始标题
+      component: OptimizeSuggestionCard
+      action:
+        method: restoreOriginalTitle
+
+  states:
+    - name: original_title
+      type: string
+      default: ''
+
+
+# =============================================
+# 7. 敏感词检测（由 AI 优化接口同步返回 sensitiveWords，无独立 REST）
+# =============================================
+---
+interaction:
+  type: state
+  name: 敏感词检测
+  trigger:
+    component: OptimizeSuggestionCard
+    action: onSuggestionGenerated
+
+  mainFlow:
+    - step: 1
+      description: 读取优化结果中的敏感词字段
+      component: OptimizeSuggestionCard
+      action:
+        method: readSensitiveWords
+        props:
+          words: { response.sensitiveWords }
+      onDone: step_2
+
+    - step: 2a
+      description: 包含敏感词
+      condition: hasSensitiveWord == true
+      parallel:
+        - name: 卡片显示红框
+          component: OptimizeSuggestionCard
+          action:
+            method: showRedBorder
+        - name: 显示警告
+          component: OptimizeSuggestionCard
+          action:
+            method: showSensitiveWarning
+        - name: 应用按钮置灰
+          component: ApplyButton
+          action:
+            method: setDisabled
+            props:
+              disabled: true
+
+    - step: 2b
+      description: 无敏感词
+      condition: hasSensitiveWord == false
+      parallel:
+        - name: 清除警告状态
+          component: OptimizeSuggestionCard
+          action:
+            method: clearWarning
+        - name: 应用按钮可用
+          component: ApplyButton
+          action:
+            method: setDisabled
+            props:
+              disabled: false
+
+    - step: 3
+      description: 字段缺失（按无敏感词处理）
+      name: 跳过敏感词检测
+      component: OptimizeSuggestionCard
+      action:
+        method: skipSensitiveCheck
+
+  states:
+    - name: is_sensitive
+      type: boolean
+      default: false
+    - name: sensitive_words
+      type: array
+      default: []
+
+
+# =============================================
+# 8. 重发布配置-选择目标账号
+# =============================================
+---
+interaction:
+  type: state
+  name: 重发布配置-选择目标账号
+  trigger:
+    component: AccountSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取选中的账号
+      component: AccountSelector
+      action:
+        method: getSelectedAccounts
+      onDone: step_2
+
+    - step: 2
+      description: 默认勾选原账号
+      condition: isOriginalAccountIncluded == false
+      component: AccountSelector
+      action:
+        method: checkOriginal
+
+    - step: 3
+      description: 检查是否包含原账号
+      component: AccountSelector
+      action:
+        method: checkOriginalIncluded
+      onDone: step_4
+
+    - step: 4
+      description: 更新删除原内容复选框状态
+      condition: hasOriginal == false
+      parallel:
+        - name: 置灰删除原内容复选框
+          component: DeleteOriginalCheckbox
+          action:
+            method: setDisabled
+            props:
+              disabled: true
+        - name: 显示提示文字
+          component: DeleteOriginalCheckbox
+          action:
+            method: showTip
+            props:
+              message: 仅重发至原账号时可勾选
+
+  states:
+    - name: selected_accounts
+      type: array
+      default: []
+    - name: has_original_account
+      type: boolean
+      default: true
+
+
+# =============================================
+# 9. 确认重发布
+# =============================================
+---
+interaction:
+  type: confirm
+  name: 确认重发布
+  trigger:
+    component: ConfirmRepublishButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 获取重发布配置
+      component: RepublishConfig
+      action:
+        method: getConfig
+      onDone: step_2
+
+    - step: 2
+      description: 验证配置
+      component: RepublishConfig
+      action:
+        method: validate
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 检查标签数量
+      component: RepublishConfig
+      action:
+        method: checkTagLimit
+      onSuccess: step_4
+      onFail: show_tag_limit_error
+
+    - step: 4
+      description: 调用重发布接口
+      async: true
+      parallel:
+        - name: 调用重发布接口
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/content-optimize/republish
+            request:
+              contentId: { content.id }
+              targetAccountIds: { targetAccountIds }
+              deleteOriginal: { deleteOriginal }
+              title: { title }
+              tags: { tags }
+        - name: 按钮进入Loading
+          component: ConfirmRepublishButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_5
+      onFail: step_6
+
+    - step: 5
+      description: 重发布成功
+      parallel:
+        - name: 关闭按钮Loading
+          component: ConfirmRepublishButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 重发布成功
+        - name: 关闭重发布配置
+          component: RepublishConfig
+          action:
+            method: hide
+        - name: 刷新列表
+          component: ContentTable
+          action:
+            method: reload
+
+    - step: 6
+      description: 重发布失败
+      parallel:
+        - name: 关闭按钮Loading
+          component: ConfirmRepublishButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示失败提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+
+  randomEvents:
+    - trigger: 网络/5xx/429错误
+      condition: error.code == 'NETWORK_ERROR' || error.code == 429
+      name: 启动重试流程
+      component: RepublishConfig
+      action:
+        method: startRetry
+        props:
+          intervals: [60000, 300000, 1800000]
+
+    - trigger: 401/403/内容违规
+      condition: error.code == 401 || error.code == 403 || error.code == 'CONTENT_VIOLATION'
+      name: 标记失败不重试
+      component: RepublishConfig
+      action:
+        method: markFailed
+        props:
+          reason: { error.message }
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: republish_config
+      type: object
+      default:
+        targetAccountIds: []
+        deleteOriginal: false
+    - name: is_republishing
+      type: boolean
+      default: false
+
+
+# =============================================
+# 10. 跨平台标签限制提示
+# =============================================
+---
+interaction:
+  type: state
+  name: 跨平台标签限制提示
+  trigger:
+    component: PlatformSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 检查选择的平台
+      component: PlatformSelector
+      action:
+        method: getSelectedPlatforms
+      onDone: step_2
+
+    - step: 2a
+      description: 同时选择抖音和小红书
+      condition: hasDouyin && hasXiaohongshu
+      parallel:
+        - name: 设置标签上限为5
+          component: TagInput
+          action:
+            method: setLimit
+            props:
+              limit: 5
+        - name: 显示限制提示
+          component: TagInput
+          action:
+            method: showTip
+            props:
+              message: 同时选择抖音和小红书时，标签上限取最小值5个
+
+    - step: 2b
+      description: 仅选择抖音
+      condition: hasDouyin && !hasXiaohongshu
+      component: TagInput
+      action:
+        method: setLimit
+        props:
+          limit: 5
+
+    - step: 2c
+      description: 仅选择小红书
+      condition: !hasDouyin && hasXiaohongshu
+      component: TagInput
+      action:
+        method: setLimit
+        props:
+          limit: 10
+
+  states:
+    - name: selected_platforms
+      type: array
+      default: []
+    - name: tag_limit
+      type: number
+      default: 5
+
+
+# =============================================
+# 11. 标签超限提示
+# =============================================
+---
+interaction:
+  type: state
+  name: 标签超限提示
+  trigger:
+    component: TagInput
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 检查标签数量
+      component: TagInput
+      action:
+        method: getTagCount
+      onDone: step_2
+
+    - step: 2
+      description: 标签数量超过限制
+      condition: tagCount > tagLimit
+      parallel:
+        - name: 显示Toast提示
+          component: Toast
+          action:
+            method: show
+            props:
+              type: warning
+              content: 标签超限，请手动删减
+        - name: 禁用确认按钮
+          component: ApplyButton
+          action:
+            method: setDisabled
+            props:
+              disabled: true
+
+    - step: 3
+      description: 标签数量在限制内
+      condition: tagCount <= tagLimit
+      component: ApplyButton
+      action:
+        method: setDisabled
+        props:
+          disabled: false
+
+  states:
+    - name: tag_count
+      type: number
+      default: 0
+    - name: tag_limit
+      type: number
+      default: 5
+
+
+# =============================================
+# 12. 跳转到标签库
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 跳转到标签库
+  trigger:
+    component: TagsButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击标签库按钮
+      component: TagsButton
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到标签库页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant/tags
+
+  states:
+    - name: current_path
+      type: string
+      default: /ai-assistant/content-optimize
+
+
+# =============================================
+# 13. 返回AI助手主页
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 返回AI助手主页
+  trigger:
+    component: BackButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击返回按钮
+      component: BackButton
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转回AI助手主页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant
+
+  states:
+    - name: current_path
+      type: string
+      default: /ai-assistant/content-optimize
+
+
+# =============================================
+# 14. AI生成超时
+# =============================================
+---
+interaction:
+  type: state
+  name: AI生成超时
+  trigger:
+    component: OptimizeSuggestionCard
+    action: onTimeout
+
+  mainFlow:
+    - step: 1
+      description: 显示超时提示
+      component: OptimizeSuggestionCard
+      action:
+        method: showTimeout
+        props:
+          message: 生成超时，点击重试
+
+  randomEvents:
+    - trigger: 用户点击重试
+      name: 重新触发AI优化
+      component: AiOptimizeButton
+      action: onClick
+
+  states:
+    - name: is_timeout
+      type: boolean
+      default: false
+
+
+# =============================================
+# 15. 重发布任务进度轮询
+# =============================================
+---
+interaction:
+  type: async
+  name: 重发布任务进度轮询
+  trigger:
+    component: RepublishConfig
+    action: onTaskCreated
+
+  mainFlow:
+    - step: 1
+      description: 启动轮询
+      component: RepublishProgress
+      action:
+        method: startPolling
+        props:
+          taskId: { taskId }
+          intervalMs: 3000
+      onDone: step_2
+
+    - step: 2
+      description: 调用任务详情接口
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/content-optimize/republish-tasks/{taskId}
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染任务进度
+      component: RepublishProgress
+      action:
+        method: setStatus
+        props:
+          status: { response.status }
+          successCount: { response.successCount }
+          failedCount: { response.failedCount }
+
+    - step: 4
+      description: 轮询失败
+      component: RepublishProgress
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  randomEvents:
+    - trigger: 任务终态
+      condition: response.status == 'SUCCESS' || response.status == 'PARTIAL_FAILURE' || response.status == 'FAILURE'
+      name: 停止轮询
+      component: RepublishProgress
+      action:
+        method: stopPolling
+
+  states:
+    - name: task_status
+      type: string
+      default: 'PENDING'
+
+
+# =============================================
+# 16. 离开页面确认
+# =============================================
+---
+interaction:
+  type: confirm
+  name: 离开页面确认
+  trigger:
+    component: ContentOptimizePage
+    action: onLeave
+
+  mainFlow:
+    - step: 1
+      description: 检测未保存状态
+      component: ContentOptimizePage
+      action:
+        method: checkDirty
+      onDone: step_2
+
+    - step: 2
+      description: 弹出确认对话框
+      condition: isDirty == true
+      component: CustomModal
+      action:
+        method: confirm
+        props:
+          title: 确认离开
+          content: 您有未保存的更改，离开后所有更改将丢失。确认离开吗？
+          cancelText: 取消
+          okText: 确认离开
+      onSuccess: step_3
+      onCancel: step_4
+
+    - step: 3
+      description: 确认离开
+      component: router
+      action:
+        method: navigate
+        props:
+          path: { targetPath }
+
+    - step: 4
+      description: 取消离开
+      component: ContentOptimizePage
+      action:
+        method: stay
+
+  randomEvents:
+    - trigger: 点击返回按钮
+      condition: isDirty == true
+      name: 离开确认-返回
+      component: ContentOptimizePage
+      action:
+        method: onBack
+      onConfirm: step_3
+      onCancel: step_4
+
+    - trigger: 点击标签库按钮
+      condition: isDirty == true
+      name: 离开确认-标签库
+      component: ContentOptimizePage
+      action:
+        method: onTags
+      onConfirm: step_3
+      onCancel: step_4
+
+    - trigger: 浏览器刷新/关闭
+      condition: isDirty == true
+      name: beforeunload提示
+      component: browser
+      action:
+        method: beforeunload
+        props:
+          message: 您有未保存的更改，离开后所有更改将丢失。确认离开吗？
+
+  states:
+    - name: is_dirty
+      type: boolean
+      default: false
+    - name: pending_path
+      type: string
+      default: ''

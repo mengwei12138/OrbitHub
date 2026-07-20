@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>需求审核报告 — {{docName}}</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1f2328;
+  background: #f6f8fa;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  background: #fff;
+}
+
+/* — Section 1: Report Header — */
+.report-header {
+  border-bottom: 3px solid #d0d7de;
+  padding-bottom: 20px;
+  margin-bottom: 32px;
+}
+
+.report-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: #1f2328;
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 6px 16px;
+  font-size: 14px;
+}
+
+.meta-label {
+  color: #656d76;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #1f2328;
+}
+
+.depth-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.depth-badge.quick {
+  background: #dafbe1;
+  color: #116329;
+}
+
+.depth-badge.full {
+  background: #ddf4ff;
+  color: #0550ae;
+}
+
+/* — Section 2: Executive Summary — */
+.exec-summary {
+  border: 1px solid #d0d7de;
+  border-left: 4px solid #0969da;
+  border-radius: 6px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  background: #f6f8fa;
+}
+
+.exec-summary h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0969da;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.exec-summary-text {
+  font-size: 15px;
+  color: #1f2328;
+  margin-bottom: 12px;
+}
+
+.verdict-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.verdict-badge.pass {
+  background: #dafbe1;
+  color: #116329;
+}
+
+.verdict-badge.warn {
+  background: #fff8c5;
+  color: #7a5e00;
+}
+
+.verdict-badge.fail {
+  background: #ffebe9;
+  color: #82071e;
+}
+
+/* — Section 3: Stats Cards — */
+.stats-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  border-radius: 8px;
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.stat-card.fix {
+  background: #ffebe9;
+  border: 1px solid #f87171;
+}
+
+.stat-card.suggest {
+  background: #fff8c5;
+  border: 1px solid #f0ad4e;
+}
+
+.stat-card .stat-number {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.stat-card.fix .stat-number { color: #dc3545; }
+.stat-card.suggest .stat-number { color: #b8860b; }
+
+.stat-card .stat-label {
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.stat-card.fix .stat-label { color: #82071e; }
+.stat-card.suggest .stat-label { color: #7a5e00; }
+
+/* — Section 4: Summary Table — */
+.summary-section {
+  margin-bottom: 28px;
+}
+
+.summary-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.summary-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background: #f6f8fa;
+  border-bottom: 2px solid #d0d7de;
+  font-weight: 600;
+  color: #656d76;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.summary-table tr:last-child td {
+  border-bottom: none;
+}
+
+.col-fix { color: #dc3545; font-weight: 600; }
+.col-suggest { color: #b8860b; font-weight: 600; }
+
+/* — Section 5: Issue Details — */
+.issues-section {
+  margin-bottom: 28px;
+}
+
+.issues-section h2 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #d0d7de;
+}
+
+.issue-group {
+  margin-bottom: 24px;
+}
+
+.issue-group-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2328;
+  padding: 10px 14px;
+  background: #f6f8fa;
+  border-radius: 6px 6px 0 0;
+  border: 1px solid #d0d7de;
+  border-bottom: none;
+}
+
+.issue-card {
+  border: 1px solid #d0d7de;
+  border-top: none;
+  padding: 16px 20px;
+  background: #fff;
+}
+
+.issue-card:last-child {
+  border-radius: 0 0 6px 6px;
+}
+
+.issue-card.fix-card { border-left: 4px solid #dc3545; }
+.issue-card.suggest-card { border-left: 4px solid #f0ad4e; }
+
+.issue-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.fix-card .issue-title { color: #dc3545; }
+.suggest-card .issue-title { color: #b8860b; }
+
+.issue-meta {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 4px 12px;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.issue-meta-label {
+  color: #656d76;
+  font-weight: 500;
+}
+
+.issue-meta-value {
+  color: #1f2328;
+}
+
+.no-issues {
+  color: #656d76;
+  font-style: italic;
+  padding: 16px 20px;
+  background: #f6f8fa;
+  border-radius: 0 0 6px 6px;
+  border: 1px solid #d0d7de;
+  font-size: 14px;
+}
+
+/* — Section 6: Footer — */
+.report-footer {
+  margin-top: 40px;
+  padding-top: 16px;
+  border-top: 1px solid #d0d7de;
+  font-size: 12px;
+  color: #656d76;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* — Print Styles — */
+@media print {
+  body { background: #fff; }
+
+  .wrapper {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .stat-card {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .verdict-badge,
+  .depth-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .issue-card.fix-card,
+  .issue-card.suggest-card {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .summary-table th {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <!-- ==================== Section 1: Report Header ==================== -->
+  <header class="report-header">
+    <h1>需求审核报告 — {{docName}}</h1>
+    <div class="meta-grid">
+      <span class="meta-label">文档版本</span>
+      <span class="meta-value">{{docVersion}}</span>
+      <span class="meta-label">审核时间</span>
+      <span class="meta-value">{{reviewTime}}</span>
+      <span class="meta-label">审核范围</span>
+      <span class="meta-value">{{reviewScope}}</span>
+      <span class="meta-label">审阅深度</span>
+      <span class="meta-value"><span class="depth-badge {{reviewDepth}}">{{reviewDepth}}</span></span>
+    </div>
+  </header>
+
+  <!-- ==================== Section 2: Executive Summary ==================== -->
+  <section class="exec-summary">
+    <h2>执行摘要</h2>
+    <p class="exec-summary-text">{{execSummary}}</p>
+    <span class="verdict-badge {{verdictClass}}">{{verdictText}}</span>
+  </section>
+
+  <!-- ==================== Section 3: Stats Cards ==================== -->
+  <section class="stats-row">
+    <div class="stat-card fix">
+      <div class="stat-number">{{fixCount}}</div>
+      <div class="stat-label">✖ 需要修正</div>
+    </div>
+    <div class="stat-card suggest">
+      <div class="stat-number">{{suggestCount}}</div>
+      <div class="stat-label">➕ 建议补充</div>
+    </div>
+  </section>
+
+  <!-- ==================== Section 4: Summary Table ==================== -->
+  <section class="summary-section">
+    <h2>页面维度汇总</h2>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>页面/模块</th>
+          <th style="width:60px;">✖</th>
+          <th style="width:60px;">➕</th>
+          <th>主要风险</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{summaryTableRows}}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ==================== Section 5: Issue Details ==================== -->
+  <section class="issues-section">
+    <h2>问题详情</h2>
+
+    <!-- BEGIN:issueSection -->
+    <div class="issue-group">
+      <div class="issue-group-header">{{pageName}}</div>
+      <!-- 若该页面无问题，替换整个 fixIssue/suggestIssue 区块为: <div class="no-issues">无问题</div> -->
+      <!-- BEGIN:fixIssue -->
+      <div class="issue-card fix-card">
+        <div class="issue-title">✖ {{issueTitle}}</div>
+        <div class="issue-meta">
+          <span class="issue-meta-label">位置</span>
+          <span class="issue-meta-value">{{issueLocation}}</span>
+          <span class="issue-meta-label">描述</span>
+          <span class="issue-meta-value">{{issueDesc}}</span>
+          <span class="issue-meta-label">影响</span>
+          <span class="issue-meta-value">{{issueImpact}}</span>
+          <span class="issue-meta-label">建议</span>
+          <span class="issue-meta-value">{{issueSuggestion}}</span>
+        </div>
+      </div>
+      <!-- END:fixIssue -->
+
+      <!-- BEGIN:suggestIssue -->
+      <div class="issue-card suggest-card">
+        <div class="issue-title">➕ {{issueTitle}}</div>
+        <div class="issue-meta">
+          <span class="issue-meta-label">位置</span>
+          <span class="issue-meta-value">{{issueLocation}}</span>
+          <span class="issue-meta-label">描述</span>
+          <span class="issue-meta-value">{{issueDesc}}</span>
+          <span class="issue-meta-label">影响</span>
+          <span class="issue-meta-value">{{issueImpact}}</span>
+          <span class="issue-meta-label">建议</span>
+          <span class="issue-meta-value">{{issueSuggestion}}</span>
+        </div>
+      </div>
+      <!-- END:suggestIssue -->
+
+    </div>
+    <!-- END:issueSection -->
+
+  </section>
+
+  <!-- ==================== Section 6: Footer ==================== -->
+  <footer class="report-footer">
+    本报告由需求审核工具自动生成，仅供参考，不作为正式需求变更依据。最终判断需结合技术团队评审结论。
+  </footer>
+
+</div>
+</body>
+</html>

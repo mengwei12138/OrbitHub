@@ -1,0 +1,48 @@
+/**
+ * CustomBreadcrumb 样式文件
+ * 使用 Figma 变量: --figma-component-breadcrumb-color-*
+ */
+
+.wrapper {
+  position: fixed;
+  top: var(--figma-pro-layout-header-height);
+  right: 0;
+  left: var(--figma-pro-layout-sider-width);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--figma-pro-layout-breadcrumb-height);
+  padding-right: var(--figma-spacing-2xl);
+  padding-left: var(--figma-spacing-2xl);
+  overflow-x: auto;
+  background-color: var(--figma-color-bg-page);
+  -webkit-overflow-scrolling: touch;
+}
+
+.wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.parent {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--figma-component-breadcrumb-color-parent);
+}
+
+.current {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--figma-component-breadcrumb-color-current);
+}
+
+.separator {
+  margin: 0 8px;
+  color: var(--figma-component-breadcrumb-color-separator);
+}
+
+.tool-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

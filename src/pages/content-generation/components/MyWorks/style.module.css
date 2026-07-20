@@ -1,0 +1,73 @@
+.container {
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px -1px rgb(0 0 0 / 6%);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 16px 24px;
+}
+
+.title {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1f1f1f;
+}
+
+.view-all {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.54;
+  color: #1677ff;
+  cursor: pointer;
+}
+
+.divider {
+  height: 1px;
+  margin: 0 24px;
+  background: #f0f0f0;
+}
+
+.content {
+  padding: 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 12px;
+}
+
+.empty-text {
+  margin-bottom: 4px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #595959;
+}
+
+.empty-hint {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.57;
+  color: #8c8c8c;
+}

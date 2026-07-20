@@ -1,0 +1,23 @@
+version: '1.0'
+
+metadata:
+  page: content-generation
+  created: null
+  updated: null
+
+actors:
+  - id: user
+    name: 用户
+
+systems:
+  - id: content-system
+    name: 内容发布系统
+  - id: ai-service
+    name: AI 服务
+
+interactions:
+  - id: interaction-1
+    actor: user
+    system: ai-service
+    action: 请求 AI 内容生成
+    response: 返回生成结果

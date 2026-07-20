@@ -1,0 +1,31 @@
+/**
+ * FilterBar 样式
+ * 引用 common/vars.css 和 datacenter/vars.css 设计变量
+ */
+
+.container {
+  background-color: var(--figma-color-bg-card, #fff);
+  border-radius: var(--figma-datacenter-border-radius-lg, 8px);
+  box-shadow: var(
+    --figma-datacenter-shadow-card,
+    0 1px 6px -1px rgb(0 0 0 / 6%)
+  );
+}
+
+.filter-row {
+  display: flex;
+  flex-direction: row;
+  gap: var(--figma-spacing-lg, 16px);
+  align-items: center;
+  padding: var(--figma-spacing-lg, 16px) var(--figma-spacing-2xl, 24px);
+}
+
+.label {
+  font-size: var(--figma-font-size-body, 14px);
+  font-weight: 400;
+  color: var(--figma-color-text-secondary, #8c8c8c);
+}
+
+.select {
+  width: 120px;
+}

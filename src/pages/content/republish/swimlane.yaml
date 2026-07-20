@@ -1,0 +1,361 @@
+# 重新发布 - 表单交互
+interaction:
+  type: form
+  name: 重新发布表单
+  trigger:
+    component: RepublishForm
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 加载原内容信息
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/records/{recordId}/detail
+          api:
+            method: GET
+            url: /api/v1/content/publish/records/{recordId}/detail
+        - name: 显示 loading
+          component: RepublishPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 渲染原内容信息
+      parallel:
+        - name: 显示原标题
+          component: OriginalInfoCard
+          action:
+            method: setTitle
+            props:
+              title: { response.data.titleByPlatform }
+        - name: 显示原文案
+          component: OriginalInfoCard
+          action:
+            method: setCaption
+            props:
+              caption: { response.data.caption }
+        - name: 显示原标签
+          component: OriginalInfoCard
+          action:
+            method: setTopicTags
+            props:
+              topicTags: { response.data.topicTags }
+        - name: 停止 loading
+          component: RepublishPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 3
+      description: 选择目标账号
+      component: TargetAccountCard
+      action:
+        method: selectAccount
+      onDone: step_4
+
+    - step: 4
+      description: 编辑内容（可选）
+      component: RepublishForm
+      action:
+        method: editContent
+      onDone: step_5
+
+    - step: 5
+      description: 提交重新发布
+      parallel:
+        - name: 调用 POST /api/v1/content/publish/records/{recordId}/republish
+          api:
+            method: POST
+            url: /api/v1/content/publish/records/{recordId}/republish
+            request:
+              targetAccountIds: { accountIds }
+              caption: { caption }
+              titleByPlatform: { titleByPlatform }
+              topicTags: { topicTags }
+              primaryMediaAssetId: { primaryMediaAssetId }
+              imageMediaAssetIds: { imageMediaAssetIds }
+              deleteOriginalOnSuccess: { deleteOriginalOnSuccess }
+              confirmDuplicate: { confirmDuplicate }
+        - name: 禁用提交按钮
+          component: RepublishForm
+          action:
+            method: setSubmitting
+            props:
+              submitting: true
+      onSuccess: step_6
+      onFail: step_7
+
+    - step: 6
+      description: 发布成功
+      parallel:
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 重新发布成功
+        - name: 跳转历史记录
+          component: router
+          action:
+            method: push
+            props:
+              path: /content/history
+
+    - step: 7
+      description: 发布失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 恢复提交按钮
+          component: RepublishForm
+          action:
+            method: setSubmitting
+            props:
+              submitting: false
+
+---
+# AI 智能优化 - 异步交互
+ai_optimize:
+  type: async
+  name: AI 智能优化
+  trigger:
+    component: RepublishForm
+    action: onAIOptimize
+
+  mainFlow:
+    - step: 1
+      description: 开始优化
+      component: RepublishForm
+      action:
+        method: setOptimizing
+        props:
+          optimizing: true
+      onDone: step_2
+
+    - step: 2
+      description: 调用 AI 标题优化接口
+      api:
+        method: POST
+        url: /api/v1/content/ai/titles
+        request:
+          platform: { platform }
+          contentMode: { contentMode }
+          userPrompt: { userPrompt }
+          currentTitle: { currentTitle }
+          captionExcerpt: { captionExcerpt }
+          maxVariants: 5
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 优化成功
+      parallel:
+        - name: 更新标题
+          component: RepublishForm
+          action:
+            method: setTitle
+            props:
+              title: '{response.data.variants[0].text}'
+        - name: 停止优化状态
+          component: RepublishForm
+          action:
+            method: setOptimizing
+            props:
+              optimizing: false
+
+    - step: 4
+      description: 优化失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 停止优化状态
+          component: RepublishForm
+          action:
+            method: setOptimizing
+            props:
+              optimizing: false
+
+---
+# 取消返回 - 导航交互
+cancel_navigate:
+  type: navigation
+  name: 取消返回上一页
+  trigger:
+    component: BottomActionBar
+    action: onCancel
+
+  mainFlow:
+    - step: 1
+      description: 获取 from 参数
+      component: RepublishPage
+      action:
+        method: getFromParam
+      onDone: step_2
+
+    - step: 2
+      description: 判断跳转目标
+      type: decision
+      conditions:
+        - if: from starts with '/'
+          then: step_3a
+        - else: step_3b
+
+    - step: 3a
+      description: from 为绝对路径
+      component: router
+      action:
+        method: push
+        props:
+          path: '{from}'
+
+    - step: 3b
+      description: from 为相对路径，添加前缀
+      component: router
+      action:
+        method: push
+        props:
+          path: '/{from}'
+
+---
+# 删除原内容确认 - 确认交互
+delete_original_confirm:
+  type: confirm
+  name: 删除原内容确认
+  trigger:
+    component: RepublishForm
+    action: onDeleteOriginalChecked
+
+  mainFlow:
+    - step: 1
+      description: 显示二次确认
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认删除
+          content: 此操作不可逆，将删除原内容。确认继续？
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+
+    - step: 2
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      parallel:
+        - name: 关闭确认弹窗
+          component: ConfirmModal
+          action:
+            method: close
+        - name: 标记删除原内容
+          component: RepublishForm
+          action:
+            method: setDeleteOriginalOnSuccess
+            props:
+              deleteOriginalOnSuccess: true
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      parallel:
+        - name: 关闭确认弹窗
+          component: ConfirmModal
+          action:
+            method: close
+        - name: 取消删除勾选
+          component: RepublishForm
+          action:
+            method: setDeleteOriginalOnSuccess
+            props:
+              deleteOriginalOnSuccess: false
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+    - trigger: 发布失败-自动重试
+      condition: publishStatus == FAILED
+      name: 自动重试 3 次
+      component: RepublishForm
+      action:
+        method: autoRetry
+        params:
+          maxRetries: 3
+          interval: 30000
+
+states:
+  - name: original_record
+    type: object
+    default: null
+
+  - name: selected_accounts
+    type: array
+    default: []
+
+  - name: edited_title
+    type: string
+    default: ''
+
+  - name: edited_content
+    type: string
+    default: ''
+
+  - name: edited_hashtags
+    type: array
+    default: []
+
+  - name: is_loading
+    type: boolean
+    default: false
+
+  - name: is_submitting
+    type: boolean
+    default: false
+
+  - name: is_optimizing
+    type: boolean
+    default: false
+
+  - name: has_duplicate
+    type: boolean
+    default: false
+
+  - name: delete_original_on_success
+    type: boolean
+    default: false
+
+  - name: confirm_duplicate
+    type: boolean
+    default: false

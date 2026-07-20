@@ -1,0 +1,57 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+  margin: 0;
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+.info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #f7faff;
+  border: 1px solid #d9e8ff;
+  border-radius: 6px;
+}
+
+.info-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.label {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f1f1f;
+}
+
+.password {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.copy-icon {
+  color: #1677ff;
+  cursor: pointer;
+}
+
+.warning {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 13px;
+  color: #d98c0d;
+}

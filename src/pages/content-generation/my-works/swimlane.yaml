@@ -1,0 +1,188 @@
+version: '1.0'
+
+metadata:
+  page: content-generation/my-works
+  created: null
+  updated: null
+
+actors:
+  - id: user
+    name: 用户
+
+systems:
+  - id: backend-api
+    name: 后端API
+
+interactions:
+  - id: list-interaction
+    type: list
+    name: 我的作品列表
+    trigger:
+      component: MyWorksTable
+      action: onMount
+
+    mainFlow:
+      - step: 1
+        description: 加载作品列表
+        async: true
+        parallel:
+          - name: 调用 GET /api/works
+            api:
+              method: GET
+              url: /api/works
+              params: '{params}'
+          - name: 显示 loading
+            component: MyWorksTable
+            action:
+              method: setLoading
+              props:
+                loading: true
+        onSuccess: step_2
+        onFail: step_3
+
+      - step: 2
+        description: 渲染列表
+        component: MyWorksTable
+        action:
+          method: setData
+          props:
+            dataSource: '{response.list}'
+        onDone: step_4
+
+      - step: 3
+        description: 加载失败
+        component: MyWorksTable
+        action:
+          method: setError
+          props:
+            error: '{error.message}'
+
+      - step: 4
+        description: 渲染分页
+        component: Pagination
+        action:
+          method: setPagination
+          props:
+            current: '{params.current}'
+            pageSize: '{params.pageSize}'
+            total: '{response.total}'
+
+    randomEvents:
+      - trigger: 用户切换分页
+        name: 重新加载数据
+        component: MyWorksTable
+        action:
+          method: reload
+        params:
+          page: '{pagination.current}'
+          pageSize: '{pagination.pageSize}'
+
+      - trigger: 用户点击查看详情
+        name: 打开详情弹窗
+        component: WorkDetailModal
+        action:
+          method: open
+        params:
+          workId: '{work.id}'
+
+      - trigger: Token 过期
+        condition: response.code == 401
+        name: 跳转登录页
+        component: router
+        action:
+          method: push
+          props:
+            path: /login
+
+    states:
+      - name: list_data
+        type: array
+        default: []
+      - name: loading
+        type: boolean
+        default: false
+      - name: pagination
+        type: object
+        default:
+          current: 1
+          pageSize: 10
+          total: 0
+      - name: detail_modal_visible
+        type: boolean
+        default: false
+      - name: selected_work_id
+        type: string
+        default: ''
+
+  - id: modal-interaction
+    type: modal
+    name: 作品详情弹窗
+    trigger:
+      component: WorkDetailModal
+      action: onOpen
+
+    mainFlow:
+      - step: 1
+        description: 打开弹窗并加载详情
+        async: true
+        parallel:
+          - name: 调用 GET /api/works/{workId}
+            api:
+              method: GET
+              url: /api/works/{workId}
+          - name: 显示 loading
+            component: WorkDetailModal
+            action:
+              method: setLoading
+              props:
+                loading: true
+        onSuccess: step_2
+        onFail: step_3
+
+      - step: 2
+        description: 渲染详情
+        component: WorkDetailModal
+        action:
+          method: setData
+          props:
+            data: '{response.data}'
+
+      - step: 3
+        description: 加载失败
+        component: WorkDetailModal
+        action:
+          method: setError
+          props:
+            error: '{error.message}'
+
+    randomEvents:
+      - trigger: 用户点击关闭
+        name: 关闭弹窗
+        component: WorkDetailModal
+        action:
+          method: close
+
+      - trigger: 点击遮罩层关闭
+        condition: modal.closable == true
+        name: 关闭弹窗
+        component: WorkDetailModal
+        action:
+          method: close
+
+      - trigger: ESC 按键
+        condition: modal.keyboard == true
+        name: 关闭弹窗
+        component: WorkDetailModal
+        action:
+          method: close
+
+    states:
+      - name: modal_visible
+        type: boolean
+        default: false
+      - name: modal_data
+        type: object
+        default: null
+      - name: loading
+        type: boolean
+        default: false

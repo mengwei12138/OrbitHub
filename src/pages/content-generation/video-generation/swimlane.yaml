@@ -1,0 +1,214 @@
+version: "1.0"
+
+name: 视频生成页面
+description: AI 视频生成配置与结果展示页面
+
+actors:
+  - name: 用户
+    description: 使用视频生成功能的用户
+
+swimlanes:
+  - name: 用户
+    alias: User
+  - name: 视频生成页面
+    alias: Page
+  - name: AI 服务
+    alias: AIService
+  - name: 结果展示
+    alias: Result
+
+states:
+  - name: 初始状态
+    alias: Initial
+    description: 用户打开视频生成页面，表单为空
+
+  - name: 上传素材
+    alias: Uploaded
+    description: 用户上传图片或视频素材
+
+  - name: 选择虚拟人物
+    alias: SelectingAvatar
+    description: 用户选择虚拟人物（可选）
+
+  - name: 填写配置
+    alias: FillingForm
+    description: 用户填写提示词、选择视频长度和清晰度
+
+  - name: 提交生成
+    alias: Submitting
+    description: 用户点击生成按钮
+
+  - name: 生成中
+    alias: Generating
+    description: AI 服务正在生成视频，显示进度
+
+  - name: 生成完成
+    alias: Completed
+    description: AI 生成完成，展示结果
+
+  - name: 生成失败
+    alias: Failed
+    description: AI 生成失败（队列满、积分不足等）
+
+transitions:
+  - name: 打开页面
+    from: null
+    to: Initial
+    condition: 用户访问 /content-generation/video-generation
+    action: 初始化表单
+
+  - name: 上传素材
+    from: Initial
+    to: Uploaded
+    trigger: User
+    action: 上传图片或视频素材
+
+  - name: 打开虚拟人物选择
+    from: Uploaded
+    to: SelectingAvatar
+    trigger: User
+    action: 点击选择虚拟人物按钮
+
+  - name: 选择虚拟人物
+    from: SelectingAvatar
+    to: Uploaded
+    trigger: User
+    action: 选择虚拟人物并确认
+
+  - name: 填写表单
+    from: Uploaded
+    to: FillingForm
+    trigger: User
+    action: 填写提示词、选择视频长度和清晰度
+
+  - name: 提交生成
+    from: FillingForm
+    to: Submitting
+    trigger: User
+    action: 点击生成按钮
+
+  - name: 积分不足
+    from: Submitting
+    to: Failed
+    trigger: Page
+    condition: 积分不足
+    action: 显示积分不足弹窗
+
+  - name: 队列已满
+    from: Submitting
+    to: Failed
+    trigger: Page
+    condition: 生成队列已满
+    action: 显示队列已满弹窗
+
+  - name: 开始生成
+    from: Submitting
+    to: Generating
+    trigger: Page
+    action: 调用 AI 视频生成接口，显示生成中弹窗
+
+  - name: 轮询进度
+    from: Generating
+    to: Generating
+    trigger: AIService
+    condition: 生成未完成
+    action: 更新进度条
+
+  - name: 生成完成
+    from: Generating
+    to: Completed
+    trigger: AIService
+    condition: 生成完成
+    action: 关闭生成中弹窗，显示结果弹窗
+
+  - name: 生成失败
+    from: Generating
+    to: Failed
+    trigger: AIService
+    condition: 生成失败
+    action: 显示错误信息
+
+  - name: 重新生成
+    from: Completed
+    to: Initial
+    trigger: User
+    action: 点击重新生成按钮
+
+  - name: 去发布
+    from: Completed
+    to: Result
+    trigger: User
+    action: 点击去发布按钮，跳转发布页面
+
+  - name: 去作品管理
+    from: Completed
+    to: Result
+    trigger: User
+    action: 点击去作品管理按钮
+
+  - name: 下载视频
+    from: Completed
+    to: Result
+    trigger: User
+    action: 点击下载视频按钮
+
+components:
+  - name: VideoGenerationPage
+    description: 主页组件，包含表单和生成按钮
+    path: src/pages/content-generation/video-generation/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: AIDisclaimerAlert
+    description: AI 免责声明提示
+    path: src/pages/content-generation/video-generation/components/AIDisclaimerAlert/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: UploadZoneImage
+    description: 图片上传区域
+    path: src/pages/content-generation/video-generation/components/UploadZoneImage/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: UploadZoneVideo
+    description: 视频上传区域
+    path: src/pages/content-generation/video-generation/components/UploadZoneVideo/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: TrialStatusCard
+    description: 试用状态与质量选择
+    path: src/pages/content-generation/video-generation/components/TrialStatusCard/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: ContentConfigForm
+    description: 内容配置表单
+    path: src/pages/content-generation/video-generation/components/ContentConfigForm/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: GenerateButton
+    description: 生成按钮
+    path: src/pages/content-generation/video-generation/components/GenerateButton/index.tsx
+    figmaAnchor: "3060-1861"
+
+  - name: GeneratingModal
+    description: 生成中弹窗
+    path: src/pages/content-generation/video-generation/components/GeneratingModal/index.tsx
+    figmaAnchor: "3085-2030"
+
+  - name: AvatarPickerModal
+    description: 虚拟人物选择弹窗
+    path: src/pages/content-generation/video-generation/components/AvatarPickerModal/index.tsx
+    figmaAnchor: "3085-2030"
+
+  - name: VideoResultModal
+    description: 视频生成结果弹窗
+    path: src/pages/content-generation/video-generation/components/VideoResultModal/index.tsx
+    figmaAnchor: "3088-2127"
+
+  - name: QueueFullModal
+    description: 队列已满弹窗
+    path: src/pages/content-generation/video-generation/components/QueueFullModal/index.tsx
+    figmaAnchor: "3089-2217"
+
+  - name: InsufficientCreditsModal
+    description: 积分不足弹窗
+    path: src/pages/content-generation/video-generation/components/InsufficientCreditsModal/index.tsx
+    figmaAnchor: "3090-2309"

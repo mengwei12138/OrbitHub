@@ -1,0 +1,269 @@
+.loading-hint {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.wrapper {
+  padding: 0;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+}
+
+.filter-inputs {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #595959;
+  white-space: nowrap;
+}
+
+.filter-select {
+  width: 120px;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.filter-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-left {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #fff;
+  background: #fe2c55;
+  border-radius: 50%;
+}
+
+.account-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.category-tag {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.confidence-tag {
+  display: flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: #595959;
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.time {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.comment-box {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.comment-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8c8c8c;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+}
+
+.category-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.section-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.category-options {
+  display: flex;
+  gap: 8px;
+}
+
+.category-btn {
+  display: flex;
+  align-items: center;
+  padding: 4px 14px;
+  font-size: 13px;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+}
+
+.category-btn-active {
+  color: #1677ff;
+  background: #e6f4ff;
+  border-color: #1677ff;
+}
+
+.reply-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reply-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.reply-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.ai-badge {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: #1677ff;
+  border-radius: 4px;
+}
+
+.ai-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.reply-content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 24px;
+}
+
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #ff4d4f;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ff4d4f;
+  border-radius: 6px;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #fff;
+  cursor: pointer;
+  background: #1677ff;
+  border: 1px solid #1677ff;
+  border-radius: 6px;
+}

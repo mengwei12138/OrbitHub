@@ -1,0 +1,254 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800">
+  <title>重新发布 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff4d4f"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="800" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">重新发布 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <!-- 用户 -->
+  <rect x="10" y="45" width="140" height="745" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="80" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <!-- 前端组件 -->
+  <rect x="160" y="45" width="280" height="745" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="300" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <!-- 后端API -->
+  <rect x="450" y="45" width="240" height="745" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="570" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <!-- 数据库 -->
+  <rect x="700" y="45" width="290" height="745" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="845" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">数据库</text>
+
+  <!-- ========== 重新发布表单 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">重新发布表单</text>
+
+  <!-- 步骤1: 加载原内容信息 -->
+  <circle cx="80" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="180" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="125" text-anchor="middle" font-size="10">RepublishPage</text>
+
+  <line x1="98" y1="120" x2="180" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤1.1: 调用API -->
+  <rect x="470" y="105" width="180" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="125" text-anchor="middle" font-size="10">GET /api/v1/content/publish/records/{recordId}/detail</text>
+
+  <line x1="240" y1="120" x2="300" y2="120" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="120" x2="300" y2="120" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="120" x2="470" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 数据库查询 -->
+  <rect x="720" y="105" width="140" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="790" y="125" text-anchor="middle" font-size="10">查询原记录</text>
+
+  <line x1="650" y1="120" x2="720" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤1.2: 显示loading -->
+  <rect x="180" y="145" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="165" text-anchor="middle" font-size="10">RepublishPage.setLoading</text>
+
+  <line x1="240" y1="135" x2="240" y2="145" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 渲染原内容信息 -->
+  <circle cx="80" cy="200" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="205" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="180" y="185" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="205" text-anchor="middle" font-size="10">OriginalInfoCard.setTitle</text>
+
+  <line x1="790" y1="135" x2="450" y2="135" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="450" y1="135" x2="450" y2="200" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="450" y1="200" x2="180" y2="200" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <rect x="180" y="225" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="245" text-anchor="middle" font-size="10">OriginalInfoCard.setCaption</text>
+
+  <rect x="180" y="265" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="285" text-anchor="middle" font-size="10">OriginalInfoCard.setTopicTags</text>
+
+  <line x1="240" y1="215" x2="240" y2="265" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 选择目标账号 -->
+  <circle cx="80" cy="320" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="325" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="180" y="305" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="325" text-anchor="middle" font-size="10">TargetAccountCard.selectAccount</text>
+
+  <line x1="98" y1="320" x2="180" y2="320" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤4: 编辑内容 -->
+  <circle cx="80" cy="365" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="370" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="180" y="350" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="370" text-anchor="middle" font-size="10">RepublishForm.editContent</text>
+
+  <line x1="240" y1="335" x2="240" y2="350" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤5: 提交重新发布 -->
+  <circle cx="80" cy="410" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="415" text-anchor="middle" font-size="10" fill="white">5</text>
+
+  <rect x="180" y="395" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="415" text-anchor="middle" font-size="10">RepublishForm.setSubmitting</text>
+
+  <line x1="98" y1="410" x2="180" y2="410" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤5.1: API调用 -->
+  <rect x="470" y="395" width="180" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="415" text-anchor="middle" font-size="10">POST /api/v1/content/publish/records/{recordId}/republish</text>
+
+  <line x1="240" y1="410" x2="300" y2="410" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="410" x2="300" y2="410" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="410" x2="470" y2="410" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤6: 发布成功 -->
+  <circle cx="80" cy="470" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="475" text-anchor="middle" font-size="10" fill="white">6</text>
+
+  <rect x="180" y="455" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="475" text-anchor="middle" font-size="10">Message.success</text>
+
+  <line x1="650" y1="425" x2="450" y2="425" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="450" y1="425" x2="450" y2="470" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="450" y1="470" x2="180" y2="470" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- 步骤6.2: 跳转历史记录 -->
+  <rect x="180" y="495" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="515" text-anchor="middle" font-size="10">router.push(/content/history)</text>
+
+  <line x1="240" y1="485" x2="240" y2="495" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤7: 发布失败 -->
+  <circle cx="80" cy="555" r="18" fill="#ff4d4f" stroke="#cf1322" stroke-width="2"/>
+  <text x="80" y="560" text-anchor="middle" font-size="10" fill="white">7</text>
+
+  <rect x="180" y="540" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="240" y="560" text-anchor="middle" font-size="10">Message.error</text>
+
+  <rect x="180" y="580" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="240" y="600" text-anchor="middle" font-size="10">RepublishForm.setSubmitting(false)</text>
+
+  <line x1="650" y1="425" x2="450" y2="425" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+  <line x1="450" y1="425" x2="450" y2="555" stroke="#ff4d4f" stroke-width="1.5"/>
+  <line x1="450" y1="555" x2="180" y2="555" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="240" y1="570" x2="240" y2="580" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 取消返回 ========== -->
+  <line x1="10" y1="590" x2="990" y2="590" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="585" font-size="11" fill="#8c8c8c">取消返回</text>
+
+  <!-- C1: 用户点击取消 -->
+  <circle cx="80" cy="615" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="620" text-anchor="middle" font-size="10" fill="white">C1</text>
+
+  <rect x="180" y="600" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="620" text-anchor="middle" font-size="10">BottomActionBar</text>
+
+  <line x1="98" y1="615" x2="180" y2="615" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- C2: 获取 from 参数 -->
+  <circle cx="80" cy="660" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="665" text-anchor="middle" font-size="10" fill="white">C2</text>
+
+  <rect x="180" y="645" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="665" text-anchor="middle" font-size="10">RepublishPage.getFromParam</text>
+
+  <line x1="98" y1="660" x2="180" y2="660" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- C3: 判断跳转目标 (decision diamond) -->
+  <polygon points="80,690 120,725 80,760 40,725" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="80" y="730" text-anchor="middle" font-size="9">判断路径</text>
+  <line x1="98" y1="695" x2="240" y2="695" stroke="#666" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <!-- C3a: from 以 / 开头，直接跳转 -->
+  <circle cx="180" cy="790" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="180" y="795" text-anchor="middle" font-size="10" fill="white">C3a</text>
+
+  <rect x="300" y="775" width="130" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="365" y="795" text-anchor="middle" font-size="10">router.push(from)</text>
+
+  <line x1="80" y1="760" x2="80" y2="790" stroke="#666" stroke-width="1.5"/>
+  <line x1="80" y1="790" x2="162" y2="790" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="198" y1="790" x2="300" y2="790" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- C3b: from 不以 / 开头，添加前缀 -->
+  <circle cx="180" cy="845" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="180" y="850" text-anchor="middle" font-size="10" fill="white">C3b</text>
+
+  <rect x="300" y="830" width="130" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="365" y="850" text-anchor="middle" font-size="10">router.push('/'+from)</text>
+
+  <line x1="40" y1="725" x2="40" y2="845" stroke="#666" stroke-width="1.5"/>
+  <line x1="40" y1="845" x2="162" y2="845" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <line x1="198" y1="845" x2="300" y2="845" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== AI 智能优化 ========== -->
+  <line x1="10" y1="900" x2="990" y2="900" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="895" font-size="11" fill="#8c8c8c">AI 智能优化</text>
+
+  <!-- AI步骤1: 开始优化 -->
+  <circle cx="80" cy="670" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="675" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="180" y="655" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="675" text-anchor="middle" font-size="10">RepublishForm.setOptimizing</text>
+
+  <line x1="98" y1="670" x2="180" y2="670" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- AI步骤2: 调用AI API -->
+  <circle cx="80" cy="715" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="80" y="720" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="470" y="700" width="180" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="560" y="720" text-anchor="middle" font-size="10">POST /api/v1/content/ai/titles</text>
+
+  <line x1="240" y1="685" x2="300" y2="685" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="685" x2="300" y2="715" stroke="#666" stroke-width="1.5"/>
+  <line x1="300" y1="715" x2="470" y2="715" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- AI步骤3: 优化成功 -->
+  <circle cx="80" cy="770" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="80" y="775" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="180" y="755" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="240" y="775" text-anchor="middle" font-size="10">RepublishForm.setTitle</text>
+
+  <line x1="650" y1="730" x2="450" y2="730" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="450" y1="730" x2="450" y2="770" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="450" y1="770" x2="180" y2="770" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="700" y="680" width="280" height="110" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="710" y="698" font-size="10" font-weight="bold">图例</text>
+  <circle cx="730" cy="720" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="745" y="723" font-size="9">用户触发</text>
+  <circle cx="730" cy="745" r="8" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="745" y="748" font-size="9">成功</text>
+  <circle cx="730" cy="770" r="8" fill="#ff4d4f" stroke="#cf1322" stroke-width="2"/>
+  <text x="745" y="773" font-size="9">失败</text>
+  <line x1="830" y1="720" x2="860" y2="720" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="870" y="723" font-size="9">正常流程</text>
+  <line x1="830" y1="745" x2="860" y2="745" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="870" y="748" font-size="9">成功流程</text>
+</svg>

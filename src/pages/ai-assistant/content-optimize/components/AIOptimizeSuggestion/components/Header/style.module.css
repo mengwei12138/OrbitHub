@@ -1,0 +1,49 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.icon {
+  color: var(--figma-color-primary);
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--figma-color-gray-10);
+}
+
+.ref-tag {
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--figma-color-primary);
+  background: var(--figma-ai-assistant-badge-bg-content-opt);
+  border-radius: 4px;
+}
+
+.close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  color: var(--figma-color-gray-8);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+  background: var(--figma-color-gray-2);
+}

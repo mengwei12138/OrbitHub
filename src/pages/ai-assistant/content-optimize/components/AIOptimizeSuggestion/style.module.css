@@ -1,0 +1,31 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: var(--figma-color-white);
+  border: 1px solid rgb(22 119 255 / 40%);
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgb(22 119 255 / 8%);
+}
+
+.card-sensitive {
+  border-color: var(--figma-color-error);
+  box-shadow: 0 2px 12px rgb(255 77 79 / 12%);
+}
+
+.error-message {
+  padding: 16px;
+  font-size: 14px;
+  color: var(--figma-color-error);
+  background: var(--figma-color-error-light);
+  border-radius: 6px;
+}
+
+.timeout-message {
+  padding: 16px;
+  font-size: 14px;
+  color: var(--figma-color-warning);
+  background: var(--figma-color-warning-light);
+  border-radius: 6px;
+}

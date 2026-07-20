@@ -1,0 +1,74 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  width: var(--figma-component-steps-width);
+  height: var(--figma-component-steps-height);
+}
+
+.step-wrapper {
+  display: flex;
+  align-items: center;
+  width: 140px;
+}
+
+.step {
+  display: flex;
+  gap: var(--figma-component-steps-gap);
+  align-items: center;
+}
+
+.circle {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--figma-component-steps-circle-size);
+  height: var(--figma-component-steps-circle-size);
+  font-size: var(--figma-component-steps-font-size);
+  font-weight: var(--figma-component-steps-font-weight);
+  border-radius: 50%;
+}
+
+.active .circle {
+  color: var(--figma-component-steps-circle-text-active);
+  background-color: var(--figma-component-steps-circle-bg-active);
+  box-shadow: var(--figma-component-steps-circle-shadow-active);
+}
+
+.pending .circle {
+  color: var(--figma-component-steps-circle-text-pending);
+  background-color: var(--figma-component-steps-circle-bg-pending);
+  border: 2px solid var(--figma-component-steps-circle-border-pending);
+}
+
+.finish .circle {
+  color: var(--figma-component-steps-circle-text-active);
+  background-color: var(--figma-component-steps-circle-bg-active);
+}
+
+.label {
+  flex-shrink: 0;
+  font-size: var(--figma-component-steps-font-size);
+}
+
+.active .label {
+  font-weight: var(--figma-component-steps-label-font-weight-active);
+  color: var(--figma-component-steps-label-text-active);
+}
+
+.pending .label {
+  font-weight: var(--figma-component-steps-label-font-weight-pending);
+  color: var(--figma-component-steps-label-text-pending);
+}
+
+.finish .label {
+  font-weight: var(--figma-component-steps-label-font-weight-active);
+  color: var(--figma-component-steps-label-text-active);
+}
+
+.connector {
+  flex: 1;
+  height: 0;
+  margin: 0 var(--figma-component-steps-connector-margin);
+  border-top: 1px solid var(--figma-component-steps-connector-color);
+}

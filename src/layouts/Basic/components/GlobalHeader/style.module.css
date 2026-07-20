@@ -1,0 +1,129 @@
+.container {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  padding: 0 16px;
+}
+
+.notification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 100%;
+  cursor: pointer;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 18px;
+  width: 6px;
+  height: 6px;
+  background: #ff4d4f;
+  border-radius: 50%;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 16px;
+  background: #e8e8e8;
+}
+
+.credits {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  cursor: pointer;
+}
+
+.coin-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+
+.credits-text {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.57;
+  color: #1f1f1f;
+}
+
+.credits:hover .credits-text {
+  color: #1677ff;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+  background: #1677ff;
+  border-radius: 50%;
+}
+
+.username {
+  margin-left: 8px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.57;
+  color: #595959;
+}
+
+.chevron-down {
+  width: 10px;
+  height: 10px;
+  margin-left: 4px;
+}
+
+.user-info-section {
+  padding: 4px 0;
+}
+
+.user-info-row {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+}
+
+.label {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.54;
+  color: #8c8c8c;
+}
+
+.value {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.54;
+  color: #1f1f1f;
+}

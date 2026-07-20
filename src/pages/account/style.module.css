@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.selected-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  background: #1677ff;
+  border-radius: 50%;
+}
+
+.account-cell {
+  display: flex;
+  flex-direction: column;
+}
+
+.account-nickname {
+  font-weight: 500;
+}
+
+.account-phone {
+  font-size: 12px;
+  color: var(--figma-color-text-secondary);
+}
+
+.followers {
+  font-size: 13px;
+  color: var(--figma-color-text-body);
+}
+
+.stop-btn {
+  color: var(--figma-color-error);
+  background: var(--figma-color-white);
+  border-color: var(--figma-color-error);
+}
+
+.start-btn {
+  color: var(--figma-color-primary);
+  background: var(--figma-color-white);
+  border-color: var(--figma-color-primary);
+}
+
+.meta-text {
+  color: var(--figma-color-text-secondary);
+}

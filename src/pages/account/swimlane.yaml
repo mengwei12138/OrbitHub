@@ -1,0 +1,545 @@
+# 账号列表 - 列表交互
+interaction:
+  type: list
+  name: 账号列表
+  trigger:
+    component: AccountTable
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载账号列表
+      parallel:
+        - name: 调用 GET /api/v1/accounts
+          api:
+            method: GET
+            url: /api/v1/accounts
+            params:
+              page: 1
+              pageSize: 10
+              keyword: ''
+              platform: ''
+              accountStatus: ''
+        - name: 显示 loading
+          component: AccountTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染账号列表
+      component: AccountTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.list }
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: AccountTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+    - step: 4
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: { response.total }
+
+---
+# 账号停止 - 确认交互
+stop_interaction:
+  type: confirm
+  name: 停止账号确认
+  trigger:
+    component: StopButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认停止
+          content: 即将停止该账号，停止后该账号将无法承载任务
+          okText: 确认停止
+          cancelText: 取消
+
+    - step: 2
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认停止
+      condition: user_action == confirm
+      parallel:
+        - name: 调用 POST /api/v1/accounts/{id}/stop
+          api:
+            method: POST
+            url: /api/v1/accounts/{id}/stop
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 停止成功
+      parallel:
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已停止该账号
+
+    - step: 5
+      description: 停止失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 账号启动 - 状态切换
+start_interaction:
+  type: state
+  name: 启动账号
+  trigger:
+    component: StartButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 执行启动
+      parallel:
+        - name: 调用 POST /api/v1/accounts/{id}/start
+          api:
+            method: POST
+            url: /api/v1/accounts/{id}/start
+        - name: 显示 loading
+          component: StartButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 启动成功
+      parallel:
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已启动该账号
+
+    - step: 3
+      description: 启动失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 批量停止 - 确认交互
+batch_stop_interaction:
+  type: confirm
+  name: 批量停止账号
+  trigger:
+    component: BatchStopButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 计算可停止账号
+      component: AccountTableToolbar
+      action:
+        method: getOnlineSelectedIds
+      onDone: step_2
+
+    - step: 2
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认批量停止
+          content: 即将停止选中的 {onlineCount}个在线账号
+          okText: 确认停止
+          cancelText: 取消
+
+    - step: 3
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 4a
+      description: 用户确认
+      condition: user_action == confirm
+      parallel:
+        - name: 调用 POST /api/v1/accounts/batch/stop
+          api:
+            method: POST
+            url: /api/v1/accounts/batch/stop
+            request:
+              ids: { onlineIds }
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_5
+      onFail: step_6
+
+    - step: 4b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 5
+      description: 批量停止成功
+      parallel:
+        - name: 清空选中
+          component: AccountTable
+          action:
+            method: clearSelection
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已批量停止{onlineCount}个账号
+
+    - step: 6
+      description: 批量停止失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 批量启动 - 确认交互
+batch_start_interaction:
+  type: confirm
+  name: 批量启动账号
+  trigger:
+    component: BatchStartButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 计算可启动账号
+      component: AccountTableToolbar
+      action:
+        method: getStoppedSelectedIds
+      onDone: step_2
+
+    - step: 2
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认批量启动
+          content: 即将启动选中的{stoppedCount}个已停止账号
+          okText: 确认启动
+          cancelText: 取消
+
+    - step: 3
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 4a
+      description: 用户确认
+      condition: user_action == confirm
+      parallel:
+        - name: 调用 POST /api/v1/accounts/batch/start
+          api:
+            method: POST
+            url: /api/v1/accounts/batch/start
+            request:
+              ids: { stoppedIds }
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_5
+      onFail: step_6
+
+    - step: 4b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 5
+      description: 批量启动成功
+      parallel:
+        - name: 清空选中
+          component: AccountTable
+          action:
+            method: clearSelection
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已批量启动{stoppedCount}个账号
+
+    - step: 6
+      description: 批量启动失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 批量删除 - 确认交互
+batch_delete_interaction:
+  type: confirm
+  name: 批量删除账号
+  trigger:
+    component: BatchDeleteButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 计算可删除账号
+      component: AccountTableToolbar
+      action:
+        method: getStoppedSelectedIds
+      onDone: step_2
+
+    - step: 2
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认删除
+          content: 确定要删除选中的{stoppedCount}个已停止账号吗？删除后不可恢复
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+
+    - step: 3
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 4a
+      description: 用户确认
+      condition: user_action == confirm
+      parallel:
+        - name: 调用 POST /api/v1/accounts/batch/delete
+          api:
+            method: POST
+            url: /api/v1/accounts/batch/delete
+            request:
+              ids: { stoppedIds }
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_5
+      onFail: step_6
+
+    - step: 5
+      description: 批量删除成功
+      parallel:
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已批量删除{stoppedCount}个账号
+
+    - step: 6
+      description: 批量删除失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 单账号删除 - 确认交互
+delete_interaction:
+  type: confirm
+  name: 删除账号确认
+  trigger:
+    component: DeleteButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认删除
+          content: 确定要删除账号{accountName}吗？删除后不可恢复
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+
+    - step: 2
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      parallel:
+        - name: 调用 DELETE /api/v1/accounts/{id}
+          api:
+            method: DELETE
+            url: /api/v1/accounts/{id}
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 删除成功
+      parallel:
+        - name: 刷新列表
+          component: AccountTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已停止该账号
+
+    - step: 5
+      description: 删除失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 工具栏按钮状态 - 状态切换
+toolbar_button_state:
+  type: state
+  name: 工具栏批量操作按钮状态
+
+  mainFlow:
+    - step: 1
+      description: 用户勾选账号
+      component: AccountTable
+      action:
+        method: onSelectionChange
+      onDone: step_2
+
+    - step: 2
+      description: 计算按钮启用状态
+      component: AccountTableToolbar
+      action:
+        method: updateButtonState
+      onDone: step_3
+
+    - step: 3
+      description: 更新按钮禁用状态
+      component: AccountTableToolbar
+      action:
+        method: setDisabled
+        props:
+          batchStop: { hasOnlineSelected }
+          batchStart: { hasStoppedSelected }
+          batchDelete: { hasStoppedSelected }
+
+states:
+  - name: selected_row_keys
+    type: string[]
+    default: []
+
+  - name: selected_rows
+    type: AccountResponse[]
+    default: []
+
+  - name: has_online_selected
+    type: boolean
+    default: false
+
+  - name: has_stopped_selected
+    type: boolean
+    default: false
+
+  - name: online_ids
+    type: string[]
+    default: []
+
+  - name: stopped_ids
+    type: string[]
+    default: []

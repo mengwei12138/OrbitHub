@@ -1,0 +1,98 @@
+{
+  // Biome 配置文件
+  // 文档: https://biomejs.dev/
+  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+
+  // VCS (版本控制) 集成
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+
+  // 文件包含/排除配置
+  "files": {
+    "includes": [
+      "**",
+      "!**/e2e/artifacts",
+      "!**/playwright-report",
+      "!**/test-results"
+    ]
+  },
+
+  // 格式化配置
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+
+  // Linter (代码检查) 配置
+  "linter": {
+    "enabled": true,
+    "rules": {
+      // 启用推荐规则集
+      "recommended": true,
+
+      // 风格规则
+      "style": {
+        "useImportType": "warn",
+        "noNonNullAssertion": "error",
+        "useNodejsImportProtocol": "error",
+        "useConsistentArrayType": {
+          "level": "error",
+          "options": {
+            "syntax": "shorthand"
+          }
+        }
+      },
+
+      // 无障碍访问规则 (已关闭，按需开启)
+      "a11y": "off",
+
+      // 可疑代码规则
+      "suspicious": {
+        "noExplicitAny": "off",
+        "noArrayIndexKey": "error",
+        "useIterableCallbackReturn": "error",
+        "noDoubleEquals": "error",
+        "noVar": "error"
+      },
+
+      // 正确性规则
+      "correctness": {
+        "useExhaustiveDependencies": "error",
+        "useJsxKeyInIterable": "error",
+        "useImportExtensions": "off"
+      },
+
+      // 性能规则
+      "performance": {
+        "noAccumulatingSpread": "error"
+      },
+
+      // Nursery 规则 (不稳定规则，可能随版本变化)
+      "nursery": {
+        "useUnicodeRegex": "error",
+        "useNamedCaptureGroup": "error"
+      }
+    }
+  },
+
+  // JavaScript 格式化特定配置
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single"
+    }
+  },
+
+  // 代码助手配置
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

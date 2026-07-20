@@ -1,0 +1,37 @@
+.container {
+  padding: 16px;
+  background-color: var(--color-bg-container);
+  border-radius: var(--border-radius-base);
+}
+
+.list-container {
+  margin-bottom: 16px;
+}
+
+.date-group {
+  margin-bottom: 16px;
+}
+
+.date-group:last-child {
+  margin-bottom: 0;
+}
+
+.date-header {
+  padding-left: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+  border-left: 3px solid var(--color-primary);
+}
+
+.cards {
+  padding-left: 8px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-secondary);
+}

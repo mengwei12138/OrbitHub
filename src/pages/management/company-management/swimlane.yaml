@@ -1,0 +1,285 @@
+page: 公司管理
+path: /management/company-management
+version: 1.0
+
+actors:
+  - id: admin
+    name: 管理员
+    type: user
+
+components:
+  - id: PageHeader
+    name: 页面头部
+    type: container
+
+  - id: FilterCard
+    name: 筛选卡片
+    type: form
+    visible: false
+
+  - id: CompanyTable
+    name: 公司列表
+    type: table
+
+  - id: CompanyFormModal
+    name: 新增/编辑公司弹窗
+    type: modal
+
+  - id: CreateSuccessModal
+    name: 创建成功弹窗
+    type: modal
+
+  - id: RechargeModal
+    name: 手动充值弹窗
+    type: modal
+
+  - id: DisableConfirmModal
+    name: 禁用确认弹窗
+    type: modal
+
+  - id: EnableConfirmModal
+    name: 启用确认弹窗
+    type: modal
+
+interactions:
+  - id: int-001
+    trigger:
+      actor: admin
+      action: 点击「新增公司」按钮
+    components:
+      - CompanyFormModal
+    state:
+      modal: visible
+      mode: create
+    result: 打开新增公司表单弹窗
+
+  - id: int-002
+    trigger:
+      actor: admin
+      action: 点击「查询」按钮
+    components:
+      - FilterCard
+      - CompanyTable
+    state:
+      loading: true
+    result: 根据筛选条件刷新表格数据
+
+  - id: int-003
+    trigger:
+      actor: admin
+      action: 点击「重置」按钮
+    components:
+      - FilterCard
+    state:
+      filters: reset
+    result: 清空筛选条件，重置表格
+
+  - id: int-004
+    trigger:
+      actor: admin
+      action: 点击表格行「编辑」
+    components:
+      - CompanyFormModal
+    state:
+      modal: visible
+      mode: edit
+      companyId: "{companyId}"
+    result: 打开编辑公司表单弹窗
+
+  - id: int-005
+    trigger:
+      actor: admin
+      action: 点击表格行「充值」
+    components:
+      - RechargeModal
+    state:
+      modal: visible
+      companyId: "{companyId}"
+      companyName: "{companyName}"
+    result: 打开手动充值弹窗
+
+  - id: int-006
+    trigger:
+      actor: admin
+      action: 点击表格行「详情」
+    components: []
+    state:
+      navigateTo: /management/company-management/{companyId}/detail
+    result: 跳转至公司详情页
+
+  - id: int-007
+    trigger:
+      actor: admin
+      action: 点击「禁用」
+    components:
+      - DisableConfirmModal
+    state:
+      modal: visible
+      companyId: "{companyId}"
+      companyName: "{companyName}"
+    result: 打开禁用确认弹窗
+
+  - id: int-008
+    trigger:
+      actor: admin
+      action: 点击「启用」
+    components:
+      - EnableConfirmModal
+    state:
+      modal: visible
+      companyId: "{companyId}"
+      companyName: "{companyName}"
+    result: 打开启用确认弹窗
+
+  - id: int-009
+    trigger:
+      actor: admin
+      action: 点击新增/编辑弹窗「取消」
+    components:
+      - CompanyFormModal
+    state:
+      modal: hidden
+    result: 关闭表单弹窗
+
+  - id: int-010
+    trigger:
+      actor: admin
+      action: 点击新增/编辑弹窗「确认创建/保存修改」
+    components:
+      - CompanyFormModal
+      - CompanyTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭表单弹窗
+        刷新表格数据
+        IF mode == create THEN
+          打开创建成功弹窗
+      onError: |
+        显示错误提示
+
+  - id: int-011
+    trigger:
+      actor: admin
+      action: 点击创建成功弹窗「我知道了」
+    components:
+      - CreateSuccessModal
+    state:
+      modal: hidden
+    result: 关闭创建成功弹窗
+
+  - id: int-012
+    trigger:
+      actor: admin
+      action: 点击充值弹窗「取消」
+    components:
+      - RechargeModal
+    state:
+      modal: hidden
+    result: 关闭充值弹窗
+
+  - id: int-013
+    trigger:
+      actor: admin
+      action: 点击充值弹窗「确认充值」
+    components:
+      - RechargeModal
+      - CompanyTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭充值弹窗
+        刷新表格数据（积分更新）
+      onError: |
+        显示错误提示
+
+  - id: int-014
+    trigger:
+      actor: admin
+      action: 点击禁用确认弹窗「取消」
+    components:
+      - DisableConfirmModal
+    state:
+      modal: hidden
+    result: 关闭禁用确认弹窗
+
+  - id: int-015
+    trigger:
+      actor: admin
+      action: 点击禁用确认弹窗「确认禁用」
+    components:
+      - DisableConfirmModal
+      - CompanyTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭禁用确认弹窗
+        刷新表格数据（状态变更为禁用）
+      onError: |
+        显示错误提示
+
+  - id: int-016
+    trigger:
+      actor: admin
+      action: 点击启用确认弹窗「取消」
+    components:
+      - EnableConfirmModal
+    state:
+      modal: hidden
+    result: 关闭启用确认弹窗
+
+  - id: int-017
+    trigger:
+      actor: admin
+      action: 点击启用确认弹窗「确认启用」
+    components:
+      - EnableConfirmModal
+      - CompanyTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭启用确认弹窗
+        刷新表格数据（状态变更为正常）
+      onError: |
+        显示错误提示
+
+  - id: int-018
+    trigger:
+      actor: admin
+      action: 点击弹窗关闭图标
+    components:
+      - CompanyFormModal
+      - CreateSuccessModal
+      - RechargeModal
+      - DisableConfirmModal
+      - EnableConfirmModal
+    state:
+      modal: hidden
+    result: 关闭对应弹窗
+
+  - id: int-019
+    trigger:
+      actor: admin
+      action: 点击分页「切换页码」
+    components:
+      - CompanyTable
+    state:
+      loading: true
+      page: "{page}"
+    result: 加载对应页数据
+
+  - id: int-020
+    trigger:
+      actor: admin
+      action: 点击分页「切换每页条数」
+    components:
+      - CompanyTable
+    state:
+      loading: true
+      pageSize: "{pageSize}"
+      page: 1
+    result: 重新加载第一页数据

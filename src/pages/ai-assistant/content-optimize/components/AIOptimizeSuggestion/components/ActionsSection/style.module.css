@@ -1,0 +1,53 @@
+.actions-section {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.edit-apply-btn {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 36px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--figma-color-gray-9);
+  cursor: pointer;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.edit-apply-btn:hover {
+  color: var(--figma-color-gray-10);
+  border-color: var(--figma-color-gray-6);
+}
+
+.apply-btn {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 36px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--figma-color-white);
+  cursor: pointer;
+  background: var(--figma-color-primary);
+  border: none;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.apply-btn:disabled {
+  color: var(--figma-color-gray-7);
+  cursor: not-allowed;
+  background: var(--figma-color-gray-2);
+}
+
+.apply-btn:hover:not(:disabled) {
+  background: #4096ff;
+}

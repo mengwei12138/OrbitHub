@@ -1,0 +1,253 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 2000">
+  <title>评论AI自动回复 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+  </defs>
+
+  <rect width="1000" height="2000" fill="#fafafa"/>
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">评论AI自动回复 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <rect x="10" y="45" width="160" height="1945" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="90" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <rect x="180" y="45" width="280" height="1945" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="320" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <rect x="470" y="45" width="240" height="1945" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="590" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <rect x="720" y="45" width="270" height="1945" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="855" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">状态管理</text>
+
+  <!-- ========== A. 页面加载 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">A. 页面加载</text>
+
+  <circle cx="90" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="125" text-anchor="middle" font-size="10">CommentReplyPage</text>
+  <line x1="108" y1="120" x2="200" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="165" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="170" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="150" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="170" text-anchor="middle" font-size="10">StatsCard</text>
+  <line x1="260" y1="135" x2="260" y2="150" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="210" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="215" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="490" y="195" width="180" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="580" y="215" text-anchor="middle" font-size="10">GET /api/v1/ai-comment/today-stats</text>
+  <line x1="260" y1="180" x2="490" y2="210" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="255" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="260" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="200" y="240" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="260" text-anchor="middle" font-size="10">AccountSelector</text>
+  <line x1="580" y1="225" x2="320" y2="255" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== B. 账号选择 ========== -->
+  <line x1="10" y1="320" x2="990" y2="320" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="315" font-size="11" fill="#8c8c8c">B. 账号选择</text>
+
+  <circle cx="90" cy="350" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="355" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="335" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="355" text-anchor="middle" font-size="10">点击账号卡片</text>
+  <line x1="108" y1="350" x2="200" y2="350" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="395" r="18" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="90" y="400" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="380" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="260" y="400" text-anchor="middle" font-size="10">切换选中状态</text>
+  <line x1="260" y1="365" x2="260" y2="380" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== C. 自动回复开关 ========== -->
+  <line x1="10" y1="460" x2="990" y2="460" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="455" font-size="11" fill="#8c8c8c">C. 自动回复开关</text>
+
+  <circle cx="90" cy="490" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="495" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="475" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="495" text-anchor="middle" font-size="10">切换开关</text>
+  <line x1="108" y1="490" x2="200" y2="490" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="535" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="540" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="490" y="520" width="180" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="580" y="540" text-anchor="middle" font-size="10">PUT /api/v1/ai-comment/auto-reply-settings</text>
+  <line x1="260" y1="505" x2="490" y2="535" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== D. 编辑回复模板 ========== -->
+  <line x1="10" y1="600" x2="990" y2="600" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="595" font-size="11" fill="#8c8c8c">D. 编辑回复模板</text>
+
+  <circle cx="90" cy="630" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="635" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="615" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="635" text-anchor="middle" font-size="10">点击编辑</text>
+  <line x1="108" y1="630" x2="200" y2="630" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="675" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="680" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="660" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="680" text-anchor="middle" font-size="10">EditRuleModal</text>
+  <line x1="260" y1="645" x2="260" y2="660" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="720" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="725" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="200" y="705" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="725" text-anchor="middle" font-size="10">点击确认</text>
+  <line x1="260" y1="690" x2="260" y2="705" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="765" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="770" text-anchor="middle" font-size="10" fill="white">4</text>
+  <rect x="490" y="750" width="180" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="580" y="770" text-anchor="middle" font-size="10">PUT /api/v1/ai-comment/reply-rules/{id}</text>
+  <line x1="260" y1="735" x2="490" y2="765" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== E. 新增自定义回复规则 ========== -->
+  <line x1="10" y1="830" x2="990" y2="830" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="825" font-size="11" fill="#8c8c8c">E. 新增自定义回复规则</text>
+
+  <circle cx="90" cy="860" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="865" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="845" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="865" text-anchor="middle" font-size="10">点击新增</text>
+  <line x1="108" y1="860" x2="200" y2="860" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="905" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="910" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="890" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="910" text-anchor="middle" font-size="10">AddRuleModal</text>
+  <line x1="260" y1="875" x2="260" y2="890" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="950" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="955" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="490" y="935" width="180" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="580" y="955" text-anchor="middle" font-size="10">POST /api/v1/ai-comment/reply-rules</text>
+  <line x1="260" y1="920" x2="490" y2="950" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== F. 立即抓取 ========== -->
+  <line x1="10" y1="1020" x2="990" y2="1020" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1015" font-size="11" fill="#8c8c8c">F. 立即抓取</text>
+
+  <circle cx="90" cy="1050" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="1055" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="1035" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="1055" text-anchor="middle" font-size="10">点击立即抓取</text>
+  <line x1="108" y1="1050" x2="200" y2="1050" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1095" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="1100" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="490" y="1080" width="160" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="570" y="1100" text-anchor="middle" font-size="10">POST /api/v1/ai-comment/fetch</text>
+  <line x1="260" y1="1065" x2="490" y2="1095" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1140" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="1145" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="200" y="1125" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="1145" text-anchor="middle" font-size="10">启动60秒CD</text>
+  <line x1="570" y1="1110" x2="320" y2="1140" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== G. Tab切换 ========== -->
+  <line x1="10" y1="1210" x2="990" y2="1210" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1205" font-size="11" fill="#8c8c8c">G. Tab切换</text>
+
+  <circle cx="90" cy="1240" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="1245" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="1225" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="1245" text-anchor="middle" font-size="10">切换Tab</text>
+  <line x1="108" y1="1240" x2="200" y2="1240" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1285" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="1290" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="490" y="1270" width="160" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="570" y="1290" text-anchor="middle" font-size="10">GET /api/v1/ai-comment/pending</text>
+  <line x1="260" y1="1255" x2="490" y2="1285" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== H. 手动回复评论 ========== -->
+  <line x1="10" y1="1350" x2="990" y2="1350" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1345" font-size="11" fill="#8c8c8c">H. 手动回复评论</text>
+
+  <circle cx="90" cy="1380" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="1385" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="1365" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="1385" text-anchor="middle" font-size="10">点击手动回复</text>
+  <line x1="108" y1="1380" x2="200" y2="1380" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1425" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="1430" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="1410" width="130" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="265" y="1430" text-anchor="middle" font-size="10">ManualReplyModal</text>
+  <line x1="260" y1="1395" x2="260" y2="1410" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1470" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="1475" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="490" y="1455" width="160" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="570" y="1475" text-anchor="middle" font-size="10">POST /api/v1/ai-comment/manual-reply</text>
+  <line x1="265" y1="1440" x2="490" y2="1470" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== I. 删除评论 ========== -->
+  <line x1="10" y1="1540" x2="990" y2="1540" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1535" font-size="11" fill="#8c8c8c">I. 删除评论</text>
+
+  <circle cx="90" cy="1570" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="1575" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="1555" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="1575" text-anchor="middle" font-size="10">点击删除</text>
+  <line x1="108" y1="1570" x2="200" y2="1570" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1615" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="1620" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="1600" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="1620" text-anchor="middle" font-size="10">ConfirmModal</text>
+  <line x1="260" y1="1585" x2="260" y2="1600" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1660" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="1665" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="490" y="1645" width="140" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="560" y="1665" text-anchor="middle" font-size="10">DELETE /api/v1/ai-comment/{id}</text>
+  <line x1="260" y1="1630" x2="490" y2="1660" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== J. 查看回复记录详情 ========== -->
+  <line x1="10" y1="1730" x2="990" y2="1730" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1725" font-size="11" fill="#8c8c8c">J. 查看回复记录详情</text>
+
+  <circle cx="90" cy="1760" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="1765" text-anchor="middle" font-size="10" fill="white">1</text>
+  <rect x="200" y="1745" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="1765" text-anchor="middle" font-size="10">点击查看详情</text>
+  <line x1="108" y1="1760" x2="200" y2="1760" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1805" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="1810" text-anchor="middle" font-size="10" fill="white">2</text>
+  <rect x="200" y="1790" width="140" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="270" y="1810" text-anchor="middle" font-size="10">HistoryDetailModal</text>
+  <line x1="260" y1="1775" x2="260" y2="1790" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="1850" r="18" fill="#fa8c16" stroke="#d48806" stroke-width="2"/>
+  <text x="90" y="1855" text-anchor="middle" font-size="10" fill="white">3</text>
+  <rect x="490" y="1835" width="160" height="30" rx="5" fill="#ffe58f" stroke="#fa8c16" stroke-width="2"/>
+  <text x="570" y="1855" text-anchor="middle" font-size="10">GET /api/v1/ai-comment/history/{id}</text>
+  <line x1="270" y1="1820" x2="490" y2="1850" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="750" y="1890" width="230" height="80" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="760" y="1908" font-size="10" font-weight="bold">图例</text>
+  <circle cx="775" cy="1928" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="790" y="1931" font-size="9">用户操作</text>
+  <circle cx="775" cy="1953" r="8" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="790" y="1956" font-size="9">前端成功</text>
+  <line x1="820" y1="1928" x2="850" y2="1928" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="860" y="1931" font-size="9">正常流程</text>
+  <line x1="820" y1="1953" x2="850" y2="1953" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="860" y="1956" font-size="9">成功流程</text>
+</svg>

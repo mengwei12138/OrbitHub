@@ -1,0 +1,786 @@
+# 标签库管理 swimlane.yaml
+# 本文件定义了标签库管理页面的交互逻辑
+
+---
+interaction:
+  type: navigation
+  name: 进入标签库页面
+  trigger:
+    component: router
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载标签列表
+      async: true
+      parallel:
+        - name: 调用 GET /api/v1/ai-assistant/tags
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/tags
+        - name: 显示骨架屏
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染标签列表
+      component: TagList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: TagList
+      action:
+        method: setError
+        props:
+          error: '{error.message}'
+
+    - step: 4
+      description: 渲染筛选条件
+      component: FilterArea
+      action:
+        method: render
+
+    - step: 5
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: '{response.total}'
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+---
+interaction:
+  type: list
+  name: 标签列表筛选
+  trigger:
+    component: FilterArea
+    action: onFilter
+
+  mainFlow:
+    - step: 1
+      description: 执行筛选
+      async: true
+      parallel:
+        - name: 调用 GET /api/v1/ai-assistant/tags
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/tags
+            params: '{filters}'
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染筛选结果
+      component: TagList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+      onDone: step_4
+
+    - step: 3
+      description: 筛选失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+    - step: 4
+      description: 更新分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          total: '{response.total}'
+
+  randomEvents:
+    - trigger: 用户点击重置
+      name: 重置筛选条件
+      component: FilterArea
+      action:
+        method: reset
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+---
+interaction:
+  type: list
+  name: 标签列表分页
+  trigger:
+    component: Pagination
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 切换分页
+      async: true
+      parallel:
+        - name: 调用 GET /api/v1/ai-assistant/tags
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/tags
+            params:
+              page: '{pagination.current}'
+              pageSize: '{pagination.pageSize}'
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染新页数据
+      component: TagList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+
+    - step: 3
+      description: 分页加载失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+---
+interaction:
+  type: list
+  name: 标签列表搜索
+  trigger:
+    component: FilterArea
+    action: onSearch
+
+  mainFlow:
+    - step: 1
+      description: 执行搜索
+      async: true
+      parallel:
+        - name: 调用 GET /api/v1/ai-assistant/tags
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/tags
+            params:
+              keyword: '{keyword}'
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染搜索结果
+      component: TagList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+      onDone: step_4
+
+    - step: 3
+      description: 搜索失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+    - step: 4
+      description: 更新分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          total: '{response.total}'
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+---
+interaction:
+  type: modal
+  name: 新建标签弹窗
+  trigger:
+    component: Button
+    action: onClick
+    props:
+      id: create-tag
+
+  mainFlow:
+    - step: 1
+      description: 打开新建标签弹窗
+      component: CreateTagModal
+      action:
+        method: open
+
+    - step: 2
+      description: 用户操作
+      type: interactive
+      waitFor: submit | cancel
+
+    - step: 3
+      description: 关闭弹窗
+      component: CreateTagModal
+      action:
+        method: close
+      onDone: handle_result
+
+  randomEvents:
+    - trigger: 点击遮罩层关闭
+      condition: modal.closable == true
+      name: 关闭弹窗
+      component: CreateTagModal
+      action:
+        method: close
+
+    - trigger: 点击取消按钮
+      name: 关闭弹窗
+      component: CreateTagModal
+      action:
+        method: close
+
+    - trigger: ESC 按键
+      condition: modal.keyboard == true
+      name: 关闭弹窗
+      component: CreateTagModal
+      action:
+        method: close
+
+  states:
+    - name: modal_visible
+      type: boolean
+      default: false
+    - name: tag_form
+      type: object
+      default:
+        name: ''
+        category: ''
+        platform: 'ALL'
+        customCategory: ''
+---
+interaction:
+  type: form
+  name: 新建标签表单
+  trigger:
+    component: CreateTagModal
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: TagForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 提交数据
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/ai-assistant/tags
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/tags
+            request: TagRequest
+        - name: 显示 loading
+          component: Button
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 创建成功
+      parallel:
+        - name: 关闭弹窗
+          component: CreateTagModal
+          action:
+            method: close
+        - name: 刷新列表
+          component: TagList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 创建成功
+
+    - step: 4
+      description: 创建失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 保留表单数据
+
+  randomEvents:
+    - trigger: 选择自定义分类
+      name: 显示自定义输入框
+      component: TagForm
+      action:
+        method: showCustomInput
+        props:
+          visible: true
+
+    - trigger: 选择适用平台
+      name: 更新平台限制提示
+      component: TagForm
+      action:
+        method: updatePlatformLimit
+        props:
+          platform: '{platform}'
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: tag_form
+      type: object
+      default:
+        name: ''
+        category: ''
+        platform: 'ALL'
+        customCategory: ''
+    - name: is_submitting
+      type: boolean
+      default: false
+---
+interaction:
+  type: modal
+  name: 编辑标签弹窗
+  trigger:
+    component: TagList
+    action: onEdit
+    props:
+      record: '{record}'
+
+  mainFlow:
+    - step: 1
+      description: 打开编辑弹窗
+      component: EditTagModal
+      action:
+        method: open
+        props:
+          data: '{record}'
+
+    - step: 2
+      description: 用户操作
+      type: interactive
+      waitFor: submit | cancel
+
+    - step: 3
+      description: 关闭弹窗
+      component: EditTagModal
+      action:
+        method: close
+      onDone: handle_result
+
+  randomEvents:
+    - trigger: 点击遮罩层关闭
+      condition: modal.closable == true
+      name: 关闭弹窗
+      component: EditTagModal
+      action:
+        method: close
+
+    - trigger: 点击取消按钮
+      name: 关闭弹窗
+      component: EditTagModal
+      action:
+        method: close
+
+  states:
+    - name: modal_visible
+      type: boolean
+      default: false
+    - name: edit_data
+      type: object
+      default: null
+---
+interaction:
+  type: form
+  name: 编辑标签表单
+  trigger:
+    component: EditTagModal
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: TagForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 提交更新
+      async: true
+      parallel:
+        - name: 调用 PUT /api/v1/ai-assistant/tags/{tagId}
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/tags/{tagId}
+            request: TagRequest
+        - name: 显示 loading
+          component: Button
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 更新成功
+      parallel:
+        - name: 关闭弹窗
+          component: EditTagModal
+          action:
+            method: close
+        - name: 刷新列表
+          component: TagList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 更新成功
+
+    - step: 4
+      description: 更新失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 保留表单数据
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: is_submitting
+      type: boolean
+      default: false
+---
+interaction:
+  type: state
+  name: 停用标签
+  trigger:
+    component: TagList
+    action: onDisable
+    props:
+      record: '{record}'
+
+  mainFlow:
+    - step: 1
+      description: 确认停用
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认停用
+          content: 停用后该标签将不在发布页推荐
+          okText: 确认停用
+          cancelText: 取消
+
+    - step: 2
+      description: 执行停用
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/ai-assistant/tags/{tagId}/disable
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/tags/{tagId}/disable
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 停用成功
+      parallel:
+        - name: 刷新列表
+          component: TagList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 停用成功
+
+    - step: 4
+      description: 停用失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 回滚状态
+          component: TagList
+          action:
+            method: rollback
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: current_status
+      type: string
+      default: 'ENABLED'
+---
+interaction:
+  type: state
+  name: 启用标签
+  trigger:
+    component: TagList
+    action: onEnable
+    props:
+      record: '{record}'
+
+  mainFlow:
+    - step: 1
+      description: 执行启用
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/ai-assistant/tags/{tagId}/enable
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/tags/{tagId}/enable
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 启用成功
+      parallel:
+        - name: 刷新列表
+          component: TagList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 启用成功
+
+    - step: 3
+      description: 启用失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: '{error.message}'
+        - name: 回滚状态
+          component: TagList
+          action:
+            method: rollback
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: current_status
+      type: string
+      default: 'DISABLED'
+---
+interaction:
+  type: navigation
+  name: 返回AI助手主页
+  trigger:
+    component: Button
+    action: onClick
+    props:
+      id: back
+
+  mainFlow:
+    - step: 1
+      description: 返回主页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+---
+interaction:
+  type: async
+  name: 网络错误重试
+  trigger:
+    component: ErrorFallback
+    action: onRetry
+
+  mainFlow:
+    - step: 1
+      description: 执行重试
+      async: true
+      parallel:
+        - name: 调用 GET /api/v1/ai-assistant/tags
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/tags
+        - name: 显示 loading
+          component: TagList
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 重试成功
+      component: TagList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+
+    - step: 3
+      description: 重试失败
+      component: ErrorFallback
+      action:
+        method: showError
+        props:
+          error: '{error.message}'
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: error
+      type: object
+      default: null
+    - name: loading
+      type: boolean
+      default: false

@@ -1,0 +1,17 @@
+.badge {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  font-size: var(--figma-font-size-tag);
+  font-weight: var(--figma-font-weight-tag);
+  white-space: nowrap;
+  border-radius: var(--figma-radius-pill);
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}

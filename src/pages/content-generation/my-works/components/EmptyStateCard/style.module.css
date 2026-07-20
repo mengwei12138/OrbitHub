@@ -1,0 +1,50 @@
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px -1px rgb(0 0 0 / 6%);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 0;
+}
+
+.illustration-bg {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 28px;
+  background: #f2f7ff;
+  border-radius: 50%;
+}
+
+.empty-title {
+  margin-bottom: 10px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #595959;
+}
+
+.empty-description {
+  margin-bottom: 20px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}
+
+.go-button {
+  height: 40px;
+  padding: 0 20px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  background: #1677ff;
+  border-color: #1677ff;
+  border-radius: 4px;
+}

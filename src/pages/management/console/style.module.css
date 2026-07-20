@@ -1,0 +1,23 @@
+.container {
+  padding: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.section {
+  padding: 20px 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1f1f1f;
+}

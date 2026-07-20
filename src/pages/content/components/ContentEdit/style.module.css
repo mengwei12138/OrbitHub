@@ -1,0 +1,227 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-right: var(--figma-spacing-lg);
+  padding-left: var(--figma-spacing-lg);
+  background: var(--figma-color-white);
+  border-radius: var(--figma-radius-lg);
+}
+
+.header {
+  margin-bottom: var(--figma-spacing-md);
+}
+
+.title {
+  font-size: var(--figma-font-size-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--figma-color-gray-11);
+}
+
+.templates-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--figma-spacing-xs);
+  padding: var(--figma-spacing-lg);
+  background: var(--figma-color-gray-2);
+  border-radius: var(--figma-radius-md);
+}
+
+.templates-wrapper {
+  display: flex;
+  gap: var(--figma-spacing-md);
+  align-items: center;
+}
+
+.template-label {
+  flex-shrink: 0;
+  font-size: var(--figma-font-size-small);
+  line-height: 1.2;
+  color: var(--figma-color-gray-8);
+}
+
+.filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--figma-spacing-sm);
+}
+
+.filter-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  padding: var(--figma-spacing-xs) 12px;
+  font-size: var(--figma-font-size-small);
+  color: var(--figma-color-gray-9);
+  cursor: pointer;
+  user-select: none;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-gray-6);
+  border-radius: var(--figma-radius-pill);
+  transition: all 0.2s ease;
+}
+
+.filter-tag:hover {
+  color: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}
+
+.filter-tag-active {
+  color: var(--figma-color-white);
+  background: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}
+
+.filter-tag-active:hover {
+  color: var(--figma-color-white);
+  background: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}
+
+.template-hint {
+  font-size: var(--figma-font-size-auxiliary);
+  line-height: 1.2;
+  color: var(--figma-color-gray-8);
+  opacity: 0.65;
+}
+
+.ai-input-box {
+  display: flex;
+  flex-direction: column;
+  gap: var(--figma-spacing-xs);
+  padding: var(--figma-spacing-md);
+  margin-top: var(--figma-spacing-md);
+  background: var(--figma-color-gray-1);
+  border: 1px solid var(--figma-color-gray-5);
+  border-radius: var(--figma-radius-md);
+}
+
+.title-counter {
+  display: flex;
+  gap: var(--figma-spacing-xs);
+  align-items: center;
+  margin-top: var(--figma-spacing-xs);
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-color-gray-8);
+}
+
+.title-counter-item[data-overlimit="true"] {
+  color: var(--figma-color-danger, #ff4d4f);
+}
+
+.title-counter-sep {
+  color: var(--figma-color-gray-6);
+}
+
+.input-label {
+  font-size: var(--figma-font-size-small);
+  line-height: 1.2;
+  color: var(--figma-color-gray-8);
+}
+
+.text-area {
+  padding: 0;
+  font-size: var(--figma-font-size-body);
+  resize: none;
+  background: transparent;
+  border: none;
+}
+
+.text-area::placeholder {
+  color: var(--figma-color-gray-7);
+}
+
+.text-area:focus {
+  box-shadow: none;
+}
+
+.prompt-detail {
+  display: flex;
+  flex-direction: column;
+  padding: var(--figma-spacing-md);
+  margin-top: var(--figma-spacing-md);
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-gray-5);
+  border-radius: var(--figma-radius-lg);
+}
+
+.prompt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--figma-spacing-sm);
+}
+
+.prompt-title {
+  font-size: var(--figma-font-size-heading);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--figma-color-gray-11);
+}
+
+.collapse-btn {
+  display: flex;
+  gap: var(--figma-spacing-xs);
+  align-items: center;
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-color-gray-8);
+  cursor: pointer;
+  user-select: none;
+}
+
+.collapse-icon {
+  font-size: 10px;
+}
+
+.prompt-content {
+  padding: var(--figma-spacing-sm) 0;
+  margin-top: var(--figma-spacing-xs);
+  border-top: 1px solid var(--figma-color-gray-4);
+}
+
+.prompt-text {
+  font-size: var(--figma-font-size-small);
+  line-height: 1.7;
+  color: var(--figma-color-gray-9);
+  white-space: pre-wrap;
+}
+
+.prompt-placeholder {
+  font-size: var(--figma-font-size-small);
+  line-height: 1.7;
+  color: var(--figma-color-gray-7);
+}
+
+.prompt-actions {
+  display: flex;
+  gap: var(--figma-spacing-sm);
+  justify-content: flex-end;
+  padding-top: var(--figma-spacing-md);
+  margin-top: var(--figma-spacing-md);
+  border-top: 1px solid var(--figma-color-gray-4);
+}
+
+.reset-btn {
+  width: 80px;
+  height: 32px;
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-color-gray-9);
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-gray-6);
+  border-radius: var(--figma-radius-sm);
+}
+
+.reset-btn:hover {
+  color: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}
+
+.generate-btn {
+  width: 110px;
+  height: 32px;
+  font-size: var(--figma-font-size-body);
+  font-weight: 500;
+  border-radius: var(--figma-radius-sm);
+}

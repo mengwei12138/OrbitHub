@@ -1,0 +1,173 @@
+.modal {
+  --all-failed-bg: #ffebeb;
+  --all-failed: #f24236;
+  --all-failed-light: #fff7f7;
+  --all-failed-border: #fae5e5;
+
+  :global(.ant-modal-content) {
+    padding: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px 0 rgb(0 0 0 / 12%);
+  }
+
+  :global(.ant-modal-body) {
+    padding: 0;
+  }
+}
+
+.error-icon-bg {
+  display: flex;
+  justify-content: center;
+  padding: 28px 0 12px;
+}
+
+.error-icon-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  background: var(--all-failed-bg);
+  border-radius: 50%;
+}
+
+.error-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: var(--all-failed);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.x-mark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+}
+
+.title {
+  padding-bottom: 8px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--all-failed);
+  text-align: center;
+}
+
+.subtitle {
+  padding-bottom: 16px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--all-failed);
+  text-align: center;
+}
+
+.divider {
+  height: 1px;
+  margin: 0 24px;
+  background: var(--figma-color-gray-5);
+}
+
+.fail-list {
+  max-height: 150px;
+  padding: 12px 16px;
+  margin: 16px 24px;
+  overflow-y: auto;
+  background: var(--all-failed-light);
+  border: 1px solid var(--all-failed-border);
+  border-radius: 8px;
+}
+
+.fail-item {
+  padding: 6px 0;
+}
+
+.fail-item:not(:last-child) {
+  border-bottom: 1px solid var(--all-failed-border);
+}
+
+.fail-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 8px;
+  vertical-align: middle;
+  background: var(--all-failed);
+  border-radius: 50%;
+}
+
+.fail-account-name {
+  display: block;
+  margin-left: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--figma-color-text-heading);
+}
+
+.fail-reason {
+  display: block;
+  margin-top: 2px;
+  margin-left: 14px;
+  font-size: 12px;
+  color: var(--figma-color-text-secondary);
+}
+
+.footer-divider {
+  height: 1px;
+  background: var(--figma-color-gray-5);
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px;
+}
+
+.secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--figma-color-text-secondary);
+  cursor: pointer;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-border);
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    color: var(--figma-color-primary);
+    border-color: var(--figma-color-primary);
+  }
+}
+
+.primary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--figma-color-white);
+  cursor: pointer;
+  background: var(--figma-color-primary);
+  border: none;
+  border-radius: 4px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--figma-color-primary-hover);
+  }
+}

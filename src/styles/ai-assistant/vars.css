@@ -1,0 +1,95 @@
+/**
+ * AI助手模块设计变量
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 1925-4171 (AI助手-UI设计稿)
+ */
+
+:root {
+  /* ===== 功能卡片主色 ===== */
+
+  /* fill_M4N077: 内容优化主色 */
+  --figma-ai-assistant-color-content-opt: #2e79ff;
+
+  /* fill_Q8QOZW: 评论回复主色 */
+  --figma-ai-assistant-color-comment-reply: #f59e0b;
+
+  /* fill_2U6MJV: 私信回复主色 */
+  --figma-ai-assistant-color-message-reply: #2ead5e;
+
+  /* fill_W4ZP4D: 标签库主色 */
+  --figma-ai-assistant-color-tag-lib: #7c51d8;
+
+  /* ===== 功能卡片渐变背景 ===== */
+
+  /* fill_ZDOW49: 内容优化卡片背景 */
+  --figma-ai-assistant-bg-content-opt: linear-gradient(
+    135deg,
+    rgb(236 243 255 / 100%) 0%,
+    rgb(219 234 255 / 100%) 100%
+  );
+
+  /* fill_MSC454: 评论回复卡片背景 */
+  --figma-ai-assistant-bg-comment-reply: linear-gradient(
+    135deg,
+    rgb(255 247 229 / 100%) 0%,
+    rgb(255 237 201 / 100%) 100%
+  );
+
+  /* fill_1X3E4X: 私信回复卡片背景 */
+  --figma-ai-assistant-bg-message-reply: linear-gradient(
+    135deg,
+    rgb(235 247 238 / 100%) 0%,
+    rgb(211 236 219 / 100%) 100%
+  );
+
+  /* fill_5JSSL5: 标签库卡片背景 */
+  --figma-ai-assistant-bg-tag-lib: linear-gradient(
+    135deg,
+    rgb(244 240 251 / 100%) 0%,
+    rgb(231 223 246 / 100%) 100%
+  );
+
+  /* ===== 功能卡片图标阴影 ===== */
+
+  /* effect_NUSMFX: 内容优化图标阴影 */
+  --figma-ai-assistant-shadow-content-opt: 0px 6px 12px 0px
+    rgb(46 121 255 / 25%);
+
+  /* effect_PH1OGG: 评论回复图标阴影 */
+  --figma-ai-assistant-shadow-comment-reply: 0px 6px 12px 0px
+    rgb(245 158 11 / 25%);
+
+  /* effect_OZ9QC2: 私信回复图标阴影 */
+  --figma-ai-assistant-shadow-message-reply: 0px 6px 12px 0px
+    rgb(46 173 94 / 25%);
+
+  /* effect_XABISP: 标签库图标阴影 */
+  --figma-ai-assistant-shadow-tag-lib: 0px 6px 12px 0px rgb(124 81 216 / 25%);
+
+  /* ===== 功能卡片徽章背景 ===== */
+
+  /* fill_DPKZ75: 内容优化徽章背景 */
+  --figma-ai-assistant-badge-bg-content-opt: rgb(46 121 255 / 12%);
+
+  /* fill_M8S066: 评论回复徽章背景 */
+  --figma-ai-assistant-badge-bg-comment-reply: rgb(245 158 11 / 12%);
+
+  /* fill_1HFQBK: 私信回复徽章背景 */
+  --figma-ai-assistant-badge-bg-message-reply: rgb(46 173 94 / 12%);
+
+  /* fill_PNM4UH: 标签库徽章背景 */
+  --figma-ai-assistant-badge-bg-tag-lib: rgb(124 81 216 / 12%);
+
+  /* ===== 圆角 ===== */
+
+  /* 按钮、输入框、下拉选择器、标签 */
+  --figma-ai-assistant-border-radius-sm: var(--figma-radius-sm);
+
+  /* Logo 图标、信息条 */
+  --figma-ai-assistant-border-radius-md: var(--figma-radius-md);
+
+  /* 卡片、弹窗、二维码框 */
+  --figma-ai-assistant-border-radius-lg: var(--figma-radius-lg);
+}

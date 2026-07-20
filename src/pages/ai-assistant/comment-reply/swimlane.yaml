@@ -1,0 +1,1574 @@
+# 评论AI自动回复 - 交互逻辑定义
+# 基于需求验收 + OpenAPI（见 AGENTS.md 索引的 contract/openapi/assistant/assistant-api.yaml）对齐
+# 交互类型：list, selection, form, state, async, confirm, modal
+
+# =============================================
+# 1. 页面加载
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 页面加载
+  trigger:
+    component: CommentReplyPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 显示骨架屏
+      parallel:
+        - name: 显示页面骨架屏
+          component: CommentReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 显示数据看板骨架
+          component: StatsCard
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 显示账号选择骨架
+          component: AccountSelector
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载今日数据
+      async: true
+      parallel:
+        - name: 获取今日统计数据
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/comment-reply/dashboard/today
+        - name: 获取账号列表
+          api:
+            method: GET
+            url: /api/v1/ai-assistant/comment-reply/accounts
+            params:
+              status: online
+              page: 1
+              pageSize: 5
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染页面数据
+      parallel:
+        - name: 渲染数据看板
+          component: StatsCard
+          action:
+            method: setData
+            props:
+              autoReply: { response.stats.autoReply }
+              blocked: { response.stats.blocked }
+              pendingHuman: { response.stats.pendingHuman }
+        - name: 渲染账号列表
+          component: AccountSelector
+          action:
+            method: setData
+            props:
+              dataSource: { response.accounts }
+        - name: 关闭骨架屏
+          component: CommentReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      parallel:
+        - name: 显示错误
+          component: CommentReplyPage
+          action:
+            method: setError
+            props:
+              error: { error.message }
+        - name: 关闭骨架屏
+          component: CommentReplyPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+  states:
+    - name: loading
+      type: boolean
+      default: true
+    - name: stats
+      type: object
+      default:
+        autoReply: 0
+        blocked: 0
+        pendingHuman: 0
+
+
+# =============================================
+# 2. 今日数据看板展示
+# =============================================
+---
+interaction:
+  type: list
+  name: 今日数据看板展示
+  trigger:
+    component: StatsCard
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 渲染统计数据
+      component: StatsCard
+      action:
+        method: setData
+        props:
+          autoReply: { response.autoReply }
+          blocked: { response.blocked }
+          pendingHuman: { response.pendingHuman }
+
+  states:
+    - name: stats_data
+      type: object
+      default:
+        autoReply: 0
+        blocked: 0
+        pendingHuman: 0
+
+
+# =============================================
+# 3. 点击待人工处理数字切换Tab
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 点击待人工处理数字切换Tab
+  trigger:
+    component: StatsPendingHumanLink
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击待人工处理数字
+      component: StatsPendingHumanLink
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 切换到待人工处理Tab
+      component: CommentTabs
+      action:
+        method: setActiveKey
+        props:
+          key: pending
+
+  states:
+    - name: active_tab
+      type: string
+      default: pending_comments
+
+
+# =============================================
+# 4. 账号选择
+# =============================================
+---
+interaction:
+  type: selection
+  name: 账号选择
+  trigger:
+    component: AccountCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击账号卡片
+      component: AccountCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 切换选中状态
+      component: AccountCard
+      action:
+        method: toggleSelection
+        props:
+          accountId: { account.id }
+      onDone: step_3
+
+    - step: 3
+      description: 更新选中列表
+      component: AccountSelector
+      action:
+        method: updateSelectedAccounts
+
+  randomEvents:
+    - trigger: 全选当前页
+      name: 全选当前页账号
+      component: SelectAllButton
+      action: onClick
+
+    - trigger: 按平台筛选
+      name: 按平台筛选账号
+      component: PlatformFilter
+      action: onClick
+      props:
+        platform: { platform }
+
+  states:
+    - name: selected_account_ids
+      type: array
+      default: []
+    - name: online_accounts
+      type: array
+      default: []
+
+
+# =============================================
+# 5. 账号搜索
+# =============================================
+---
+interaction:
+  type: list
+  name: 账号搜索
+  trigger:
+    component: AccountSearchInput
+    action: onSearch
+
+  mainFlow:
+    - step: 1
+      description: 获取搜索关键词
+      component: AccountSearchInput
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 调用搜索接口
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/accounts
+        params:
+          keyword: { keyword }
+          status: online
+          page: 1
+          pageSize: 5
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染搜索结果
+      component: AccountSelector
+      action:
+        method: setData
+        props:
+          dataSource: { response.accounts }
+
+    - step: 4
+      description: 搜索失败
+      component: AccountSearchInput
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+
+# =============================================
+# 6. 账号列表分页
+# =============================================
+---
+interaction:
+  type: list
+  name: 账号列表分页
+  trigger:
+    component: AccountPagination
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取分页参数
+      component: AccountPagination
+      action:
+        method: getPagination
+      onDone: step_2
+
+    - step: 2
+      description: 加载对应页数据
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/accounts
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+          status: online
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染账号列表
+      component: AccountSelector
+      action:
+        method: setData
+        props:
+          dataSource: { response.accounts }
+          pagination: { response.pagination }
+
+    - step: 4
+      description: 分页失败
+      component: AccountSelector
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+
+# =============================================
+# 7. 自动回复开关
+# =============================================
+---
+interaction:
+  type: state
+  name: 自动回复开关
+  trigger:
+    component: AutoReplySwitch
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取开关状态
+      component: AutoReplySwitch
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 保存自动回复设置（按账号粒度）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/comment-reply/account-settings/{accountId}
+        request:
+          autoReplyEnabled: { enabled }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 自动回复设置已保存
+
+    - step: 4
+      description: 保存失败
+      parallel:
+        - name: 回滚开关状态
+          component: AutoReplySwitch
+          action:
+            method: setValue
+            props:
+              value: { previousValue }
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+
+  states:
+    - name: auto_reply_enabled
+      type: boolean
+      default: true
+
+
+# =============================================
+# 8. 回复规则设置
+# =============================================
+---
+interaction:
+  type: list
+  name: 回复规则设置
+  trigger:
+    component: ReplyRulesList
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载回复规则
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/rules
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染4种类型规则
+      parallel:
+        - name: 渲染正向规则
+          component: ReplyRuleItem
+          action:
+            method: render
+            props:
+              type: positive
+              template: { response.rules.positive.template }
+        - name: 渲染负向规则
+          component: ReplyRuleItem
+          action:
+            method: render
+            props:
+              type: negative
+              template: { response.rules.negative.template }
+        - name: 渲染中性规则
+          component: ReplyRuleItem
+          action:
+            method: render
+            props:
+              type: neutral
+              template: { response.rules.neutral.template }
+        - name: 渲染提问规则
+          component: ReplyRuleItem
+          action:
+            method: render
+            props:
+              type: question
+              template: { response.rules.question.template }
+
+    - step: 3
+      description: 加载失败
+      component: ReplyRulesList
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  states:
+    - name: reply_rules
+      type: object
+      default: {}
+
+
+# =============================================
+# 9. 编辑回复模板
+# =============================================
+---
+interaction:
+  type: modal
+  name: 编辑回复模板
+  trigger:
+    component: EditRuleButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示编辑弹窗
+      component: EditRuleModal
+      action:
+        method: open
+        props:
+          type: { rule.type }
+          template: { rule.template }
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户编辑确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认（批量 upsert 全量规则）
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用批量更新接口
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/comment-reply/rules
+            request:
+              rules: { form.rulesUpserted }
+        - name: 关闭弹窗
+          component: EditRuleModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: EditRuleModal
+      action:
+        method: close
+
+    - step: 4
+      description: 更新成功
+      parallel:
+        - name: 刷新规则列表
+          component: ReplyRulesList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 模板更新成功
+
+    - step: 5
+      description: 更新失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 10. 新增自定义回复规则
+# =============================================
+---
+interaction:
+  type: modal
+  name: 新增自定义回复规则
+  trigger:
+    component: AddRuleButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示新增弹窗
+      component: AddRuleModal
+      action:
+        method: open
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户填写
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认（批量 upsert，含新增项）
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用批量更新接口
+          api:
+            method: PUT
+            url: /api/v1/ai-assistant/comment-reply/rules
+            request:
+              rules: { form.rulesWithNew }
+        - name: 关闭弹窗
+          component: AddRuleModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: AddRuleModal
+      action:
+        method: close
+
+    - step: 4
+      description: 创建成功
+      parallel:
+        - name: 刷新规则列表
+          component: ReplyRulesList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 规则创建成功
+
+    - step: 5
+      description: 创建失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 11. 删除自定义回复规则
+# =============================================
+---
+interaction:
+  type: confirm
+  name: 删除自定义回复规则
+  trigger:
+    component: DeleteRuleButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 获取要删除的规则
+      component: ReplyRulesList
+      action:
+        method: getRule
+        props:
+          ruleId: { rule.id }
+      onDone: step_2
+
+    - step: 2
+      description: 调用批量更新接口（排除要删除的规则）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/comment-reply/rules
+        request:
+          rules: { rules.filter(r => r.id !== rule.id) }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 删除成功
+      parallel:
+        - name: 刷新规则列表
+          component: ReplyRulesList
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 规则删除成功
+
+    - step: 4
+      description: 删除失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 12. 回复规则内部滚动
+# =============================================
+---
+interaction:
+  type: state
+  name: 回复规则内部滚动
+  trigger:
+    component: ReplyRulesList
+    action: onOverflow
+
+  mainFlow:
+    - step: 1
+      description: 检查规则数量
+      component: ReplyRulesList
+      action:
+        method: getItemCount
+      onDone: step_2
+
+    - step: 2
+      description: 超过6条启用滚动
+      condition: itemCount > 6
+      component: ReplyRulesList
+      action:
+        method: enableScroll
+        props:
+          maxHeight: 300
+          overflowY: auto
+
+  states:
+    - name: rule_count
+      type: number
+      default: 0
+    - name: is_scrollable
+      type: boolean
+      default: false
+
+
+# =============================================
+# 13. 设置回复语气
+# =============================================
+---
+interaction:
+  type: state
+  name: 设置回复语气
+  trigger:
+    component: ToneSelector
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取选择的语气
+      component: ToneSelector
+      action:
+        method: getValue
+      onDone: step_2
+
+    - step: 2
+      description: 保存语气设置（合并到回复规则 tone 字段）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/comment-reply/rules
+        request:
+          rules: { rulesWithTone }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 语气设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: reply_tone
+      type: string
+      default: friendly
+
+
+# =============================================
+# 14. 人工干预设置
+# =============================================
+---
+interaction:
+  type: state
+  name: 人工干预设置
+  trigger:
+    component: HumanInterventionSwitch
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取干预设置
+      component: HumanInterventionSettings
+      action:
+        method: getValues
+      onDone: step_2
+
+    - step: 2
+      description: 保存设置（按账号粒度）
+      async: true
+      api:
+        method: PUT
+        url: /api/v1/ai-assistant/comment-reply/account-settings/{accountId}
+        request:
+          humanInterventionForQuestion: { values.questionRequireReview }
+          humanInterventionForNegative: { values.negativeRequireReview }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 人工干预设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: human_intervention_settings
+      type: object
+      default:
+        questionRequireReview: true
+        negativeRequireReview: true
+
+
+# =============================================
+# 15. 关键词屏蔽设置
+# =============================================
+---
+interaction:
+  type: state
+  name: 关键词屏蔽设置
+  trigger:
+    component: BlockKeywordsInput
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取屏蔽词列表
+      component: BlockKeywordsInput
+      action:
+        method: getKeywords
+      onDone: step_2
+
+    - step: 2
+      description: 保存屏蔽词设置（新增→POST，删除→DELETE，按变更项分别调用）
+      async: true
+      parallel:
+        - name: 新增屏蔽词
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/comment-reply/blocked-keywords
+            request:
+              keyword: { addedKeyword }
+              autoDelete: { autoDelete }
+        - name: 删除屏蔽词
+          api:
+            method: DELETE
+            url: /api/v1/ai-assistant/comment-reply/blocked-keywords/{keywordId}
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 保存成功
+      component: Message
+      action:
+        method: success
+        props:
+          content: 屏蔽词设置已保存
+
+    - step: 4
+      description: 保存失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+  states:
+    - name: block_keywords
+      type: array
+      default: []
+    - name: auto_delete_enabled
+      type: boolean
+      default: false
+
+
+# =============================================
+# 16. 立即抓取
+# =============================================
+---
+interaction:
+  type: async
+  name: 立即抓取
+  trigger:
+    component: FetchButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 检查CD状态
+      component: FetchButton
+      action:
+        method: getCooldown
+      onDone: step_2
+
+    - step: 2a
+      description: CD中
+      condition: cooldown > 0
+      component: FetchButton
+      action:
+        method: showCooldown
+        props:
+          remaining: { cooldown }
+
+    - step: 2b
+      description: CD完成，执行抓取（每个账号一次 POST）
+      condition: cooldown == 0
+      async: true
+      parallel:
+        - name: 调用抓取接口
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/comment-reply/scrape
+            request:
+              accountId: { selectedAccountId }
+        - name: 启动60秒CD
+          component: FetchButton
+          action:
+            method: startCooldown
+            props:
+              duration: 60
+        - name: 显示Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 抓取成功
+      parallel:
+        - name: 关闭Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 抓取成功，获取{count}条新评论
+        - name: 刷新列表
+          component: CommentTable
+          action:
+            method: reload
+
+    - step: 4
+      description: 抓取失败
+      parallel:
+        - name: 关闭Loading
+          component: FetchButton
+          action:
+            method: setLoading
+            props:
+              loading: false
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+
+  states:
+    - name: cooldown_remaining
+      type: number
+      default: 0
+    - name: is_fetching
+      type: boolean
+      default: false
+
+
+# =============================================
+# 17. AI分类评论（仅在「待人工处理」流中由用户触发再分类，前端不直接调用通用 classify）
+# =============================================
+---
+interaction:
+  type: async
+  name: 人工审核-再分类
+  trigger:
+    component: HumanReviewClassifyButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 调用人工审核再分类接口
+      async: true
+      api:
+        method: POST
+        url: /api/v1/ai-assistant/comment-reply/human-review/{commentId}/classify
+        request:
+          commentId: { comment.id }
+          category: { selectedCategory }
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 更新评论分类
+      component: PendingHumanItem
+      action:
+        method: setClassifyResult
+        props:
+          type: { response.category }
+          confidence: { response.confidence }
+
+    - step: 3
+      description: 分类失败
+      component: PendingHumanItem
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  randomEvents:
+    - trigger: 置信度低于70%
+      condition: response.confidence < 70
+      name: 保留在待人工处理
+      component: PendingHumanItem
+      action:
+        method: keepPending
+        props:
+          reason: confidence_low
+
+  states:
+    - name: classify_result
+      type: object
+      default: null
+
+
+# =============================================
+# 18. Tab切换
+# =============================================
+---
+interaction:
+  type: state
+  name: Tab切换
+  trigger:
+    component: CommentTabs
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 切换Tab
+      component: CommentTabs
+      action:
+        method: setActiveKey
+        props:
+          key: { activeKey }
+      onDone: step_2
+
+    - step: 2
+      description: 加载对应列表数据
+      async: true
+      component: { ListComponent }
+      action:
+        method: reload
+      params:
+        tab: { activeKey }
+
+  states:
+    - name: active_tab
+      type: string
+      default: pending_comments
+
+
+# =============================================
+# 19. 待回复评论列表
+# =============================================
+---
+interaction:
+  type: list
+  name: 待回复评论列表
+  trigger:
+    component: PendingCommentsList
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: PendingCommentsList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载待回复评论
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/pending
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染评论列表
+      parallel:
+        - name: 渲染数据
+          component: PendingCommentsList
+          action:
+            method: setData
+            props:
+              dataSource: { response.list }
+              total: { response.total }
+        - name: 关闭Loading
+          component: PendingCommentsList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      parallel:
+        - name: 显示错误
+          component: PendingCommentsList
+          action:
+            method: setError
+            props:
+              error: { error.message }
+        - name: 关闭Loading
+          component: PendingCommentsList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+  randomEvents:
+    - trigger: 无数据
+      condition: response.list.length == 0
+      name: 显示空状态
+      component: Empty
+      action:
+        method: show
+        props:
+          description: 暂无待回复评论
+
+  states:
+    - name: pending_comments
+      type: array
+      default: []
+
+
+# =============================================
+# 20. 手动回复评论
+# =============================================
+---
+interaction:
+  type: modal
+  name: 手动回复评论
+  trigger:
+    component: ManualReplyButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示手动回复弹窗
+      component: ManualReplyModal
+      action:
+        method: open
+        props:
+          comment: { comment }
+          suggestedReply: { comment.suggestedReply }
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户编辑确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用手动回复接口
+          api:
+            method: POST
+            url: /api/v1/ai-assistant/comment-reply/{commentId}/reply
+            request:
+              commentId: { comment.id }
+              content: { replyContent }
+        - name: 关闭弹窗
+          component: ManualReplyModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: ManualReplyModal
+      action:
+        method: close
+
+    - step: 4
+      description: 回复成功
+      parallel:
+        - name: 刷新列表
+          component: CommentTable
+          action:
+            method: reload
+        - name: 更新统计数据
+          component: StatsCard
+          action:
+            method: refresh
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 回复成功
+
+    - step: 5
+      description: 回复失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 21. 删除评论
+# =============================================
+---
+interaction:
+  type: confirm
+  name: 删除评论
+  trigger:
+    component: DeleteCommentButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示二次确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认删除
+          content: 确定删除该评论吗？删除后不可恢复
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+      onDone: step_2
+
+    - step: 2
+      description: 等待用户确认
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认删除
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用删除接口
+          api:
+            method: DELETE
+            url: /api/v1/ai-assistant/comment-reply/{commentId}
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 删除成功
+      parallel:
+        - name: 刷新列表
+          component: CommentTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 删除成功
+
+    - step: 5
+      description: 删除失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+
+# =============================================
+# 22. 待人工处理列表
+# =============================================
+---
+interaction:
+  type: list
+  name: 待人工处理列表
+  trigger:
+    component: PendingHumanList
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: PendingHumanList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载待人工处理列表
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/human-review
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染列表
+      parallel:
+        - name: 渲染数据
+          component: PendingHumanList
+          action:
+            method: setData
+            props:
+              dataSource: { response.list }
+              total: { response.total }
+        - name: 关闭Loading
+          component: PendingHumanList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      component: PendingHumanList
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+  randomEvents:
+    - trigger: 选择分类
+      name: 用户选择分类
+      component: PendingHumanItem
+      action: onSelectType
+      props:
+        type: { selectedType }
+
+    - trigger: 确认回复
+      name: 确认人工回复
+      component: ConfirmReplyButton
+      action: onClick
+
+    - trigger: 跳过
+      name: 跳过该评论
+      component: SkipButton
+      action: onClick
+
+  states:
+    - name: pending_human_comments
+      type: array
+      default: []
+
+
+# =============================================
+# 23. 回复记录列表
+# =============================================
+---
+interaction:
+  type: list
+  name: 回复记录列表
+  trigger:
+    component: ReplyHistoryList
+    action: onLoad
+
+  mainFlow:
+    - step: 1
+      description: 显示Loading
+      component: ReplyHistoryList
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_2
+
+    - step: 2
+      description: 加载回复记录
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/comment-reply/history
+        params:
+          page: { pagination.current }
+          pageSize: { pagination.pageSize }
+          accountId: { filters.accountId }
+          replyType: { filters.replyType }
+          status: { filters.status }
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染回复记录
+      parallel:
+        - name: 渲染数据
+          component: ReplyHistoryList
+          action:
+            method: setData
+            props:
+              dataSource: { response.list }
+              total: { response.total }
+        - name: 关闭Loading
+          component: ReplyHistoryList
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      component: ReplyHistoryList
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+
+# =============================================
+# 24. 回复记录筛选
+# =============================================
+---
+interaction:
+  type: list
+  name: 回复记录筛选
+  trigger:
+    component: HistoryFilters
+    action: onChange
+
+  mainFlow:
+    - step: 1
+      description: 获取筛选条件
+      component: HistoryFilters
+      action:
+        method: getValues
+      onDone: step_2
+
+    - step: 2
+      description: 重新加载列表
+      component: ReplyHistoryList
+      action:
+        method: reload
+        props:
+          filters: { filterValues }
+
+
+# =============================================
+# 25. 查看回复记录详情
+# =============================================
+---
+interaction:
+  type: modal
+  name: 查看回复记录详情
+  trigger:
+    component: ViewDetailButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 显示详情弹窗
+      component: HistoryDetailModal
+      action:
+        method: open
+        props:
+          record: { record }
+      onDone: step_2
+
+    - step: 2
+      description: 渲染本地详情数据（契约未提供独立详情查询，使用列表项数据）
+      component: HistoryDetailModal
+      action:
+        method: setData
+        props:
+          comment: { record.comment }
+          reply: { record.reply }
+          status: { record.status }
+      onDone: step_3
+
+    - step: 3
+      description: 完成详情展示
+      component: HistoryDetailModal
+      action:
+        method: ready
+
+  randomEvents:
+    - trigger: 关闭弹窗
+      name: 关闭详情弹窗
+      component: HistoryDetailModal
+      action: onClose
+
+  states:
+    - name: current_record
+      type: object
+      default: null
+
+
+# =============================================
+# 26. 账号离线显示警告
+# =============================================
+---
+interaction:
+  type: state
+  name: 账号离线显示警告
+  trigger:
+    component: AccountStatusMonitor
+    action: onStatusChange
+
+  mainFlow:
+    - step: 1
+      description: 检查账号状态
+      component: AccountStatusMonitor
+      action:
+        method: checkAccountStatus
+      onDone: step_2
+
+    - step: 2a
+      description: 有账号离线
+      condition: hasOfflineAccounts == true
+      parallel:
+        - name: 显示警告图标
+          component: AutoReplySwitch
+          action:
+            method: showWarning
+        - name: 悬停显示离线账号列表
+          component: OfflineAccountsTooltip
+          action:
+            method: setContent
+            props:
+              accounts: { offlineAccounts }
+
+    - step: 2b
+      description: 所有账号在线
+      condition: hasOfflineAccounts == false
+      component: AutoReplySwitch
+      action:
+        method: hideWarning
+
+  states:
+    - name: offline_accounts
+      type: array
+      default: []
+    - name: has_offline
+      type: boolean
+      default: false

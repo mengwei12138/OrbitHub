@@ -1,0 +1,152 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 45%);
+}
+
+.content {
+  width: 720px;
+  max-width: 90vw;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow:
+    0 6px 16px 0 rgb(0 0 0 / 8%),
+    0 3px 6px -4px rgb(0 0 0 / 10%);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.close-btn {
+  color: #8c8c8c;
+  cursor: pointer;
+}
+
+.body {
+  padding: 24px;
+}
+
+.video-preview {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 378px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  background: linear-gradient(150deg, #1f1f3a 0%, #43435e 87%);
+  border-radius: 8px;
+}
+
+.play-btn {
+  display: inline-flex;
+  padding: 0;
+  margin-bottom: 120px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.play-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.video-el {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+  border-radius: 8px;
+}
+
+.video-meta {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  font-size: 12px;
+  color: rgb(255 255 255 / 85%);
+}
+
+.meta-card {
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 8px;
+}
+
+.metaRow:last-child {
+  margin-bottom: 0;
+}
+
+.meta-label {
+  font-size: 13px;
+  color: #595959;
+}
+
+.meta-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: #1f1f1f;
+}
+
+.credits {
+  font-size: 13px;
+  font-weight: 500;
+  color: #faad14;
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding: 16px 24px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.go-works-btn,
+.regenerate-btn,
+.publish-btn,
+.download-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.go-works-btn,
+.regenerate-btn {
+  color: #595959;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+}
+
+.publish-btn,
+.download-btn {
+  font-weight: 500;
+  color: #fff;
+  background: #1677ff;
+  border: none;
+}

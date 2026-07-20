@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900">
+  <title>AI助手主页 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff4d4f"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="900" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">AI助手主页 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <!-- 用户 -->
+  <rect x="10" y="45" width="160" height="845" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="90" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <!-- 前端组件 -->
+  <rect x="180" y="45" width="280" height="845" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="320" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <!-- 后端API -->
+  <rect x="470" y="45" width="240" height="845" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="590" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <!-- 状态管理 -->
+  <rect x="720" y="45" width="270" height="845" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="855" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">状态管理</text>
+
+  <!-- ========== A. 页面加载 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">A. 页面加载</text>
+
+  <!-- 步骤1: 进入页面 -->
+  <circle cx="90" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="125" text-anchor="middle" font-size="10">AIAssistantPage</text>
+
+  <line x1="108" y1="120" x2="200" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 渲染卡片 -->
+  <circle cx="90" cy="165" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="170" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="150" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="170" text-anchor="middle" font-size="10">FeatureCards</text>
+
+  <line x1="260" y1="135" x2="260" y2="150" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 四个功能卡片 -->
+  <rect x="200" y="195" width="100" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="1.5"/>
+  <text x="250" y="212" text-anchor="middle" font-size="9">内容优化</text>
+
+  <rect x="310" y="195" width="100" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="1.5"/>
+  <text x="360" y="212" text-anchor="middle" font-size="9">评论回复</text>
+
+  <rect x="200" y="235" width="100" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="1.5"/>
+  <text x="250" y="252" text-anchor="middle" font-size="9">私信回复</text>
+
+  <rect x="310" y="235" width="100" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="1.5"/>
+  <text x="360" y="252" text-anchor="middle" font-size="9">标签库</text>
+
+  <line x1="260" y1="180" x2="250" y2="195" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="260" y1="180" x2="360" y2="195" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="260" y1="180" x2="250" y2="235" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="260" y1="180" x2="360" y2="235" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== B. 点击内容优化卡片 ========== -->
+  <line x1="10" y1="310" x2="990" y2="310" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="305" font-size="11" fill="#8c8c8c">B. 点击内容优化卡片</text>
+
+  <!-- 步骤1 -->
+  <circle cx="90" cy="340" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="345" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="325" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="345" text-anchor="middle" font-size="10">点击内容优化</text>
+
+  <line x1="108" y1="340" x2="200" y2="340" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2 -->
+  <circle cx="90" cy="385" r="18" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="90" y="390" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="370" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="260" y="390" text-anchor="middle" font-size="10">getPath</text>
+
+  <line x1="260" y1="355" x2="260" y2="370" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3 -->
+  <circle cx="90" cy="430" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="435" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="200" y="415" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="435" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="260" y1="400" x2="260" y2="415" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="360" y="435" font-size="10" fill="#666">→ /ai-assistant/content-optimize</text>
+
+  <!-- ========== C. 点击评论回复卡片 ========== -->
+  <line x1="10" y1="510" x2="990" y2="510" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="505" font-size="11" fill="#8c8c8c">C. 点击评论回复卡片</text>
+
+  <circle cx="90" cy="540" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="545" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="525" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="545" text-anchor="middle" font-size="10">点击评论回复</text>
+
+  <line x1="108" y1="540" x2="200" y2="540" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="585" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="590" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="570" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="590" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="260" y1="555" x2="260" y2="570" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="360" y="590" font-size="10" fill="#666">→ /ai-assistant/comment-reply</text>
+
+  <!-- ========== D. 点击私信回复卡片 ========== -->
+  <line x1="10" y1="660" x2="990" y2="660" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="655" font-size="11" fill="#8c8c8c">D. 点击私信回复卡片</text>
+
+  <circle cx="90" cy="690" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="695" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="675" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="695" text-anchor="middle" font-size="10">点击私信回复</text>
+
+  <line x1="108" y1="690" x2="200" y2="690" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="735" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="740" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="720" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="740" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="260" y1="705" x2="260" y2="720" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="360" y="740" font-size="10" fill="#666">→ /ai-assistant/message-reply</text>
+
+  <!-- ========== E. 点击标签库卡片 ========== -->
+  <line x1="10" y1="800" x2="990" y2="800" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="795" font-size="11" fill="#8c8c8c">E. 点击标签库卡片</text>
+
+  <circle cx="90" cy="830" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="835" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="815" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="835" text-anchor="middle" font-size="10">点击标签库</text>
+
+  <line x1="108" y1="830" x2="200" y2="830" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="875" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="880" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="860" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="880" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="260" y1="845" x2="260" y2="860" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="360" y="880" font-size="10" fill="#666">→ /ai-assistant/tags</text>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="750" y="830" width="230" height="55" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="760" y="848" font-size="10" font-weight="bold">图例</text>
+  <circle cx="775" cy="868" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="790" y="871" font-size="9">步骤</text>
+  <line x1="820" y1="868" x2="850" y2="868" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="860" y="871" font-size="9">正常流程</text>
+  <line x1="820" y1="883" x2="850" y2="883" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="860" y="886" font-size="9">成功流程</text>
+</svg>

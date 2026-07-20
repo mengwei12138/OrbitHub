@@ -1,0 +1,147 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 4%);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #262626;
+}
+
+.pills {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pill {
+  padding: 4px 16px;
+  font-size: 13px;
+  line-height: 1.2;
+  color: #595959;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid rgb(22 119 255 / 50%);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.pill:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+.pill-active {
+  padding: 4px 16px;
+  font-size: 13px;
+  line-height: 1.2;
+  color: #fff;
+  cursor: pointer;
+  background: #1677ff;
+  border: 1px solid #1677ff;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.chip {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.chip:hover {
+  border-color: #1677ff;
+}
+
+.chip-selected {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 14px;
+  cursor: pointer;
+  background: #f0f7ff;
+  border: 1px solid rgb(22 119 255 / 50%);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.checkbox {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
+
+.chip-selected .checkbox {
+  background: #1677ff;
+  border-color: #1677ff;
+}
+
+.checkmark {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.platform-icon {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 7px;
+  font-weight: 700;
+  color: #fff;
+  background: #ff2442;
+  border-radius: 2px;
+}
+
+.account-name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #262626;
+}
+
+.chip-selected .account-name {
+  color: #1677ff;
+}
+
+.platform-tag {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}

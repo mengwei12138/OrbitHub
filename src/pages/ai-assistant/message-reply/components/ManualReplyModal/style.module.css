@@ -1,0 +1,164 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.sender-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  background: #e6fbfb;
+  border-radius: 50%;
+}
+
+.sender-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.account-info {
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #262626;
+}
+
+.message-bubble {
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.ai-classification {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ai-label {
+  font-size: 13px;
+  color: #595959;
+}
+
+.ai-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #13c2c2;
+  background: #e6fbfb;
+  border-radius: 12px;
+}
+
+.reply-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ai-hint {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  margin-left: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #1677ff;
+}
+
+.ai-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.textarea-wrapper {
+  position: relative;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.textarea {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+  resize: none;
+  border: none;
+  border-radius: 6px;
+}
+
+.textarea:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.char-count {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  font-size: 12px;
+  color: #8c8c8c;
+}
+
+.btn-ghost {
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+}
+
+.btn-ghost:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  cursor: pointer;
+  background: #1677ff;
+  border: none;
+  border-radius: 6px;
+}
+
+.btn-primary:hover {
+  background: #4096ff;
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+  background: #d9d9d9;
+}

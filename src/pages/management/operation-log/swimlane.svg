@@ -1,0 +1,4 @@
+<!-- TODO: swimlane.svg should be generated from swimlane.yaml using the project's swimlane rendering tool -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <text x="400" y="300" text-anchor="middle">swimlane.svg pending generation</text>
+</svg>

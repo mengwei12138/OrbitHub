@@ -1,0 +1,361 @@
+# AI助手主页 - 交互逻辑定义
+# 基于需求验收 + OpenAPI（见 AGENTS.md 索引的 contract/openapi/assistant/assistant-api.yaml）对齐
+# 交互类型：navigation, list, state
+
+# =============================================
+# 1. 页面加载
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 页面加载
+  trigger:
+    component: AIAssistantPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 进入页面
+      component: AIAssistantPage
+      action: onMount
+      onDone: step_2
+
+    - step: 2
+      description: 显示骨架屏
+      component: AIAssistantPage
+      action:
+        method: setLoading
+        props:
+          loading: true
+      onDone: step_3
+
+    - step: 3
+      description: 加载主页摘要
+      async: true
+      api:
+        method: GET
+        url: /api/v1/ai-assistant/home/summary
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 4
+      description: 渲染卡片状态与 Badge
+      parallel:
+        - name: 应用 HomeSummary 数据
+          component: AIAssistantPage
+          action:
+            method: applySummary
+            props:
+              summary: { response.data }
+        - name: 关闭骨架屏
+          component: AIAssistantPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 5
+      description: 摘要加载失败
+      parallel:
+        - name: 显示错误
+          component: AIAssistantPage
+          action:
+            method: setError
+            props:
+              error: { error.message }
+        - name: 关闭骨架屏
+          component: AIAssistantPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+  randomEvents:
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+    - trigger: 无数据
+      condition: data.length == 0
+      name: 显示空状态
+      component: Empty
+      action:
+        method: show
+        props:
+          description: 暂无数据
+
+  states:
+    - name: loading
+      type: boolean
+      default: true
+    - name: current_path
+      type: string
+      default: /ai-assistant
+
+
+# =============================================
+# 2. 功能卡片渲染
+# =============================================
+---
+interaction:
+  type: list
+  name: 功能卡片渲染
+  trigger:
+    component: AIAssistantPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 渲染四个功能卡片
+      parallel:
+        - name: 渲染内容优化卡片
+          component: ContentOptimizeCard
+          action:
+            method: render
+          props:
+            title: 内容优化与重发布
+            description: 智能检测低数据内容，提供标题、标签优化建议，支持一键重发布
+            icon: BarChartOutlined
+            path: /ai-assistant/content-optimize
+
+        - name: 渲染评论回复卡片
+          component: CommentReplyCard
+          action:
+            method: render
+          props:
+            title: 评论AI自动回复
+            description: 实时抓取多平台评论，AI自动识别分类，按规则自动回复，支持人工干预
+            icon: CommentOutlined
+            path: /ai-assistant/comment-reply
+
+        - name: 渲染私信回复卡片
+          component: MessageReplyCard
+          action:
+            method: render
+          props:
+            title: 私信AI自动回复
+            description: 私信分类识别，自动回复匹配模板，重要私信标记提醒
+            icon: MessageOutlined
+            path: /ai-assistant/message-reply
+
+        - name: 渲染标签库卡片
+          component: TagsCard
+          action:
+            method: render
+          props:
+            title: 标签库
+            description: 统一管理话题标签，支持自定义
+            icon: TagsOutlined
+            path: /ai-assistant/tags
+
+
+# =============================================
+# 3. 功能卡片悬停效果
+# =============================================
+---
+interaction:
+  type: state
+  name: 功能卡片悬停效果
+  trigger:
+    component: FeatureCard
+    action: onMouseEnter
+
+  mainFlow:
+    - step: 1
+      description: 显示悬停效果
+      component: FeatureCard
+      action:
+        method: setHoverState
+        props:
+          hover: true
+
+    - step: 2
+      description: 移除悬停效果
+      component: FeatureCard
+      action:
+        method: onMouseLeave
+
+  states:
+    - name: hover_card
+      type: string
+      default: ''
+
+
+# =============================================
+# 4. 点击内容优化卡片跳转
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 点击内容优化卡片跳转
+  trigger:
+    component: ContentOptimizeCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击内容优化卡片
+      component: ContentOptimizeCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到内容优化页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant/content-optimize
+
+  states:
+    - name: selected_card
+      type: string
+      default: content-optimize
+
+
+# =============================================
+# 5. 点击评论回复卡片跳转
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 点击评论回复卡片跳转
+  trigger:
+    component: CommentReplyCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击评论回复卡片
+      component: CommentReplyCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到评论回复页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant/comment-reply
+
+  states:
+    - name: selected_card
+      type: string
+      default: comment-reply
+
+
+# =============================================
+# 6. 点击私信回复卡片跳转
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 点击私信回复卡片跳转
+  trigger:
+    component: MessageReplyCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击私信回复卡片
+      component: MessageReplyCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到私信回复页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant/message-reply
+
+  states:
+    - name: selected_card
+      type: string
+      default: message-reply
+
+
+# =============================================
+# 7. 点击标签库卡片跳转
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 点击标签库卡片跳转
+  trigger:
+    component: TagsCard
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击标签库卡片
+      component: TagsCard
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到标签库页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant/tags
+
+  states:
+    - name: selected_card
+      type: string
+      default: tags
+
+
+# =============================================
+# 8. 从子页面返回主页
+# =============================================
+---
+interaction:
+  type: navigation
+  name: 从子页面返回主页
+  trigger:
+    component: BackButton
+    action: onClick
+
+  mainFlow:
+    - step: 1
+      description: 点击返回按钮
+      component: BackButton
+      action: onClick
+      onDone: step_2
+
+    - step: 2
+      description: 跳转回AI助手主页
+      component: router
+      action:
+        method: push
+        props:
+          path: /ai-assistant
+
+    - step: 3
+      description: 恢复主页状态
+      component: AIAssistantPage
+      action:
+        method: restoreState
+
+  states:
+    - name: previous_path
+      type: string
+      default: /ai-assistant

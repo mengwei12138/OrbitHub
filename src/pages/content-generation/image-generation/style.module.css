@@ -1,0 +1,42 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-height: 100%;
+}
+
+.alert-wrapper {
+  width: 100%;
+}
+
+.generate-action-card {
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.generate-button {
+  width: 100%;
+  height: 48px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #fff;
+  cursor: pointer;
+  background: #1677ff;
+  border: none;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.generate-button:disabled {
+  color: #8c8c8c;
+  cursor: not-allowed;
+  background: #d9d9d9;
+}
+
+.generate-button:hover:not(:disabled) {
+  background: #4096ff;
+}

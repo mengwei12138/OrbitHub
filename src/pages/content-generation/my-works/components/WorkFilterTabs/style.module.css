@@ -1,0 +1,40 @@
+.card {
+  padding: 16px 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px -1px rgb(0 0 0 / 6%);
+}
+
+.filter-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.filter-label {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.57;
+  color: #434343;
+}
+
+.warning-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.warning-icon {
+  font-size: 14px;
+  color: #faad14;
+}
+
+.warning-text {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.54;
+  color: #8c8c8c;
+}

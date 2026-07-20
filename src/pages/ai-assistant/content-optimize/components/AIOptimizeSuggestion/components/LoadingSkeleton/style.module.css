@@ -1,0 +1,44 @@
+.loading-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.spinner {
+  color: var(--figma-color-primary);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--figma-color-primary);
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-row {
+  height: 14px;
+  background: var(--figma-color-gray-4);
+  border-radius: 4px;
+}

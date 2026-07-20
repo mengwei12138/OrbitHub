@@ -1,0 +1,464 @@
+# 普通管理员管理页面交互逻辑
+---
+# 管理员列表 - 列表交互
+interaction:
+  type: list
+  name: 普通管理员列表
+  trigger:
+    component: AdminTable
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载管理员列表和租户信息
+      parallel:
+        - name: 调用 GET /api/v1/admin/admins
+          api:
+            method: GET
+            url: /api/v1/admin/admins
+            params:
+              page: 1
+              pageSize: 10
+              status: { status }
+              keyword: { keyword }
+        - name: 调用 GET /api/v1/tenant/info
+          api:
+            method: GET
+            url: /api/v1/tenant/info
+        - name: 显示 loading
+          component: AdminTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染管理员列表
+      component: AdminTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.data.list }
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: AdminTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+    - step: 4
+      description: 渲染分页和账号上限统计
+      parallel:
+        - name: 渲染分页
+          component: Pagination
+          action:
+            method: setPagination
+            props:
+              current: 1
+              pageSize: 10
+              total: { response.data.total }
+        - name: 渲染账号上限统计
+          component: AccountLimitSummary
+          action:
+            method: setData
+            props:
+              used: { tenantInfo.usedAccounts }
+              total: { tenantInfo.totalAccounts }
+              package: { tenantInfo.packageName }
+
+  randomEvents:
+    - trigger: 用户切换状态筛选
+      name: 重新加载数据
+      component: AdminTable
+      action:
+        method: reload
+      params:
+        status: { status }
+
+    - trigger: 用户输入关键词搜索
+      name: 重新加载数据
+      component: AdminTable
+      action:
+        method: reload
+      params:
+        keyword: { keyword }
+
+    - trigger: 用户点击重置
+      name: 重置筛选条件并重新加载
+      component: FilterCard
+      action:
+        method: reset
+      onDone: step_1
+
+    - trigger: 用户点击查询
+      name: 按筛选条件重新加载
+      component: FilterCard
+      action:
+        method: search
+      onDone: step_1
+
+    - trigger: 用户切换分页
+      name: 重新加载数据
+      component: AdminTable
+      action:
+        method: reload
+      params:
+        page: { pagination.current }
+        pageSize: { pagination.pageSize }
+
+    - trigger: 用户点击新建管理员
+      name: 打开新建弹窗
+      component: AdminFormModal
+      action:
+        method: open
+        props:
+          mode: create
+
+    - trigger: 用户点击编辑
+      name: 打开编辑弹窗
+      component: AdminFormModal
+      action:
+        method: open
+        props:
+          mode: edit
+          adminId: { adminId }
+
+    - trigger: 用户点击禁用
+      name: 打开禁用确认弹窗
+      component: DisableConfirmModal
+      action:
+        method: open
+        props:
+          adminId: { adminId }
+          adminName: { adminName }
+
+    - trigger: 用户点击启用
+      name: 打开启用确认弹窗
+      component: EnableConfirmModal
+      action:
+        method: open
+        props:
+          adminId: { adminId }
+          adminName: { adminName }
+
+---
+# 新建管理员 - 表单交互
+interaction:
+  type: form
+  name: 新建普通管理员
+  trigger:
+    component: AdminFormModal
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: AdminForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 提交数据
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/admin/admins
+          api:
+            method: POST
+            url: /api/v1/admin/admins
+            request: CreateAdminRequest
+        - name: 显示 loading
+          component: SubmitButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 创建成功
+      parallel:
+        - name: 关闭弹窗
+          component: AdminFormModal
+          action:
+            method: close
+        - name: 刷新列表
+          component: AdminTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 创建成功
+
+    - step: 4
+      description: 创建失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 保留表单数据
+          component: AdminForm
+          action:
+            method: keepValues
+
+---
+# 编辑管理员 - 表单交互
+interaction:
+  type: form
+  name: 编辑普通管理员
+  trigger:
+    component: AdminFormModal
+    action: onSubmit
+
+  mainFlow:
+    - step: 1
+      description: 表单验证
+      component: AdminForm
+      action:
+        method: validate
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 提交数据
+      async: true
+      parallel:
+        - name: 调用 PUT /api/v1/admin/admins/{adminId}
+          api:
+            method: PUT
+            url: /api/v1/admin/admins/{adminId}
+            request: UpdateAdminRequest
+        - name: 显示 loading
+          component: SubmitButton
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 更新成功
+      parallel:
+        - name: 关闭弹窗
+          component: AdminFormModal
+          action:
+            method: close
+        - name: 刷新列表
+          component: AdminTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 保存成功
+
+    - step: 4
+      description: 更新失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 保留表单数据
+          component: AdminForm
+          action:
+            method: keepValues
+
+---
+# 禁用管理员 - 确认交互
+interaction:
+  type: confirm
+  name: 禁用普通管理员
+  trigger:
+    component: DisableConfirmModal
+    action: onConfirm
+
+  mainFlow:
+    - step: 1
+      description: 显示禁用确认框
+      component: DisableConfirmModal
+      action:
+        method: open
+        props:
+          adminId: { adminId }
+          adminName: { adminName }
+
+    - step: 2
+      description: 等待用户操作
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认禁用
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/admin/admins/{adminId}/disable
+          api:
+            method: POST
+            url: /api/v1/admin/admins/{adminId}/disable
+        - name: 关闭确认框
+          component: DisableConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: DisableConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 禁用成功
+      parallel:
+        - name: 刷新列表
+          component: AdminTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 禁用成功
+
+    - step: 5
+      description: 禁用失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 启用管理员 - 确认交互
+interaction:
+  type: confirm
+  name: 启用普通管理员
+  trigger:
+    component: EnableConfirmModal
+    action: onConfirm
+
+  mainFlow:
+    - step: 1
+      description: 显示启用确认框
+      component: EnableConfirmModal
+      action:
+        method: open
+        props:
+          adminId: { adminId }
+          adminName: { adminName }
+
+    - step: 2
+      description: 等待用户操作
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认启用
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用 POST /api/v1/admin/admins/{adminId}/enable
+          api:
+            method: POST
+            url: /api/v1/admin/admins/{adminId}/enable
+        - name: 关闭确认框
+          component: EnableConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: EnableConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 启用成功
+      parallel:
+        - name: 刷新列表
+          component: AdminTable
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 启用成功
+
+    - step: 5
+      description: 启用失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: { error.message }
+
+---
+# 状态定义
+states:
+  - name: admins
+    type: array
+    default: []
+
+  - name: status
+    type: string
+    default: ''
+
+  - name: keyword
+    type: string
+    default: ''
+
+  - name: pagination
+    type: object
+    default:
+      current: 1
+      pageSize: 10
+      total: 0
+
+  - name: tenant_info
+    type: object
+    default:
+      usedAccounts: 0
+      totalAccounts: 0
+      packageName: ''
+
+  - name: form_mode
+    type: string
+    default: 'create'
+
+  - name: editing_admin_id
+    type: string
+    default: ''
+
+---
+# 手机号正则校验
+phone_regex: '^1[3-9]\\d{9}$'

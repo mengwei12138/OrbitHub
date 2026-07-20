@@ -1,0 +1,33 @@
+.card {
+  /* 保持详情页现有卡片风格 */
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.label {
+  flex-shrink: 0;
+  min-width: 80px;
+  font-size: 13px;
+  color: #999;
+}
+
+.value,
+.empty-text {
+  font-size: 13px;
+  color: #212121;
+}
+
+.error-text {
+  font-size: 13px;
+  color: #f24236;
+}

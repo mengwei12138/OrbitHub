@@ -1,0 +1,52 @@
+.wrapper {
+  padding: 16px 20px;
+  margin-top: 16px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 4%);
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.cover-image {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.cover-placeholder {
+  width: 48px;
+  height: 48px;
+  background-color: #f0f2f5;
+  border-radius: 6px;
+}
+
+.interaction-rate {
+  display: block;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

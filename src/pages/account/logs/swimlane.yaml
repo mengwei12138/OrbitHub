@@ -1,0 +1,233 @@
+# 账号日志页面交互逻辑
+---
+# 账号信息卡片 - 异步交互
+account_info_interaction:
+  type: async
+  name: 加载账号信息
+  trigger:
+    component: AccountInfoCard
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载账号信息
+      parallel:
+        - name: 调用 GET /api/v1/accounts/{id}
+          api:
+            method: GET
+            url: /api/v1/accounts/{id}
+        - name: 显示 loading
+          component: AccountInfoCard
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染账号信息
+      component: AccountInfoCard
+      action:
+        method: setData
+        props:
+          nickname: { response.nickname }
+          platform: { response.platform }
+          phoneNumber: { response.phoneNumber }
+          status: { response.status }
+          followers: { response.followers }
+
+    - step: 3
+      description: 加载失败
+      component: AccountInfoCard
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+---
+# 日志类型显示 - 状态切换
+log_type_display:
+  type: state
+  name: 日志类型中文显示
+  trigger:
+    component: LogTypeTag
+    action: onRender
+
+  mainFlow:
+    - step: 1
+      description: 获取操作类型英文值
+      component: LogTable
+      action:
+        method: getOperationValue
+      onDone: step_2
+
+    - step: 2
+      description: 映射为中文显示
+      component: LogTypeTag
+      action:
+        method: mapOperationToDisplay
+      onDone: step_3
+
+    - step: 3
+      description: 渲染日志类型标签
+      component: LogTypeTag
+      action:
+        method: render
+        props:
+          displayText: { displayText }
+          colorScheme: { colorScheme }
+
+---
+# 日志列表 - 列表交互
+interaction:
+  type: list
+  name: 日志列表
+  trigger:
+    component: LogTable
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载日志列表
+      parallel:
+        - name: 调用 GET /api/v1/accounts/{id}/logs
+          api:
+            method: GET
+            url: /api/v1/accounts/{id}/logs
+            params:
+              page: 1
+              pageSize: 10
+              startDate: { startDate }
+              endDate: { endDate }
+              keyword: ''
+        - name: 显示 loading
+          component: LogTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染日志列表
+      component: LogTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.data.list }
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: LogTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+    - step: 4
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: { response.data.total }
+
+  randomEvents:
+    - trigger: 用户切换日期筛选
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        startDate: { startDate }
+        endDate: { endDate }
+
+    - trigger: 用户搜索关键词
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        keyword: { keyword }
+
+    - trigger: 用户点击清空
+      name: 清空关键词并重新加载
+      component: LogTable
+      action:
+        method: reload
+      params:
+        keyword: ''
+
+    - trigger: 用户切换分页
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        page: { pagination.current }
+        pageSize: { pagination.pageSize }
+
+---
+# 操作类型映射表
+operation_mapping:
+  LOGIN: 登录
+  START: 启动
+  STOP: 停止
+  DELETE: 删除
+  EXPIRED: 登录失效
+
+---
+# 操作类型颜色映射表
+operation_colors:
+  登录:
+    bg: '#E6F4FF'
+    color: '#1677FF'
+  启动:
+    bg: '#F9F0FF'
+    color: '#722ED1'
+  停止:
+    bg: '#FFF0F6'
+    color: '#EB2F96'
+  删除:
+    bg: '#FFF2E6'
+    color: '#FA8C16'
+  登录失效:
+    bg: '#FFF2F0'
+    color: '#FF4D4F'
+
+---
+# 状态定义
+states:
+  - name: account_info
+    type: object
+    default: null
+
+  - name: account_id
+    type: string
+    default: ''
+
+  - name: operation_map
+    type: object
+    default:
+      LOGIN: 登录
+      START: 启动
+      STOP: 停止
+      DELETE: 删除
+      EXPIRED: 登录失效
+
+  - name: start_date
+    type: string
+    default: ''
+
+  - name: end_date
+    type: string
+    default: ''
+
+  - name: keyword
+    type: string
+    default: ''

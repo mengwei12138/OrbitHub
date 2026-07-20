@@ -1,0 +1,200 @@
+page: 租户管理员管理
+path: /management/tenant-admin
+version: 1.0
+
+actors:
+  - id: admin
+    name: 管理员
+    type: user
+
+components:
+  - id: PageHeader
+    name: 页面头部
+    type: container
+
+  - id: FilterCard
+    name: 筛选卡片
+    type: form
+    visible: false
+
+  - id: TenantAdminTable
+    name: 租户管理员列表
+    type: table
+
+  - id: EditTenantAdminModal
+    name: 编辑租户管理员弹窗
+    type: modal
+
+  - id: ResetPasswordModal
+    name: 重置密码弹窗
+    type: modal
+
+interactions:
+  - id: int-001
+    trigger:
+      actor: admin
+      action: 点击「查询」按钮
+    components:
+      - FilterCard
+      - TenantAdminTable
+    state:
+      loading: true
+    result: 根据筛选条件刷新表格数据
+
+  - id: int-002
+    trigger:
+      actor: admin
+      action: 点击「重置」按钮
+    components:
+      - FilterCard
+    state:
+      filters: reset
+    result: 清空筛选条件，重置表格
+
+  - id: int-003
+    trigger:
+      actor: admin
+      action: 点击表格行「编辑」
+    components:
+      - EditTenantAdminModal
+    state:
+      modal: visible
+      adminId: "{adminId}"
+    result: 打开编辑租户管理员弹窗
+
+  - id: int-004
+    trigger:
+      actor: admin
+      action: 点击表格行「重置密码」
+    components:
+      - ResetPasswordModal
+    state:
+      modal: visible
+      adminId: "{adminId}"
+      newPassword: "{generatedPassword}"
+    result: 打开重置密码弹窗并生成新密码
+
+  - id: int-005
+    trigger:
+      actor: admin
+      action: 点击「禁用」
+    components:
+      - TenantAdminTable
+    state:
+      submitting: true
+      adminId: "{adminId}"
+    result:
+      onSuccess: |
+        刷新表格数据（状态变更为禁用）
+      onError: |
+        显示错误提示
+
+  - id: int-006
+    trigger:
+      actor: admin
+      action: 点击「启用」
+    components:
+      - TenantAdminTable
+    state:
+      submitting: true
+      adminId: "{adminId}"
+    result:
+      onSuccess: |
+        刷新表格数据（状态变更为正常）
+      onError: |
+        显示错误提示
+
+  - id: int-007
+    trigger:
+      actor: admin
+      action: 点击编辑弹窗「取消」
+    components:
+      - EditTenantAdminModal
+    state:
+      modal: hidden
+    result: 关闭编辑弹窗
+
+  - id: int-008
+    trigger:
+      actor: admin
+      action: 点击编辑弹窗「保存修改」
+    components:
+      - EditTenantAdminModal
+      - TenantAdminTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭编辑弹窗
+        刷新表格数据
+      onError: |
+        显示错误提示
+
+  - id: int-009
+    trigger:
+      actor: admin
+      action: 点击重置密码弹窗「取消」
+    components:
+      - ResetPasswordModal
+    state:
+      modal: hidden
+    result: 关闭重置密码弹窗
+
+  - id: int-010
+    trigger:
+      actor: admin
+      action: 点击重置密码弹窗「确认重置」
+    components:
+      - ResetPasswordModal
+      - TenantAdminTable
+    state:
+      submitting: true
+    result:
+      onSuccess: |
+        关闭重置密码弹窗
+        刷新表格数据
+      onError: |
+        显示错误提示
+
+  - id: int-011
+    trigger:
+      actor: admin
+      action: 点击重置密码弹窗「点击复制」
+    components: []
+    state:
+      copied: true
+    result: 复制新密码到剪贴板
+
+  - id: int-012
+    trigger:
+      actor: admin
+      action: 点击弹窗关闭图标
+    components:
+      - EditTenantAdminModal
+      - ResetPasswordModal
+    state:
+      modal: hidden
+    result: 关闭对应弹窗
+
+  - id: int-013
+    trigger:
+      actor: admin
+      action: 点击分页「切换页码」
+    components:
+      - TenantAdminTable
+    state:
+      loading: true
+      page: "{page}"
+    result: 加载对应页数据
+
+  - id: int-014
+    trigger:
+      actor: admin
+      action: 点击分页「切换每页条数」
+    components:
+      - TenantAdminTable
+    state:
+      loading: true
+      pageSize: "{pageSize}"
+      page: 1
+    result: 重新加载第一页数据

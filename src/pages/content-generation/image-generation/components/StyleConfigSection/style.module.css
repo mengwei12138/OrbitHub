@@ -1,0 +1,150 @@
+.form-item {
+  margin-bottom: 24px;
+}
+
+.form-item:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #434343;
+}
+
+.form-label-row {
+  display: flex;
+  gap: 4px;
+  align-items: baseline;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 22px;
+  color: #434343;
+}
+
+.optional {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #8c8c8c;
+}
+
+.segment-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.segment-chip {
+  padding: 5px 16px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.segment-chip:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+.segment-chip-active {
+  font-weight: 500;
+  color: #1677ff;
+  background: #e6f4ff;
+  border-color: #1677ff;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  color: #262626;
+  outline: none;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.custom-input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgb(5 145 255 / 10%);
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.radio-item {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 0;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  color: #595959;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.radio-item-active {
+  font-weight: 500;
+  color: #1677ff;
+}
+
+.radio-circle {
+  box-sizing: border-box;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #d9d9d9;
+  border-radius: 50%;
+}
+
+.radio-item-active .radio-circle {
+  background: #1677ff;
+  border-color: #1677ff;
+  box-shadow: inset 0 0 0 4px #fff;
+}
+
+.textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 80px;
+  padding: 10px 11px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 22px;
+  resize: vertical;
+  outline: none;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: border-color 0.2s;
+}
+
+.textarea::placeholder {
+  color: #bfbfbf;
+}
+
+.textarea:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 0 2px rgb(22 119 255 / 10%);
+}

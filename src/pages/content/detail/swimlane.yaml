@@ -1,0 +1,243 @@
+# 发布详情 - 导航交互
+interaction:
+  type: navigation
+  name: 发布详情
+  trigger:
+    component: DetailPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 获取记录 ID
+      component: router
+      action:
+        method: getParams
+        props:
+          key: recordId
+      onDone: step_2
+
+    - step: 2
+      description: 加载详情数据
+      parallel:
+        - name: 调用 GET /api/v1/content/publish/records/{recordId}/detail
+          api:
+            method: GET
+            url: /api/v1/content/publish/records/{recordId}/detail
+        - name: 显示 loading
+          component: DetailPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 渲染详情
+      parallel:
+        - name: 渲染内容信息
+          component: ContentInfoCard
+          action:
+            method: setData
+            props:
+              data: { response.data.contentInfo }
+        - name: 渲染发布信息
+          component: PublishInfoCard
+          action:
+            method: setData
+            props:
+              data: { response.data.publishInfo }
+        - name: 渲染数据表现
+          component: DataPerformanceCard
+          action:
+            method: setData
+            props:
+              data: { response.data.metrics }
+        - name: 停止 loading
+          component: DetailPage
+          action:
+            method: setLoading
+            props:
+              loading: false
+
+    - step: 4
+      description: 加载失败
+      component: DetailPage
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+---
+# 刷新数据表现 - 异步交互
+refresh_performance:
+  type: async
+  name: 刷新数据表现
+  trigger:
+    component: DataPerformanceCard
+    action: onRefresh
+
+  mainFlow:
+    - step: 1
+      description: 开始刷新
+      component: DataPerformanceCard
+      action:
+        method: setRefreshing
+        props:
+          refreshing: true
+      onDone: step_2
+
+    - step: 2
+      description: 调用刷新接口
+      api:
+        method: POST
+        url: /api/v1/content/publish/records/{recordId}/metrics:refresh
+      onSuccess: step_3
+      onFail: step_4
+
+    - step: 3
+      description: 刷新成功
+      parallel:
+        - name: 更新数据表现
+          component: DataPerformanceCard
+          action:
+            method: setData
+            props:
+              data: { response.data }
+        - name: 停止刷新
+          component: DataPerformanceCard
+          action:
+            method: setRefreshing
+            props:
+              refreshing: false
+        - name: 更新最后同步时间
+          component: DataPerformanceCard
+          action:
+            method: setSyncedAt
+            props:
+              time: { response.data.syncedAt }
+
+    - step: 4
+      description: 刷新失败
+      parallel:
+        - name: 显示错误提示
+          component: Message
+          action:
+            method: error
+            props:
+              content: { error.message }
+        - name: 停止刷新
+          component: DataPerformanceCard
+          action:
+            method: setRefreshing
+            props:
+              refreshing: false
+
+---
+# 重新发布入口 - 导航交互
+republish_entry:
+  type: navigation
+  name: 重新发布入口
+  trigger:
+    component: DetailPage
+    action: onRepublish
+
+  mainFlow:
+    - step: 1
+      description: 获取记录 ID
+      component: router
+      action:
+        method: getParams
+        props:
+          key: recordId
+      onDone: step_2
+
+    - step: 2
+      description: 跳转到重新发布页
+      component: router
+      action:
+        method: push
+        props:
+          path: /content/republish
+          params:
+            recordId: { recordId }
+
+---
+# 返回历史记录 - 导航交互
+back_to_history:
+  type: navigation
+  name: 返回历史记录
+  trigger:
+    component: DetailPage
+    action: onBack
+
+  mainFlow:
+    - step: 1
+      description: 返回历史记录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /content/history
+
+randomEvents:
+  - trigger: Token 过期
+    condition: response.code == 401
+    name: 跳转登录页
+    component: router
+    action:
+      method: push
+      props:
+        path: /login
+
+  - trigger: 网络错误
+    condition: response.code >= 500
+    name: 显示服务异常提示
+    component: Message
+    action:
+      method: error
+      props:
+        content: 服务异常，请稍后重试
+
+  - trigger: 数据停止同步
+    condition: daysSincePublish > 30
+    name: 显示停止同步提示
+    component: DataPerformanceCard
+    action:
+      method: showStopSyncNotice
+
+  - trigger: 审核中状态
+    condition: publishStatus == 'UNDER_REVIEW'
+    name: 数据表现显示「—」
+    component: DataPerformanceCard
+    action:
+      method: showPendingReview
+
+states:
+  - name: record_id
+    type: string
+    default: null
+
+  - name: content_info
+    type: object
+    default: null
+
+  - name: publish_info
+    type: object
+    default: null
+
+  - name: performance_data
+    type: object
+    default: null
+
+  - name: loading
+    type: boolean
+    default: false
+
+  - name: refreshing
+    type: boolean
+    default: false
+
+  - name: last_sync_time
+    type: string
+    default: null

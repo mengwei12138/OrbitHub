@@ -1,0 +1,73 @@
+.wrapper {
+  padding: 20px 24px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 4%);
+}
+
+.header {
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+
+.avatar-letter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ff2442;
+  background-color: #ffe4e6;
+  border-radius: 50%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nickname-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.nickname {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1f1f1f;
+}
+
+.platform-label {
+  font-size: 14px;
+  color: #1f1f1f;
+}
+
+.meta-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 13px;
+  color: #8c8c8c;
+}
+
+.divider {
+  color: #d9d9d9;
+}

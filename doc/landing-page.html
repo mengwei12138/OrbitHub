@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OrbitHub 官网</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: #fff;
+        line-height: 1.6;
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+          "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+        background: #050816;
+      }
+
+      .page {
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      .header {
+        padding: 24px 0;
+        border-bottom: 1px solid rgb(255 255 255 / 8%);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 28px;
+        color: #cbd5e1;
+        font-size: 15px;
+      }
+
+      .nav-links a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        padding: 0 22px;
+        border: 0;
+        border-radius: 999px;
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      }
+
+      .hero {
+        padding: 110px 0 90px;
+        text-align: center;
+      }
+
+      .hero-title {
+        margin: 0 0 24px;
+        font-size: 56px;
+        line-height: 1.15;
+      }
+
+      .hero-description {
+        max-width: 760px;
+        margin: 0 auto 36px;
+        color: #cbd5e1;
+        font-size: 20px;
+      }
+
+      .hero-card {
+        max-width: 920px;
+        margin: 70px auto 0;
+        padding: 36px;
+        border: 1px solid rgb(255 255 255 / 12%);
+        border-radius: 28px;
+        background: rgb(255 255 255 / 6%);
+        box-shadow: 0 30px 80px rgb(0 0 0 / 35%);
+      }
+
+      .dashboard {
+        display: grid;
+        grid-template-columns: 1.1fr 1.6fr;
+        gap: 20px;
+        height: 360px;
+        padding: 24px;
+        border-radius: 20px;
+        background:
+          linear-gradient(135deg, rgb(37 99 235 / 35%), rgb(14 165 233 / 24%)),
+          #0f172a;
+      }
+
+      .panel {
+        padding: 20px;
+        border: 1px solid rgb(255 255 255 / 10%);
+        border-radius: 16px;
+        background: rgb(15 23 42 / 75%);
+      }
+
+      .line {
+        height: 12px;
+        margin-bottom: 14px;
+        border-radius: 8px;
+        background: rgb(255 255 255 / 18%);
+      }
+
+      .short {
+        width: 55%;
+      }
+
+      .mid {
+        width: 75%;
+      }
+
+      .section {
+        padding: 90px 0;
+      }
+
+      .section-title {
+        margin: 0 0 18px;
+        font-size: 36px;
+        text-align: center;
+      }
+
+      .section-desc {
+        max-width: 680px;
+        margin: 0 auto 50px;
+        font-size: 17px;
+        text-align: center;
+        color: #94a3b8;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .feature {
+        padding: 30px;
+        border: 1px solid rgb(255 255 255 / 10%);
+        border-radius: 22px;
+        background: rgb(255 255 255 / 5%);
+      }
+
+      .feature h3 {
+        margin: 0 0 12px;
+        font-size: 21px;
+      }
+
+      .feature p {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 15px;
+      }
+
+      .scenes {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .tag {
+        padding: 12px 20px;
+        border: 1px solid rgb(255 255 255 / 10%);
+        border-radius: 999px;
+        color: #cbd5e1;
+        background: rgb(255 255 255 / 7%);
+      }
+
+      .cta {
+        padding: 100px 0;
+        text-align: center;
+        background: radial-gradient(
+          circle at center,
+          rgb(37 99 235 / 35%),
+          transparent 55%
+        );
+      }
+
+      .cta-title {
+        margin: 0 0 20px;
+        font-size: 42px;
+      }
+
+      .cta-desc {
+        margin: 0 0 32px;
+        font-size: 18px;
+        color: #cbd5e1;
+      }
+
+      .footer {
+        padding: 34px 0;
+        color: #64748b;
+        text-align: center;
+        border-top: 1px solid rgb(255 255 255 / 8%);
+      }
+
+      @media (width <= 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero-title {
+          font-size: 38px;
+        }
+
+        .hero-description {
+          font-size: 17px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dashboard {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="container">
+          <div class="nav">
+            <div class="logo">OrbitHub</div>
+            <nav class="nav-links">
+              <a href="#features">产品功能</a>
+              <a href="#scenes">使用场景</a>
+              <a href="#contact">平台价值</a>
+            </nav>
+            <a class="btn" href="/login">登录平台</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="container">
+            <h1 class="hero-title">
+              账号矩阵驱动的
+              <br />
+              内容增长平台
+            </h1>
+            <p class="hero-description">
+              OrbitHub 统一管理抖音、小红书等平台账号，通过 AI 内容生成、批量发布、
+              数据分析与智能助手，帮助团队构建从内容生产到增长复盘的完整运营闭环。
+            </p>
+
+            <div class="hero-card">
+              <div class="dashboard">
+                <div class="panel">
+                  <div class="line short"></div>
+                  <div class="line mid"></div>
+                  <div class="line"></div>
+                  <div class="line short"></div>
+                  <div class="line mid"></div>
+                </div>
+                <div class="panel">
+                  <div class="line mid"></div>
+                  <div class="line"></div>
+                  <div class="line short"></div>
+                  <div class="line"></div>
+                  <div class="line mid"></div>
+                  <div class="line short"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="features" class="section">
+          <div class="container">
+            <h2 class="section-title">核心能力</h2>
+            <p class="section-desc">
+              覆盖账号矩阵管理、内容生成、批量发布与运营分析，让矩阵运营更高效。
+            </p>
+
+            <div class="grid">
+              <div class="feature">
+                <h3>账号矩阵管理</h3>
+                <p>统一管理抖音、小红书等平台账号，支持账号分组、状态查看、归属协同与团队分工。</p>
+              </div>
+              <div class="feature">
+                <h3>AI 内容生成</h3>
+                <p>自动生成标题、文案、脚本、图文与营销素材，减少内容生产成本并提升效率。</p>
+              </div>
+              <div class="feature">
+                <h3>批量发布</h3>
+                <p>支持内容排期、批量发布、记录追踪与重发布，帮助团队减少重复操作。</p>
+              </div>
+              <div class="feature">
+                <h3>数据分析</h3>
+                <p>聚合账号表现、内容数据与增长趋势，辅助团队判断运营效果与策略方向。</p>
+              </div>
+              <div class="feature">
+                <h3>AI 智能助手</h3>
+                <p>为账号配置评论回复、私信回复、内容优化与运营建议等智能辅助能力。</p>
+              </div>
+              <div class="feature">
+                <h3>全链路协同</h3>
+                <p>把账号接入、内容生产、发布执行与数据复盘纳入同一工作流，形成持续增长闭环。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="scenes" class="section">
+          <div class="container">
+            <h2 class="section-title">适用场景</h2>
+            <p class="section-desc">
+              面向需要批量内容运营、多账号管理和自动化增长的团队。
+            </p>
+
+            <div class="scenes">
+              <div class="tag">本地生活</div>
+              <div class="tag">品牌营销</div>
+              <div class="tag">电商种草</div>
+              <div class="tag">短剧推广</div>
+              <div class="tag">教育培训</div>
+              <div class="tag">MCN机构</div>
+              <div class="tag">代运营团队</div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact" class="cta">
+          <div class="container">
+            <h2 class="cta-title">让每一个账号，都拥有一套可持续增长的运营系统</h2>
+            <p class="cta-desc">
+              登录平台，查看 OrbitHub 如何帮助你的团队提升矩阵运营效率。
+            </p>
+            <a class="btn" href="/login">登录平台</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container">© 2026 OrbitHub. All rights reserved.</div>
+      </footer>
+    </div>
+  </body>
+</html>

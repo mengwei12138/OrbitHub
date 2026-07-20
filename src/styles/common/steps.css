@@ -1,0 +1,48 @@
+/**
+ * Steps 组件样式变量
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 312-119 (添加账号页面 - 步骤条)
+ */
+
+:root {
+  /* ===== Steps 组件变量 (Steps) ===== */
+
+  /* 圆形指示器尺寸 */
+  --figma-component-steps-circle-size: 32px;
+
+  /* 圆形指示器 - active */
+  --figma-component-steps-circle-bg-active: var(--figma-color-primary);
+  --figma-component-steps-circle-shadow-active: 0px 0px 8px 4px
+    rgb(22 119 255 / 15%);
+  --figma-component-steps-circle-text-active: var(--figma-color-white);
+
+  /* 圆形指示器 - pending */
+  --figma-component-steps-circle-bg-pending: var(--figma-color-white);
+  --figma-component-steps-circle-border-pending: var(--figma-color-gray-6);
+  --figma-component-steps-circle-text-pending: var(--figma-color-gray-7);
+
+  /* 连接线颜色 */
+  --figma-component-steps-connector-color: #e8e8e8;
+
+  /* 标签 - active */
+  --figma-component-steps-label-text-active: var(--figma-color-primary);
+  --figma-component-steps-label-font-weight-active: 700;
+
+  /* 标签 - pending */
+  --figma-component-steps-label-text-pending: var(--figma-color-gray-8);
+  --figma-component-steps-label-font-weight-pending: 700;
+
+  /* 字体 */
+  --figma-component-steps-font-size: 14px;
+  --figma-component-steps-font-weight: 700;
+
+  /* 间距 */
+  --figma-component-steps-gap: 10px;
+  --figma-component-steps-connector-margin: 16px;
+
+  /* 容器尺寸 */
+  --figma-component-steps-width: 400px;
+  --figma-component-steps-height: 32px;
+}

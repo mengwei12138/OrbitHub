@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 900">
+  <title>账号列表 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff4d4f"/>
+    </marker>
+    <marker id="arrowhead-disabled" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#d9d9d9"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="900" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">账号列表 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <!-- 用户 -->
+  <rect x="10" y="45" width="160" height="845" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="90" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <!-- 前端组件 -->
+  <rect x="180" y="45" width="280" height="845" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="320" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <!-- 后端API -->
+  <rect x="470" y="45" width="240" height="845" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="590" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <!-- 数据库 -->
+  <rect x="720" y="45" width="270" height="845" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="855" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">数据库</text>
+
+  <!-- ========== 账号列表加载流程 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">账号列表加载</text>
+
+  <!-- 步骤1: 加载账号列表 -->
+  <circle cx="90" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="125" text-anchor="middle" font-size="10">AccountTable</text>
+
+  <line x1="108" y1="120" x2="200" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 调用API -->
+  <circle cx="90" cy="165" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="170" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="490" y="150" width="160" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="570" y="170" text-anchor="middle" font-size="10">GET /api/v1/accounts</text>
+
+  <line x1="260" y1="120" x2="350" y2="120" stroke="#666" stroke-width="1.5"/>
+  <line x1="350" y1="120" x2="350" y2="165" stroke="#666" stroke-width="1.5"/>
+  <line x1="350" y1="165" x2="490" y2="165" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 数据库查询 -->
+  <rect x="740" y="150" width="140" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="810" y="170" text-anchor="middle" font-size="10">查询账号列表</text>
+
+  <line x1="650" y1="165" x2="740" y2="165" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 渲染列表 -->
+  <circle cx="90" cy="210" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="215" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="200" y="195" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="215" text-anchor="middle" font-size="10">setData</text>
+
+  <line x1="810" y1="180" x2="450" y2="180" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="450" y1="180" x2="450" y2="210" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="450" y1="210" x2="200" y2="210" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- 步骤4: 渲染分页 -->
+  <circle cx="90" cy="255" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="260" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="200" y="240" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="260" text-anchor="middle" font-size="10">Pagination</text>
+
+  <line x1="260" y1="225" x2="260" y2="240" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 停止账号确认流程 ========== -->
+  <line x1="10" y1="310" x2="990" y2="310" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="305" font-size="11" fill="#8c8c8c">停止账号确认</text>
+
+  <!-- 步骤1: 点击停止 -->
+  <circle cx="90" cy="340" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="345" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="325" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="345" text-anchor="middle" font-size="10">点击「停止」</text>
+
+  <line x1="108" y1="340" x2="200" y2="340" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 显示确认框 -->
+  <circle cx="90" cy="385" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="390" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="370" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="390" text-anchor="middle" font-size="10">ConfirmModal</text>
+
+  <line x1="260" y1="355" x2="260" y2="370" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 等待确认 -->
+  <circle cx="90" cy="430" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="435" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <polygon points="260,415 295,430 260,445 225,430" fill="#fff" stroke="#1890ff" stroke-width="2"/>
+  <text x="260" y="433" text-anchor="middle" font-size="9">确认?</text>
+
+  <line x1="260" y1="400" x2="260" y2="415" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 取消路径 -->
+  <line x1="225" y1="430" x2="90" y2="430" stroke="#666" stroke-width="1.5"/>
+  <text x="150" y="425" font-size="9" fill="#8c8c8c">取消</text>
+
+  <!-- 步骤4: 确认停止 -->
+  <circle cx="90" cy="475" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="480" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="490" y="460" width="160" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="570" y="480" text-anchor="middle" font-size="10">POST /accounts/{id}/stop</text>
+
+  <line x1="295" y1="430" x2="295" y2="460" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="295" y1="460" x2="490" y2="460" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- 步骤5: 数据库更新 -->
+  <rect x="740" y="460" width="140" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="810" y="480" text-anchor="middle" font-size="10">更新账号状态</text>
+
+  <line x1="650" y1="475" x2="740" y2="475" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤6: 刷新列表 -->
+  <circle cx="90" cy="520" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="525" text-anchor="middle" font-size="10" fill="white">5</text>
+
+  <rect x="200" y="505" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="525" text-anchor="middle" font-size="10">reload</text>
+
+  <line x1="810" y1="490" x2="450" y2="490" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <line x1="450" y1="490" x2="450" y2="520" stroke="#52c41a" stroke-width="1.5"/>
+  <line x1="450" y1="520" x2="200" y2="520" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== 批量操作流程 ========== -->
+  <line x1="10" y1="580" x2="990" y2="580" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="575" font-size="11" fill="#8c8c8c">批量操作（停止/启动/删除）</text>
+
+  <!-- 批量停止流程 -->
+  <circle cx="90" cy="610" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="615" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="595" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="260" y="615" text-anchor="middle" font-size="10">点击「批量停止」</text>
+
+  <line x1="108" y1="610" x2="200" y2="610" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="655" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="660" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="640" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="660" text-anchor="middle" font-size="10">ConfirmModal</text>
+
+  <line x1="260" y1="625" x2="260" y2="640" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="700" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="705" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="490" y="685" width="160" height="30" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="570" y="705" text-anchor="middle" font-size="10">POST /batch/stop</text>
+
+  <line x1="295" y1="700" x2="295" y2="685" stroke="#666" stroke-width="1.5"/>
+  <line x1="295" y1="685" x2="490" y2="685" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="740" y="685" width="140" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="810" y="705" text-anchor="middle" font-size="10">批量更新状态</text>
+
+  <line x1="650" y1="700" x2="740" y2="700" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 工具栏按钮状态 ========== -->
+  <line x1="10" y1="760" x2="990" y2="760" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="755" font-size="11" fill="#8c8c8c">工具栏按钮状态切换</text>
+
+  <circle cx="90" cy="790" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="90" y="795" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="200" y="775" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="260" y="795" text-anchor="middle" font-size="10">勾选账号</text>
+
+  <line x1="108" y1="790" x2="200" y2="790" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="90" cy="835" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="90" y="840" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="200" y="820" width="140" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="270" y="840" text-anchor="middle" font-size="10">updateButtonState</text>
+
+  <line x1="260" y1="805" x2="260" y2="820" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="750" y="830" width="230" height="55" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="760" y="848" font-size="10" font-weight="bold">图例</text>
+  <circle cx="775" cy="868" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="790" y="871" font-size="9">步骤</text>
+  <line x1="820" y1="868" x2="850" y2="868" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="860" y="871" font-size="9">正常流程</text>
+  <line x1="820" y1="883" x2="850" y2="883" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="860" y="886" font-size="9">成功流程</text>
+</svg>

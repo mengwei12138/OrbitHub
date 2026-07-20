@@ -1,0 +1,141 @@
+/* ===== CustomProTable 全局样式 ===== */
+.container {
+  z-index: 1;
+}
+
+/* 工具栏容器 - 已验证 */
+:global(.ant-pro-table-list-toolbar-left),
+:global(.ant-pro-table-list-toolbar-title) {
+  width: 100%;
+  max-width: initial;
+}
+
+/* 工具栏容器 */
+:global(.ant-pro-table-list-toolbar-container) {
+  padding-inline: var(--figma-spacing-lg);
+}
+
+/* 查询筛选区域 */
+:global(.ant-pro-query-filter.ant-pro-query-filter) {
+  padding: var(--figma-spacing-lg);
+}
+
+/* 卡片内容区 */
+:global(.ant-pro-card .ant-pro-card-body) {
+  padding: 0;
+}
+
+:global(.ant-table-pagination) {
+  padding-right: var(--figma-spacing-lg);
+  padding-bottom: var(--figma-spacing-lg);
+  padding-left: var(--figma-spacing-lg);
+}
+
+/* 表格容器 */
+
+/* :global(.ant-pro-table) {
+  border-radius: var(--figma-component-pro-table-card-radius);
+} */
+
+/* 表头 (thead) */
+:global(.ant-table-thead > tr > th) {
+  padding: var(--figma-component-pro-table-thead-padding);
+  font-size: var(--figma-component-pro-table-thead-font-size);
+  font-weight: var(--figma-component-pro-table-thead-font-weight);
+  color: var(--figma-component-pro-table-thead-text-color);
+  background: var(--figma-component-pro-table-thead-bg);
+}
+
+/* 表格单元格 */
+:global(.ant-table-tbody > tr > td) {
+  padding: var(--figma-component-pro-table-tbody-cell-padding);
+}
+
+/* 表体行 hover */
+:global(.ant-table-tbody > tr:hover > td) {
+  background: var(--figma-component-pro-table-tbody-row-hover-bg);
+}
+
+/* 表格分割线 */
+:global(.ant-table-cell::after) {
+  background: var(--figma-component-pro-table-divider-color);
+}
+
+/* 分页器容器 */
+:global(.ant-pro-table-list-pagination) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--figma-spacing-lg);
+  border-top: 1px solid var(--figma-color-border-light);
+}
+
+/* 分页器信息文字 */
+:global(.ant-pagination-total-text) {
+  font-size: var(--figma-component-pro-table-pagination-total-font-size);
+  color: var(--figma-component-pro-table-pagination-total-color);
+}
+
+/* 分页器页码按钮 */
+:global(.ant-pagination-item) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--figma-component-pro-table-pagination-min-width);
+  height: var(--figma-component-pro-table-pagination-height);
+  background: var(--figma-component-pro-table-pagination-button-bg);
+  border-color: var(--figma-component-pro-table-pagination-button-border-color);
+  border-radius: var(--figma-radius-sm);
+}
+
+:global(.ant-pagination-item a) {
+  color: var(--figma-component-pro-table-pagination-button-text-color);
+}
+
+/* 分页器当前页 */
+:global(.ant-pagination-item-active) {
+  background: var(--figma-component-pro-table-pagination-button-active-bg);
+  border-color: var(--figma-component-pro-table-pagination-button-active-bg);
+}
+
+:global(.ant-pagination-item-active a) {
+  font-weight: 500;
+  color: var(--figma-component-pro-table-pagination-button-active-text);
+}
+
+/* 分页器_prev_next按钮 */
+:global(.ant-pagination-prev),
+:global(.ant-pagination-next) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--figma-component-pro-table-pagination-min-width);
+  height: var(--figma-component-pro-table-pagination-height);
+  background: var(--figma-component-pro-table-pagination-button-bg);
+  border-color: var(--figma-component-pro-table-pagination-button-border-color);
+  border-radius: var(--figma-radius-sm);
+}
+
+:global(.ant-pagination-prev button),
+:global(.ant-pagination-next button) {
+  color: var(--figma-component-pro-table-pagination-button-text-color);
+}
+
+/* 分页器页码下拉选择器 */
+:global(.ant-pagination-options-size-changer) {
+  min-width: 86px;
+  height: var(--figma-component-pro-table-pagination-height);
+}
+
+/* 分页器跳转输入框 */
+:global(.ant-pagination-options-jump-go) {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+:global(.ant-pagination-options-jump-go .ant-pagination-input) {
+  width: 36px;
+  height: var(--figma-component-pro-table-pagination-height);
+  border-radius: var(--figma-radius-sm);
+}

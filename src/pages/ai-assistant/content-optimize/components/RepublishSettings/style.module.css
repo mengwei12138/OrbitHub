@@ -1,0 +1,95 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  background: var(--figma-color-white);
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgb(0 0 0 / 4%);
+}
+
+.task-status {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--figma-color-text-secondary);
+}
+
+.task-status[data-status="SUCCESS"] {
+  color: var(--figma-color-success);
+}
+
+.task-status[data-status="FAILED"] {
+  color: var(--figma-color-error);
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--figma-color-gray-10);
+}
+
+.badge {
+  padding: 1px 8px;
+  font-size: 12px;
+  color: var(--figma-color-success);
+  background: var(--figma-color-success-light);
+  border-radius: 4px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content h3 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--figma-color-gray-9);
+}
+
+.footer {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.cancel-btn,
+.confirm-btn {
+  height: 36px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.cancel-btn {
+  color: var(--figma-color-gray-9);
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-border);
+}
+
+.cancel-btn:hover {
+  color: var(--figma-color-gray-10);
+  border-color: var(--figma-color-gray-6);
+}
+
+.confirm-btn {
+  color: var(--figma-color-white);
+  background: var(--figma-color-primary);
+  border: none;
+}
+
+.confirm-btn:hover {
+  background: #4096ff;
+}

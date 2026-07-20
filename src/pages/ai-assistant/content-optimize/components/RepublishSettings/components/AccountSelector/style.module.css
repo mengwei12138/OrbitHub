@@ -1,0 +1,66 @@
+.account-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--figma-color-gray-10);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--figma-color-primary);
+  background: var(--figma-color-primary-light);
+  border: 1px solid var(--figma-color-border);
+  border-radius: 6px;
+}
+
+.chip-original {
+  background: #f0f7ff;
+  border-color: var(--figma-color-primary);
+}
+
+.avatar {
+  width: 16px;
+  height: 16px;
+  background: var(--figma-color-gray-5);
+  border-radius: 50%;
+}
+
+.name {
+  font-weight: 400;
+  color: var(--figma-color-gray-10);
+}
+
+.select-btn {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--figma-color-gray-9);
+  cursor: pointer;
+  background: var(--figma-color-white);
+  border: 1px dashed var(--figma-color-border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.select-btn:hover {
+  color: var(--figma-color-primary);
+  background: var(--figma-color-gray-1);
+}

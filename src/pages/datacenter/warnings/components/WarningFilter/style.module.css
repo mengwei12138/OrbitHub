@@ -1,0 +1,14 @@
+.container {
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: var(--color-bg-container);
+  border-radius: var(--border-radius-base);
+}
+
+.type-select {
+  width: 120px;
+}
+
+.search-input {
+  width: 240px;
+}

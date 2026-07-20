@@ -1,0 +1,22 @@
+.modal :global(.ant-modal-body) {
+  padding: 24px 32px 32px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.lock-icon {
+  flex-shrink: 0;
+}
+
+.text {
+  margin: 0;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  color: #595959;
+  text-align: center;
+}

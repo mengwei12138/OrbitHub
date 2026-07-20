@@ -1,0 +1,252 @@
+/* 上传区公共布局：避免 Dragger 边框与自定义边框叠加，左右等高 160px */
+
+.zone-wrap {
+  width: 100%;
+  min-width: 0;
+  height: 160px;
+}
+
+.zoneWrap :global(.ant-upload-wrapper) {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.zoneWrap :global(.ant-upload.ant-upload-drag) {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  overflow: hidden;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+}
+
+.zoneWrap :global(.ant-upload.ant-upload-drag:hover:not(.ant-upload-disabled)) {
+  border-color: #1677ff;
+}
+
+.zoneWrap :global(.ant-upload-drag-container) {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  height: 100%;
+  padding: 0;
+}
+
+/* Dragger 内部内容区：不再绘制边框 */
+.zone-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 24px 16px;
+  background: transparent;
+  border: none;
+}
+
+/* 非 Dragger 空态 / 试用禁用态 */
+.zone-static {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 160px;
+  padding: 24px 16px;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+}
+
+.filled {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 160px;
+  padding: 12px 16px 16px;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+}
+
+.filled-header {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.count-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #595959;
+}
+
+.add-btn {
+  padding: 4px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #1677ff;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #1677ff;
+  border-radius: 4px;
+}
+
+.thumb-grid {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+  min-height: 0;
+  overflow: auto;
+}
+
+.thumb-item {
+  position: relative;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.thumb-placeholder {
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+}
+
+/* 失败态：红色边框 + 浅红底色 + 居中错误图标与文字 */
+.thumb-error {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #fff1f0;
+  border: 1px solid #ff4d4f;
+  border-radius: 6px;
+}
+
+.thumb-error-icon {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  color: #ff4d4f;
+}
+
+.thumb-error-label {
+  font-size: 12px;
+  line-height: 1;
+  color: #ff4d4f;
+}
+
+.progress-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 60%);
+}
+
+.delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  background: rgb(0 0 0 / 45%);
+  border: none;
+  border-radius: 4px;
+}
+
+.thumb-add-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: #8c8c8c;
+  cursor: pointer;
+  background: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+}
+
+.thumbAddInner:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+/* 空态：主内容贴齐底部提示槽上方，提示行固定 18px，整体不超出 160px */
+.empty-layout {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.empty-main {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hint-slot {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 18px;
+  overflow: hidden;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.title {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+  text-align: center;
+}
+
+.desc {
+  font-size: 13px;
+  line-height: 18px;
+  color: #bfbfbf;
+  text-align: center;
+}

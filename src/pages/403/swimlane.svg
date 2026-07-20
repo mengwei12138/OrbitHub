@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <rect width="800" height="200" fill="#f5f5f5"/>
+  <text x="400" y="100" text-anchor="middle" font-family="Arial" font-size="16" fill="#999">静态页面 - 仅展示 Result 组件</text>
+</svg>

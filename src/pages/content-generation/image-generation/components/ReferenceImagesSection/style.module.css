@@ -1,0 +1,42 @@
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  background: #fafafa;
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.upload-zone:hover {
+  border-color: #1677ff;
+}
+
+.upload-icon-img {
+  width: 40px;
+  height: 40px;
+}
+
+.upload-text {
+  font-size: 16px;
+  line-height: 22px;
+  color: #8c8c8c;
+}
+
+.upload-hint {
+  font-size: 13px;
+  line-height: 18px;
+  color: #bfbfbf;
+}
+
+.upload-hint-secondary {
+  font-size: 12px;
+  line-height: 18px;
+  color: #bfbfbf;
+}

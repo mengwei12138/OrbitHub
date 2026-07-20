@@ -1,0 +1,192 @@
+<svg height="900" viewbox="0 0 800 900" width="800" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <marker id="arrowhead" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+      <polygon fill="#64748b" points="0 0, 10 3.5, 0 7"></polygon>
+    </marker>
+    <marker id="arrowhead-success" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+      <polygon fill="#22c55e" points="0 0, 10 3.5, 0 7"></polygon>
+    </marker>
+    <marker id="arrowhead-fail" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+      <polygon fill="#ef4444" points="0 0, 10 3.5, 0 7"></polygon>
+    </marker>
+    <marker id="arrowhead-async" markerheight="7" markerwidth="10" orient="auto" refx="9" refy="3.5">
+      <polygon fill="#3b82f6" points="0 0, 10 3.5, 0 7"></polygon>
+    </marker>
+  </defs>
+
+  <style>
+    .lane-label { font-family: system-ui, sans-serif; font-size: 14px; font-weight: 600; }
+    .step-box { fill: #f8fafc; stroke: #64748b; stroke-width: 1.5; rx: 8; }
+    .step-text { font-family: system-ui, sans-serif; font-size: 12px; }
+    .step-title { font-weight: 600; }
+    .async-box { fill: #eff6ff; stroke: #3b82f6; stroke-width: 1.5; rx: 8; stroke-dasharray: 5,3; }
+    .success-path { stroke: #22c55e; stroke-width: 2; marker-end: url(#arrowhead-success); }
+    .fail-path { stroke: #ef4444; stroke-width: 2; marker-end: url(#arrowhead-fail); }
+    .async-path { stroke: #3b82f6; stroke-width: 2; marker-end: url(#arrowhead-async); stroke-dasharray: 5,3; }
+    .normal-path { stroke: #64748b; stroke-width: 2; marker-end: url(#arrowhead); }
+    .event-text { font-family: system-ui, sans-serif; font-size: 11px; fill: #64748b; font-style: italic; }
+    .state-text { font-family: monospace; font-size: 10px; fill: #475569; }
+    .interaction-title { font-family: system-ui, sans-serif; font-size: 16px; font-weight: 700; }
+    .section-bg { fill: #f1f5f9; rx: 12; }
+  </style>
+
+  <!-- Title -->
+  <text x="400" y="30">
+    <tspan class="interaction-title">我的作品 - 交互泳道图</tspan>
+  </text>
+
+  <!-- Swimlane Headers -->
+  <rect fill="#e2e8f0" height="40" rx="8" width="180" x="60" y="50"></rect>
+  <text fill="#1e293b" x="150" y="75">
+    <tspan class="lane-label" text-anchor="middle">用户 (User)</tspan>
+  </text>
+
+  <rect fill="#e2e8f0" height="40" rx="8" width="180" x="560" y="50"></rect>
+  <text fill="#1e293b" x="650" y="75">
+    <tspan class="lane-label" text-anchor="middle">后端API (Backend API)</tspan>
+  </text>
+
+  <!-- Swimlane Dividers -->
+  <line stroke="#cbd5e1" stroke-width="2" x1="60" x2="740" y1="90" y2="90"></line>
+  <line stroke="#cbd5e1" stroke-width="2" x1="60" x2="740" y1="480" y2="480"></line>
+
+  <!-- ==================== Interaction 1: 我的作品列表 ==================== -->
+  <rect class="section-bg" height="380" width="660" x="60" y="100"></rect>
+  <text fill="#1e293b" x="80" y="125">
+    <tspan class="interaction-title">① 我的作品列表 (list-interaction)</tspan>
+  </text>
+
+  <!-- Step 1 -->
+  <rect class="async-box" height="60" width="160" x="80" y="145"></rect>
+  <text fill="#1e40af" x="160" y="168">
+    <tspan class="step-text step-title" text-anchor="middle">Step 1: 加载作品列表</tspan>
+  </text>
+  <text fill="#3b82f6" x="160" y="183">
+    <tspan class="step-text" text-anchor="middle">异步并行</tspan>
+  </text>
+
+  <!-- Step 1 Actions -->
+  <text class="event-text" x="90" y="220">调用 GET /api/works</text>
+  <text class="event-text" x="90" y="235">显示 loading</text>
+
+  <!-- Step 2 -->
+  <rect class="step-box" height="50" width="140" x="80" y="260"></rect>
+  <text fill="#1e293b" x="150" y="283">
+    <tspan class="step-text step-title" text-anchor="middle">Step 2: 渲染列表</tspan>
+  </text>
+  <text class="event-text" x="90" y="330">setData (dataSource)</text>
+
+  <!-- Step 3 -->
+  <rect class="step-box" height="50" width="140" x="80" y="360"></rect>
+  <text fill="#1e293b" x="150" y="383">
+    <tspan class="step-text step-title" text-anchor="middle">Step 3: 加载失败</tspan>
+  </text>
+  <text class="event-text" x="90" y="430">setError</text>
+
+  <!-- Step 4 -->
+  <rect class="step-box" height="50" width="160" x="80" y="440"></rect>
+  <text fill="#1e293b" x="160" y="463">
+    <tspan class="step-text step-title" text-anchor="middle">Step 4: 渲染分页</tspan>
+  </text>
+
+  <!-- Random Events for Interaction 1 -->
+  <text class="event-text" x="320" y="150">随机事件:</text>
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="180" x="320" y="160"></rect>
+  <text fill="#92400e" x="330" y="178">用户切换分页 → 重新加载</text>
+
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="180" x="320" y="195"></rect>
+  <text fill="#92400e" x="330" y="213">用户点击查看详情 → 打开详情弹窗</text>
+
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="160" x="320" y="230"></rect>
+  <text fill="#92400e" x="330" y="248">Token 过期 → 跳转登录页</text>
+
+  <!-- States for Interaction 1 -->
+  <text class="state-text" x="320" y="290">状态:</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="200" x="320" y="300"></rect>
+  <text class="state-text" x="330" y="315">list_data: array = []</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="200" x="320" y="325"></rect>
+  <text class="state-text" x="330" y="340">loading: boolean = false</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="200" x="320" y="350"></rect>
+  <text class="state-text" x="330" y="365">pagination: object = {current:1, pageSize:10, total:0}</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="200" x="320" y="375"></rect>
+  <text class="state-text" x="330" y="390">detail_modal_visible: boolean = false</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="200" x="320" y="395"></rect>
+  <text class="state-text" x="330" y="410">selected_work_id: string = ''</text>
+
+  <!-- Flow arrows for Interaction 1 -->
+  <path class="async-path" d="M 240 175 L 300 175"></path>
+  <path class="success-path" d="M 300 200 L 300 260 L 240 260"></path>
+  <path class="fail-path" d="M 300 200 Q 340 200 340 310 L 240 310"></path>
+  <path class="normal-path" d="M 150 310 L 150 360"></path>
+  <path class="normal-path" d="M 150 410 L 150 440"></path>
+
+  <!-- ==================== Interaction 2: 作品详情弹窗 ==================== -->
+  <rect class="section-bg" height="320" width="660" x="60" y="500"></rect>
+  <text fill="#1e293b" x="80" y="525">
+    <tspan class="interaction-title">② 作品详情弹窗 (modal-interaction)</tspan>
+  </text>
+
+  <!-- Step 1 -->
+  <rect class="async-box" height="60" width="160" x="80" y="545"></rect>
+  <text fill="#1e40af" x="160" y="568">
+    <tspan class="step-text step-title" text-anchor="middle">Step 1: 打开弹窗并加载详情</tspan>
+  </text>
+  <text fill="#3b82f6" x="160" y="583">
+    <tspan class="step-text" text-anchor="middle">异步并行</tspan>
+  </text>
+
+  <!-- Step 1 Actions -->
+  <text class="event-text" x="90" y="620">调用 GET /api/works/{workId}</text>
+  <text class="event-text" x="90" y="635">显示 loading</text>
+
+  <!-- Step 2 -->
+  <rect class="step-box" height="50" width="140" x="80" y="680"></rect>
+  <text fill="#1e293b" x="150" y="703">
+    <tspan class="step-text step-title" text-anchor="middle">Step 2: 渲染详情</tspan>
+  </text>
+  <text class="event-text" x="90" y="750">setData (data)</text>
+
+  <!-- Step 3 -->
+  <rect class="step-box" height="50" width="140" x="80" y="780"></rect>
+  <text fill="#1e293b" x="150" y="803">
+    <tspan class="step-text step-title" text-anchor="middle">Step 3: 加载失败</tspan>
+  </text>
+  <text class="event-text" x="90" y="830">setError</text>
+
+  <!-- Random Events for Interaction 2 -->
+  <text class="event-text" x="320" y="560">随机事件:</text>
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="140" x="320" y="570"></rect>
+  <text fill="#92400e" x="330" y="588">用户点击关闭 → 关闭弹窗</text>
+
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="180" x="320" y="605"></rect>
+  <text fill="#92400e" x="330" y="623">点击遮罩层关闭 (closable=true)</text>
+
+  <rect fill="#fef3c7" height="25" rx="4" stroke="#f59e0b" width="140" x="320" y="640"></rect>
+  <text fill="#92400e" x="330" y="658">ESC 按键 (keyboard=true)</text>
+
+  <!-- States for Interaction 2 -->
+  <text class="state-text" x="520" y="560">状态:</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="160" x="520" y="570"></rect>
+  <text class="state-text" x="530" y="585">modal_visible: boolean</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="160" x="520" y="595"></rect>
+  <text class="state-text" x="530" y="610">modal_data: object = null</text>
+  <rect fill="#f1f5f9" height="20" rx="4" width="160" x="520" y="620"></rect>
+  <text class="state-text" x="530" y="635">loading: boolean = false</text>
+
+  <!-- Flow arrows for Interaction 2 -->
+  <path class="async-path" d="M 240 575 L 300 575"></path>
+  <path class="success-path" d="M 300 600 L 300 680 L 240 680"></path>
+  <path class="fail-path" d="M 300 600 Q 340 600 340 780 L 240 780"></path>
+
+  <!-- Legend -->
+  <rect fill="#f1f5f9" height="80" rx="8" width="200" x="560" y="700"></rect>
+  <text fill="#1e293b" font-weight="600" x="580" y="720">图例</text>
+  <line class="normal-path" x1="580" x2="610" y1="735" y2="735"></line>
+  <text class="state-text" x="620" y="738">正常流程</text>
+  <line class="success-path" x1="580" x2="610" y1="755" y2="755"></line>
+  <text class="state-text" x="620" y="758">成功</text>
+  <line class="fail-path" x1="580" x2="610" y1="775" y2="775"></line>
+  <text class="state-text" x="620" y="778">失败</text>
+  <line class="async-path" x1="580" x2="610" y1="795" y2="795"></line>
+  <text class="state-text" x="620" y="798">异步并行</text>
+</svg>

@@ -1,0 +1,35 @@
+/**
+ * Figma Design System Variables - 内容生成模块
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 内容生成 (3036-1635)
+ */
+
+:root {
+  /* ===== 主色和功能色 - 引用 common/vars.css ===== */
+
+  /* fill_KDHLCG: 主题蓝，高亮背景 */
+  --figma-content-generation-color-primary: var(--figma-color-primary);
+
+  /* fill_4X884K: 图标颜色 */
+  --figma-content-generation-color-icon: var(--figma-color-icon);
+
+  /* ===== 文字颜色 - 引用 common/vars.css ===== */
+
+  /* fill_R4NCV3: 白色文字 */
+  --figma-content-generation-color-text: var(--figma-color-text-heading);
+
+  /* ===== 背景色 ===== */
+
+  /* fill_OK68W4: 侧边栏深色背景 */
+  --figma-content-generation-color-bg-sider: #001529;
+
+  /* ===== 圆角 ===== */
+
+  /* 卡片、图标背景圆角 */
+  --figma-content-generation-border-radius-md: 6px;
+
+  /* 大圆角 */
+  --figma-content-generation-border-radius-lg: 12px;
+}

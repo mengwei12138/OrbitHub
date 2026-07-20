@@ -1,0 +1,591 @@
+# 预警详情页 - 交互逻辑定义
+# 本文件定义预警详情页的交互逻辑
+# OpenAPI 文件暂无，API 路径为占位符
+
+# =============================================
+# 1. 预警详情页加载
+# =============================================
+---
+interaction:
+  type: list
+  name: 预警详情页加载
+  trigger:
+    component: WarningListPage
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载预警统计和列表
+      parallel:
+        - name: 调用预警统计接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/warnings/stats
+        - name: 调用预警列表接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/warnings
+            params:
+              page: 1
+              pageSize: 10
+        - name: 显示 loading
+          component: WarningListPage
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: show_error
+
+    - step: 2
+      description: 渲染预警统计
+      component: WarningStats
+      action:
+        method: setData
+        props:
+          totalCount: '{response.totalCount}'
+          unreadCount: '{response.unreadCount}'
+          abnormalAccountCount: '{response.abnormalAccountCount}'
+      onDone: step_3
+
+    - step: 3
+      description: 渲染预警列表
+      component: WarningList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+          total: '{response.total}'
+      onDone: step_4
+
+    - step: 4
+      description: 渲染分页器
+      component: WarningList
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: '{response.total}'
+      onDone: step_5
+
+    - step: 5
+      description: 停止 loading
+      component: WarningListPage
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  randomEvents:
+    - trigger: 用户切换类型筛选
+      name: 按类型筛选预警列表
+      component: WarningList
+      action:
+        method: reload
+      params:
+        warningType: '{warningType}'
+        page: 1
+
+    - trigger: 用户输入搜索关键词
+      condition: debounceComplete == true
+      name: 搜索预警列表
+      component: WarningList
+      action:
+        method: reload
+      params:
+        keyword: '{keyword}'
+        page: 1
+
+    - trigger: 用户切换分页
+      name: 加载指定页
+      component: WarningList
+      action:
+        method: reload
+      params:
+        page: '{pagination.current}'
+        pageSize: '{pagination.pageSize}'
+
+    - trigger: 用户点击查看详情
+      name: 跳转账号详情页
+      component: WarningList
+      action:
+        method: onViewDetail
+      params:
+        warningId: '{warning.id}'
+        accountId: '{warning.accountId}'
+        contentId: '{warning.contentId}'  # 可空：仅 CONTENT_EXCEPTION 类预警有值
+
+    - trigger: 用户点击忽略
+      name: 忽略预警
+      component: WarningList
+      action:
+        method: onIgnoreWarning
+      params:
+        warningId: '{warning.id}'
+
+    - trigger: 用户点击全部标记已读
+      name: 显示确认弹窗
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认标记已读
+          content: 确认将所有未读预警标记为已读吗？
+          okText: 确认
+          cancelText: 取消
+
+    - trigger: 用户点击清空已忽略项
+      name: 显示危险确认弹窗
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 危险操作
+          content: 确认永久删除所有已忽略的预警记录吗？此操作不可恢复。
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+
+    - trigger: 用户点击返回数据中心
+      name: 返回数据中心主页
+      component: router
+      action:
+        method: push
+        props:
+          path: /datacenter
+
+    - trigger: Token 过期
+      condition: response.code == 401
+      name: 跳转登录页
+      component: router
+      action:
+        method: push
+        props:
+          path: /login
+
+    - trigger: 网络错误
+      condition: response.code >= 500
+      name: 显示服务异常提示
+      component: Message
+      action:
+        method: error
+        props:
+          content: 服务异常，请稍后重试
+
+  states:
+    - name: warning_type
+      type: string
+      default: all
+      enum: [all, account, content, fans]
+    - name: keyword
+      type: string
+      default: ''
+    - name: pagination
+      type: object
+      default:
+        current: 1
+        pageSize: 10
+        total: 0
+    - name: loading
+      type: boolean
+      default: false
+---
+# 2. 全部标记已读
+interaction:
+  type: confirm
+  name: 全部标记已读
+  trigger:
+    component: WarningList
+    action: onMarkAllRead
+
+  mainFlow:
+    - step: 1
+      description: 显示确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 确认标记已读
+          content: 确认将所有未读预警标记为已读吗？
+          okText: 确认
+          cancelText: 取消
+
+    - step: 2
+      description: 等待用户操作
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用全部标记已读接口
+          api:
+            method: POST
+            url: /api/v1/datacenter/warnings/mark-all-read
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 操作成功
+      parallel:
+        - name: 刷新预警列表
+          component: WarningList
+          action:
+            method: reload
+        - name: 刷新预警统计
+          component: WarningStats
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已全部标记为已读
+
+    - step: 5
+      description: 操作失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+  randomEvents:
+    - trigger: 用户点击遮罩层
+      condition: modal.closable == true
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+  states:
+    - name: confirm_visible
+      type: boolean
+      default: false
+    - name: is_executing
+      type: boolean
+      default: false
+
+---
+# 3. 清空已忽略项
+interaction:
+  type: confirm
+  name: 清空已忽略项
+  trigger:
+    component: WarningList
+    action: onClearIgnored
+
+  mainFlow:
+    - step: 1
+      description: 显示危险确认框
+      component: ConfirmModal
+      action:
+        method: confirm
+        props:
+          title: 危险操作
+          content: 确认永久删除所有已忽略的预警记录吗？此操作不可恢复。
+          okText: 确认删除
+          cancelText: 取消
+          okType: danger
+
+    - step: 2
+      description: 等待用户操作
+      type: interactive
+      waitFor: confirm | cancel
+
+    - step: 3a
+      description: 用户确认删除
+      condition: user_action == confirm
+      async: true
+      parallel:
+        - name: 调用清空已忽略项接口
+          api:
+            method: DELETE
+            url: /api/v1/datacenter/warnings/ignored
+        - name: 关闭确认框
+          component: ConfirmModal
+          action:
+            method: close
+      onSuccess: step_4
+      onFail: step_5
+
+    - step: 3b
+      description: 用户取消
+      condition: user_action == cancel
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+    - step: 4
+      description: 操作成功
+      parallel:
+        - name: 如果当前页被清空则跳回第1页
+          component: WarningList
+          action:
+            method: checkAndResetPage
+        - name: 刷新预警列表
+          component: WarningList
+          action:
+            method: reload
+        - name: 刷新预警统计
+          component: WarningStats
+          action:
+            method: reload
+        - name: 显示成功提示
+          component: Message
+          action:
+            method: success
+            props:
+              content: 已清空已忽略项
+
+    - step: 5
+      description: 操作失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+  randomEvents:
+    - trigger: 用户点击遮罩层
+      condition: modal.closable == true
+      name: 关闭确认框
+      component: ConfirmModal
+      action:
+        method: close
+
+  states:
+    - name: confirm_visible
+      type: boolean
+      default: false
+    - name: is_executing
+      type: boolean
+      default: false
+
+---
+# 4. 忽略预警
+interaction:
+  type: state
+  name: 忽略预警
+  trigger:
+    component: WarningList
+    action: onIgnoreWarning
+
+  mainFlow:
+    - step: 1
+      description: 忽略预警
+      async: true
+      api:
+        method: POST
+        url: /api/v1/datacenter/warnings/{warningId}/ignore
+      onSuccess: step_2
+      onFail: step_4
+
+    - step: 2
+      description: 检查是否需要加载上一页
+      condition: currentPageItems == 1
+      name: 加载上一页
+      component: WarningList
+      action:
+        method: loadPrevPage
+
+    - step: 3
+      description: 刷新预警列表和统计
+      parallel:
+        - name: 刷新预警列表
+          component: WarningList
+          action:
+            method: reload
+        - name: 刷新预警统计
+          component: WarningStats
+          action:
+            method: reload
+
+    - step: 4
+      description: 忽略失败
+      component: Message
+      action:
+        method: error
+        props:
+          content: '{error.message}'
+
+  states:
+    - name: warning_id
+      type: string
+      default: ''
+    - name: current_page_items
+      type: number
+      default: 0
+
+---
+# 5. 类型筛选
+interaction:
+  type: state
+  name: 类型筛选
+  trigger:
+    component: WarningList
+    action: onTypeChange
+
+  mainFlow:
+    - step: 1
+      description: 更新筛选类型
+      component: WarningList
+      action:
+        method: setFilter
+        props:
+          warningType: '{warningType}'
+      onDone: step_2
+
+    - step: 2
+      description: 重置页码并加载数据
+      parallel:
+        - name: 重置页码为1
+          component: WarningList
+          action:
+            method: setPagination
+            props:
+              current: 1
+        - name: 显示 loading
+          component: WarningList
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 调用预警列表接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/warnings
+            params:
+              type: '{type}'
+              page: 1
+              pageSize: '{pageSize}'
+      onSuccess: step_3
+      onFail: show_error
+
+    - step: 3
+      description: 渲染新列表
+      component: WarningList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+          total: '{response.total}'
+      onDone: step_4
+
+    - step: 4
+      description: 停止 loading
+      component: WarningList
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  states:
+    - name: warning_type
+      type: string
+      default: all
+      enum: [all, account, content, fans]
+
+---
+# 6. 搜索
+interaction:
+  type: async
+  name: 搜索预警
+  trigger:
+    component: WarningList
+    action: onSearchChange
+
+  mainFlow:
+    - step: 1
+      description: 更新搜索关键词
+      component: WarningList
+      action:
+        method: setKeyword
+        props:
+          keyword: '{keyword}'
+      onDone: step_2
+
+    - step: 2
+      description: 300ms防抖
+      component: WarningList
+      action:
+        method: debounce
+      params:
+        delay: 300
+      onDone: step_3
+
+    - step: 3
+      description: 重置页码并搜索
+      parallel:
+        - name: 重置页码为1
+          component: WarningList
+          action:
+            method: setPagination
+            props:
+              current: 1
+        - name: 显示 loading
+          component: WarningList
+          action:
+            method: setLoading
+            props:
+              loading: true
+        - name: 调用搜索接口
+          api:
+            method: GET
+            url: /api/v1/datacenter/warnings
+            params:
+              keyword: '{keyword}'
+              page: 1
+              pageSize: '{pageSize}'
+      onSuccess: step_4
+      onFail: show_error
+
+    - step: 4
+      description: 渲染搜索结果
+      component: WarningList
+      action:
+        method: setData
+        props:
+          dataSource: '{response.list}'
+          total: '{response.total}'
+      onDone: step_5
+
+    - step: 5
+      description: 停止 loading
+      component: WarningList
+      action:
+        method: setLoading
+        props:
+          loading: false
+
+  randomEvents:
+    - trigger: 用户快速输入
+      name: 取消上次请求
+      component: WarningList
+      action:
+        method: cancelRequest
+
+  states:
+    - name: keyword
+      type: string
+      default: ''
+    - name: debounce_timer
+      type: number
+      default: null

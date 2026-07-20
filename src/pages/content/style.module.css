@@ -1,0 +1,56 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  gap: var(--figma-spacing-lg);
+  align-items: stretch;
+  margin: var(--figma-spacing-lg) 0;
+}
+
+.main-left {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--figma-spacing-lg);
+  padding: 0 0 var(--figma-spacing-lg) 0;
+  background: var(--figma-color-white);
+  border-radius: var(--figma-radius-lg);
+}
+
+.left-block {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--figma-spacing-lg);
+  padding: var(--figma-spacing-lg) 0;
+  background: var(--figma-color-gray-1);
+  border-radius: var(--figma-radius-md);
+}
+
+.main-right {
+  display: flex;
+  flex: 0 0 360px;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.btn-history {
+  width: 88px;
+  height: 32px;
+}
+
+.btn-cancel {
+  width: 80px;
+  height: 32px;
+}
+
+.btn-confirm {
+  width: 140px;
+  height: 32px;
+}

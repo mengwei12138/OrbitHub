@@ -1,0 +1,99 @@
+/**
+ * Figma Design System Variables - 内容发布模块
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 内容发布-UI设计稿 (544-2016)
+ */
+
+/* ===== 内容发布模块颜色 ===== */
+
+:root {
+  /* ===== 主色和功能色 - 引用 common/vars.css ===== */
+
+  /* fill_DSCJB3: 主题蓝，按钮背景 */
+  --figma-content-color-primary: var(--figma-color-primary);
+
+  /* fill_KS4IUS: 成功绿，状态标签文字 */
+  --figma-content-color-success: var(--figma-color-success);
+
+  /* fill_KF2OG6: 警告黄，警示图标 */
+  --figma-content-color-warning: var(--figma-color-warning);
+
+  /* fill_XH7XMT: 错误红，失败状态 */
+  --figma-content-color-error: var(--figma-color-error);
+
+  /* ===== 文字颜色 - 引用 common/vars.css ===== */
+
+  /* fill_E41JNJ: 页面标题文字 */
+  --figma-content-color-text-primary: var(--figma-color-text-heading);
+
+  /* fill_8ABLYG: 正文内容、标签文字 */
+  --figma-content-color-text: var(--figma-color-text-body);
+
+  /* fill_WUTI4X: 次要说明文字 */
+  --figma-content-color-text-secondary: var(--figma-color-text-secondary);
+
+  /* ===== 背景色 - 引用 common/vars.css ===== */
+
+  /* fill_NUOQ8M: 卡片、容器背景 */
+  --figma-content-color-bg-container: var(--figma-color-bg-card);
+
+  /* fill_1YZ551: 输入框背景 */
+  --figma-content-color-bg-input: var(--figma-color-bg-input);
+
+  /* fill_6QN69Y: 表格表头背景 */
+  --figma-content-color-bg-header: var(--figma-color-bg-header);
+
+  /* fill_L4E4DT: AI结果区域背景 */
+  --figma-content-color-bg-ai-result: var(--figma-color-bg-ai-result);
+
+  /* fill_0R7VW9: 选中标签背景 */
+  --figma-content-color-bg-selected: var(--figma-color-primary-light);
+
+  /* fill_3QUJJN: 进度条背景 */
+  --figma-content-color-bg-progress: var(--figma-color-gray-2);
+
+  /* fill_JG28PO: 成功图标背景 */
+  --figma-content-color-bg-success-icon: var(--figma-color-success-light);
+
+  /* fill_B6JY75: 警告提示背景 */
+  --figma-content-color-bg-warning: var(--figma-color-warning-light);
+
+  /* ===== 边框和分割线 - 引用 common/vars.css ===== */
+
+  /* fill_WUTI4X: 输入框、按钮边框 */
+  --figma-content-color-border: var(--figma-color-border);
+
+  /* fill_53DVJO: 卡片边框 */
+  --figma-content-color-border-card: var(--figma-color-border-light);
+
+  /* fill_VK6OTV: AI结果边框 */
+  --figma-content-color-border-ai: var(--figma-color-border);
+
+  /* fill_5OQRDN: 头部分割线 */
+  --figma-content-color-divider: var(--figma-color-border-strong);
+
+  /* fill_Z5RI2Q: 分隔线 */
+  --figma-content-color-divider-light: var(--figma-color-border-light);
+
+  /* ===== 阴影 ===== */
+
+  /* effect_096UOB: 弹窗阴影 */
+  --figma-content-shadow-lg:
+    0px 6px 16px 0px rgb(0 0 0 / 8%), 0px 3px 6px -4px rgb(0 0 0 / 10%);
+
+  /* ===== 圆角 ===== */
+
+  /* 输入框、按钮圆角 */
+  --figma-content-border-radius-sm: 4px;
+
+  /* 卡片、弹窗圆角 */
+  --figma-content-border-radius-md: 8px;
+
+  /* 大圆角 */
+  --figma-content-border-radius-lg: 12px;
+
+  /* 进度条圆角 */
+  --figma-content-border-radius-full: 100px;
+}

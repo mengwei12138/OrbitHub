@@ -1,0 +1,161 @@
+.card {
+  padding: 16px 20px;
+  margin-bottom: 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 4%);
+}
+
+.header {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.header-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.header-title {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1f1f1f;
+}
+
+.stats {
+  display: flex;
+  gap: 16px;
+}
+
+.stat-card {
+  display: flex;
+  flex: 1;
+  gap: 16px;
+  align-items: center;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 6px;
+}
+
+.icon-box {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.icon-box img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.icon-box-total {
+  background: #e6f4ff;
+}
+
+.icon-box-unread {
+  background: #fff1f0;
+}
+
+.icon-box-abnormal {
+  background: #fff7e6;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}
+
+.stat-value {
+  font-family: Inter, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.21;
+  color: #1f1f1f;
+}
+
+.stat-value-unread {
+  color: #ff4d4f;
+}
+
+.stat-value-abnormal {
+  color: #fa8c16;
+}
+
+.divider {
+  height: 1px;
+  margin: 16px 0;
+  background: #f0f0f0;
+}
+
+.batch-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.batch-label {
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}
+
+.btn-mark-read {
+  height: 32px;
+  padding: 0 16px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #595959;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-mark-read:hover {
+  color: #1677ff;
+  border-color: #1677ff;
+}
+
+.btn-clear-ignored {
+  height: 32px;
+  padding: 0 16px;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #ff4d4f;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #ffa39e;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.btn-clear-ignored:hover {
+  background: #fff1f0;
+  border-color: #ff4d4f;
+}

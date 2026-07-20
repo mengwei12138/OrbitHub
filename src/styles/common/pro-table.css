@@ -1,0 +1,115 @@
+/**
+ * CustomProTable 组件样式变量
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 369-604 (AccountListContent)
+ */
+
+:root {
+  /* ===== CustomProTable 组件变量 ===== */
+
+  /* 表格容器 */
+  --figma-component-pro-table-card-bg: var(--figma-color-white);
+  --figma-component-pro-table-card-radius: var(--figma-radius-lg);
+  --figma-component-pro-table-card-shadow: var(--figma-shadow-card);
+
+  /* 工具栏 */
+  --figma-component-pro-table-toolbar-bg: var(--figma-color-white);
+  --figma-component-pro-table-toolbar-height: 48px;
+  --figma-component-pro-table-toolbar-padding: var(--figma-spacing-lg);
+
+  /* 表头 (thead) */
+  --figma-component-pro-table-thead-bg: var(--figma-color-gray-1);
+  --figma-component-pro-table-thead-text-color: var(--figma-color-gray-10);
+  --figma-component-pro-table-thead-font-size: var(--figma-font-size-small);
+  --figma-component-pro-table-thead-font-weight: var(
+    --figma-font-weight-heading
+  );
+  --figma-component-pro-table-thead-padding: var(--figma-spacing-md)
+    var(--figma-spacing-lg);
+
+  /* 表体 (tbody) */
+  --figma-component-pro-table-tbody-bg: var(--figma-color-white);
+  --figma-component-pro-table-tbody-alt-bg: var(--figma-color-gray-1);
+  --figma-component-pro-table-tbody-row-hover-bg: var(--figma-color-gray-1);
+  --figma-component-pro-table-tbody-cell-padding: var(--figma-spacing-md)
+    var(--figma-spacing-lg);
+  --figma-component-pro-table-divider-color: var(--figma-color-gray-5);
+  --figma-component-pro-table-divider-width: 1px;
+
+  /* 复选框 */
+  --figma-component-pro-table-checkbox-radius: var(--figma-radius-checkbox);
+  --figma-component-pro-table-checkbox-border-color: var(--figma-color-gray-6);
+  --figma-component-pro-table-checkbox-checked-bg: var(--figma-color-primary);
+  --figma-component-pro-table-checkbox-checked-border: var(
+    --figma-color-primary
+  );
+
+  /* 状态徽章 */
+  --figma-component-pro-table-status-online-bg: var(
+    --figma-color-success-light
+  );
+  --figma-component-pro-table-status-online-text: var(--figma-color-success);
+  --figma-component-pro-table-status-online-dot: var(--figma-color-success);
+  --figma-component-pro-table-status-invalid-bg: var(--figma-color-error-light);
+  --figma-component-pro-table-status-invalid-text: var(--figma-color-error);
+  --figma-component-pro-table-status-invalid-dot: var(--figma-color-error);
+  --figma-component-pro-table-status-stopped-bg: var(--figma-color-gray-2);
+  --figma-component-pro-table-status-stopped-text: var(--figma-color-gray-8);
+  --figma-component-pro-table-status-stopped-dot: var(--figma-color-gray-8);
+  --figma-component-pro-table-status-radius: var(--figma-radius-pill);
+
+  /* 操作列 */
+  --figma-component-pro-table-action-link-color: var(--figma-color-primary);
+  --figma-component-pro-table-action-button-radius: var(--figma-radius-sm);
+  --figma-component-pro-table-action-button-border-color: var(
+    --figma-color-gray-6
+  );
+  --figma-component-pro-table-action-button-text-color: var(
+    --figma-color-gray-9
+  );
+  --figma-component-pro-table-action-button-border-width: 1px;
+  --figma-component-pro-table-action-button-danger-border: var(
+    --figma-color-error
+  );
+  --figma-component-pro-table-action-button-danger-text: var(
+    --figma-color-error
+  );
+  --figma-component-pro-table-action-button-primary-border: var(
+    --figma-color-primary
+  );
+  --figma-component-pro-table-action-button-primary-text: var(
+    --figma-color-primary
+  );
+
+  /* 选中信息区 */
+  --figma-component-pro-table-selection-badge-bg: var(--figma-color-primary);
+  --figma-component-pro-table-selection-badge-text: var(--figma-color-white);
+  --figma-component-pro-table-selection-label-color: var(--figma-color-gray-9);
+
+  /* 批量操作按钮 */
+  --figma-component-pro-table-batch-button-radius: var(--figma-radius-sm);
+  --figma-component-pro-table-batch-button-border-width: 1px;
+
+  /* 分页器 */
+  --figma-component-pro-table-pagination-total-color: var(--figma-color-gray-8);
+  --figma-component-pro-table-pagination-total-font-size: var(
+    --figma-font-size-caption
+  );
+  --figma-component-pro-table-pagination-button-bg: var(--figma-color-white);
+  --figma-component-pro-table-pagination-button-border-color: var(
+    --figma-color-gray-6
+  );
+  --figma-component-pro-table-pagination-button-text-color: var(
+    --figma-color-gray-9
+  );
+  --figma-component-pro-table-pagination-button-active-bg: var(
+    --figma-color-primary
+  );
+  --figma-component-pro-table-pagination-button-active-text: var(
+    --figma-color-white
+  );
+  --figma-component-pro-table-pagination-height: 28px;
+  --figma-component-pro-table-pagination-min-width: 28px;
+}

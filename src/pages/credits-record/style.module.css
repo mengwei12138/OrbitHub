@@ -1,0 +1,144 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 100%;
+  background: #f5f5f5;
+}
+
+.panel {
+  overflow: hidden;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.filter-left {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-label {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: #434343;
+}
+
+.filter-select {
+  width: 160px;
+}
+
+.table-wrap :global(.ant-pro-card) {
+  background: transparent;
+  box-shadow: none;
+}
+
+.table-wrap :global(.ant-pro-card .ant-pro-card-body) {
+  padding: 0;
+}
+
+/* Figma 3157-3053：表头 48px、#434343 Semibold、底边 #e8e8e8 */
+.table-wrap :global(.ant-table-thead > tr > th) {
+  height: 48px;
+  padding: var(--figma-component-pro-table-thead-padding);
+  font-size: var(--figma-component-pro-table-thead-font-size);
+  font-weight: var(--figma-component-pro-table-thead-font-weight);
+  color: var(--figma-component-pro-table-thead-text-color);
+  background: var(--figma-component-pro-table-thead-bg);
+  border-bottom: 1px solid var(--figma-color-border-strong);
+}
+
+.table-wrap :global(.ant-table-thead > tr > th::before) {
+  display: none;
+}
+
+.table-wrap :global(.ant-table-thead > tr > th::after) {
+  display: none;
+}
+
+.table-wrap :global(.ant-table-tbody > tr > td) {
+  height: 46px;
+  padding: var(--figma-component-pro-table-tbody-cell-padding);
+  font-size: 14px;
+  color: var(--figma-color-text-body);
+  border-bottom: 1px solid var(--figma-color-border-light);
+}
+
+.table-wrap :global(.ant-table-tbody > tr:last-child > td) {
+  border-bottom: none;
+}
+
+.table-wrap :global(.ant-table-tbody > tr:hover > td) {
+  background: var(--figma-component-pro-table-tbody-row-hover-bg);
+}
+
+.table-wrap :global(.ant-pro-table-list-pagination) {
+  padding: 12px 16px 16px;
+  margin: 0;
+  border-top: 1px solid #f0f0f0;
+}
+
+.time-text {
+  font-size: 14px;
+  color: #595959;
+}
+
+.cell-text {
+  font-size: 14px;
+  color: #262626;
+}
+
+.type-video {
+  font-size: 14px;
+  color: #1677ff;
+}
+
+.type-image {
+  font-size: 14px;
+  color: #52c41a;
+}
+
+.type-other {
+  font-size: 14px;
+  color: #595959;
+}
+
+.cell-muted {
+  font-size: 14px;
+  color: #8c8c8c;
+}
+
+.credits-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--figma-color-orange, #fa8c16);
+}
+
+.credits-trial {
+  font-size: 14px;
+  color: #595959;
+}
+
+.trial-yes {
+  font-size: 14px;
+  color: #1677ff;
+}
+
+.trial-no {
+  font-size: 14px;
+  color: #595959;
+}
+
+.title-cell {
+  font-size: 14px;
+  color: #262626;
+}

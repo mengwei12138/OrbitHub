@@ -1,0 +1,39 @@
+:global(.ant-pro-global-header-logo) {
+  display: flex;
+  align-items: center;
+  width: 215px;
+  height: 100%;
+  margin: 0;
+  background-color: #001529;
+}
+
+:global(.ant-pro-global-header-logo h1) {
+  color: rgb(255 255 255 / 65%);
+}
+
+:global(.ant-pro-global-header) {
+  margin: 0;
+  background-color: #fff;
+}
+
+:global(.ant-pro-layout .ant-layout-header.ant-pro-layout-header) {
+  background-color: #fff;
+}
+
+:global(.ant-layout-sider-children) {
+  padding: 0;
+}
+
+:global(.ant-pro-sider-menu .ant-menu-item) {
+  border-radius: 0;
+}
+
+:global(.ant-pro-sider-menu .ant-menu-item-selected) {
+  width: 100%;
+  margin: 0;
+}
+
+:global(.ant-pro-page-container) {
+  padding: var(--figma-pro-layout-breadcrumb-height) var(--figma-spacing-2xl)
+    var(--figma-spacing-2xl);
+}

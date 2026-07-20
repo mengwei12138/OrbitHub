@@ -1,0 +1,68 @@
+.account-selector-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.account-option-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.accountOptionItem:hover {
+  background-color: #f5f5f5;
+}
+
+.account-option-item-selected {
+  background-color: #e6f7ff;
+}
+
+.account-option-item-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.account-option-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.platform-badge {
+  font-size: 12px;
+  color: #666;
+}
+
+.account-name-phone {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+.account-name {
+  font-size: 14px;
+  color: #333;
+}
+
+.account-phone {
+  font-size: 12px;
+  color: #999;
+}
+
+.loading-more {
+  padding: 12px;
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+}
+
+.no-more {
+  padding: 12px;
+  font-size: 12px;
+  color: #bbb;
+  text-align: center;
+}

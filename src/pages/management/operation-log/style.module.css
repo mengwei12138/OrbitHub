@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--figma-color-text-heading);
+}
+
+.operation-type-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 4px;
+}
+
+.time-text {
+  font-size: 13px;
+  color: var(--figma-color-text-secondary);
+}
+
+.operator-text {
+  font-size: 14px;
+  color: var(--figma-color-text);
+}
+
+.company-text {
+  font-size: 14px;
+  color: var(--figma-color-text-secondary);
+}
+
+.content-text {
+  font-size: 14px;
+  color: var(--figma-color-text);
+}

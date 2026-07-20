@@ -1,0 +1,80 @@
+{
+  "name": "matrixhub-ui-review-prototype",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "需求评审用 MatrixHub 前端副本原型，不作为正式 web 代码提交。",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1",
+    "lint": "biome check --write . && stylelint --fix \"src/**/*.css\"",
+    "lint:style": "stylelint \"**/*.css\"",
+    "precommit": "pnpm lint && pnpm test",
+    "prepare": "echo prototype-skip-husky",
+    "preview": "npm run build && vite preview",
+    "test": "tsc -b && vitest --run --coverage",
+    "update": "pnpm i --ignore-scripts"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "biome check --write"
+    ],
+    "*.css": [
+      "stylelint --fix"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/charts": "2.6.x",
+    "@ant-design/icons": "5.6.x",
+    "@ant-design/pro-components": "2.8.x",
+    "@tanstack/react-query": "5.96.x",
+    "ahooks": "3.9.x",
+    "antd": "5.29.x",
+    "axios": "1.14.x",
+    "classnames": "2.5.x",
+    "crypto-js": "4.2.x",
+    "dashjs": "5.0.x",
+    "dayjs": "1.11.x",
+    "decimal.js": "10.6.x",
+    "hls.js": "1.5.x",
+    "jsencrypt": "3.3.2",
+    "lodash-es": "4.18.x",
+    "plyr": "3.7.x",
+    "react": "18.3.x",
+    "react-dom": "18.3.x",
+    "react-router-dom": "7.14.x",
+    "zustand": "5.0.x"
+  },
+  "devDependencies": {
+    "@amiceli/vitest-cucumber": "6.3.x",
+    "@biomejs/biome": "2.4.x",
+    "@playwright/test": "1.59.x",
+    "@rolldown/plugin-babel": "0.2.x",
+    "@testing-library/jest-dom": "6.9.x",
+    "@testing-library/react": "16.3.x",
+    "@testing-library/user-event": "14.6.x",
+    "@types/crypto-js": "4.2.x",
+    "@types/lodash-es": "4.17.x",
+    "@types/node": "22.19.x",
+    "@types/react": "18.3.x",
+    "@types/react-dom": "18.3.x",
+    "@vitejs/plugin-react": "6.0.x",
+    "@vitest/coverage-v8": "4.1.x",
+    "happy-dom": "20.9.x",
+    "husky": "9.1.x",
+    "lint-staged": "16.4.x",
+    "msw": "2.13.x",
+    "playwright": "1.59.x",
+    "stylelint": "16.26.x",
+    "stylelint-config-recess-order": "7.7.x",
+    "stylelint-config-standard": "36.0.x",
+    "stylelint-order": "8.1.x",
+    "typescript": "5.9.x",
+    "vite": "8.0.x",
+    "vite-plugin-compression2": "2.5.x",
+    "vitest": "4.1.x"
+  },
+  "resolutions": {
+    "@antv/util": "3.3.11"
+  }
+}

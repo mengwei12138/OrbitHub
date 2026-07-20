@@ -1,0 +1,163 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--figma-color-text-heading);
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 32px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--figma-color-text);
+  cursor: pointer;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-gray-6);
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.back-button:hover {
+  color: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}
+
+.account-info-card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 16px;
+  margin-top: 8px;
+  margin-bottom: 16px;
+  background: var(--figma-color-white);
+  border-radius: 8px;
+  box-shadow: 0 1px 6px -1px rgb(0 0 0 / 6%);
+}
+
+.loading {
+  flex: 1;
+  font-size: 14px;
+  color: var(--figma-color-text-secondary);
+  text-align: center;
+}
+
+.error {
+  flex: 1;
+  font-size: 14px;
+  color: var(--figma-color-error);
+  text-align: center;
+}
+
+.avatar {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background-color: var(--figma-account-color-special-red);
+  border-radius: 50%;
+}
+
+.avatar-text {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.account-details {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-left: 16px;
+}
+
+.account-name {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--figma-color-text-heading);
+}
+
+.account-meta {
+  display: flex;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--figma-color-text-secondary);
+}
+
+.meta-divider {
+  margin: 0 8px;
+  color: var(--figma-color-gray-4);
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  margin-left: 16px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--figma-color-success);
+  background: var(--figma-color-success-light);
+  border-radius: 10px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  background: var(--figma-color-success);
+  border-radius: 50%;
+}
+
+.followers {
+  margin-left: 66px;
+  font-size: 13px;
+  color: var(--figma-color-text-secondary);
+}
+
+.log-type-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  border-radius: 4px;
+}
+
+.time-text {
+  font-size: 13px;
+  color: var(--figma-color-text-secondary);
+}
+
+.description-text {
+  font-size: 14px;
+  color: var(--figma-color-text);
+}

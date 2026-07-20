@@ -1,0 +1,287 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 32px;
+}
+
+.steps-wrapper {
+  width: var(--figma-component-steps-width);
+  margin-bottom: 32px;
+}
+
+.form-card {
+  width: 560px;
+  padding: 40px;
+  background-color: var(--figma-color-white);
+  border-radius: var(--figma-account-border-radius-lg);
+  box-shadow: var(--figma-account-shadow-sm);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--figma-font-size-h1);
+  font-weight: var(--figma-font-weight-h1);
+  line-height: 1.2;
+  color: var(--figma-account-color-text-primary);
+}
+
+.description {
+  margin: 6px 0 0;
+  font-size: var(--figma-font-size-caption);
+  font-weight: var(--figma-font-weight-caption);
+  line-height: 1.2;
+  color: var(--figma-account-color-text-secondary);
+}
+
+.alert {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background-color: var(--figma-account-color-bg-selected);
+  border-radius: var(--figma-account-border-radius-sm);
+}
+
+.form :global(.ant-form-item:first-of-type) {
+  margin-top: 0;
+}
+
+.form :global(.ant-form-item) {
+  margin-bottom: 16px;
+}
+
+.form :global(.ant-form-item-label > label) {
+  font-weight: 500;
+  color: var(--figma-account-color-text);
+}
+
+.form :global(.ant-form-item-label > label::before) {
+  color: var(--figma-account-color-error);
+}
+
+.hint {
+  margin-top: 4px;
+  font-size: var(--figma-font-size-auxiliary);
+  font-weight: var(--figma-font-weight-auxiliary);
+  line-height: 1.2;
+  color: var(--figma-color-text-secondary);
+}
+
+.footer {
+  margin-top: 24px;
+}
+
+.divider {
+  height: 0;
+  border-top: 1px solid var(--figma-color-gray-4);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 40px;
+  font-size: var(--figma-font-size-body);
+  font-weight: var(--figma-font-weight-body);
+  color: var(--figma-account-color-text);
+  cursor: pointer;
+  background-color: var(--figma-color-white);
+  border: 1px solid var(--figma-color-gray-6);
+  border-radius: var(--figma-account-border-radius-sm);
+  transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+  color: var(--figma-account-color-primary);
+  border-color: var(--figma-account-color-primary);
+}
+
+.next-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 40px;
+  font-size: var(--figma-font-size-body);
+  font-weight: 500;
+  color: var(--figma-color-white);
+  cursor: pointer;
+  background-color: var(--figma-account-color-primary);
+  border: none;
+  border-radius: var(--figma-account-border-radius-sm);
+  transition: all 0.2s;
+}
+
+.next-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.next-btn:hover:not(:disabled) {
+  background-color: var(--figma-account-color-primary);
+}
+
+.qr-code-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.qr-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--figma-color-gray-4);
+  border-radius: var(--figma-account-border-radius-md);
+}
+
+.qr-image {
+  width: 180px;
+  height: 180px;
+}
+
+.qr-code-placeholder,
+.qr-code-error {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-color-text-secondary);
+}
+
+.error-text {
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-account-color-error);
+}
+
+.retry-button {
+  padding: 4px 12px;
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-account-color-primary);
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--figma-account-color-primary);
+  border-radius: var(--figma-account-border-radius-sm);
+}
+
+.retry-button:hover {
+  background-color: var(--figma-account-color-bg-selected);
+}
+
+.refresh-button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 32px;
+  margin: 0 auto 16px;
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-account-color-primary);
+  cursor: pointer;
+  background: none;
+  border: 1px solid var(--figma-account-color-primary);
+  border-radius: var(--figma-account-border-radius-sm);
+  transition: all 0.2s;
+}
+
+.refresh-button:hover {
+  background-color: var(--figma-account-color-bg-selected);
+}
+
+.timer-wrapper {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-color-text-secondary);
+}
+
+.timer-text {
+  color: var(--figma-color-text-secondary);
+}
+
+.timer-value {
+  font-weight: 500;
+  color: var(--figma-color-text-body);
+}
+
+.scan-hint {
+  margin: 0 0 8px;
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-color-text-body);
+  text-align: center;
+}
+
+.scan-guide {
+  margin: 0;
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-color-text-secondary);
+  text-align: center;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+  margin-top: 16px;
+  background-color: var(--figma-color-gray-1);
+  border-radius: var(--figma-account-border-radius-sm);
+}
+
+.loading-spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid var(--figma-color-gray-4);
+  border-top-color: var(--figma-account-color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-color-text-body);
+}
+
+.loading-hint {
+  font-size: var(--figma-font-size-auxiliary);
+  color: var(--figma-color-text-secondary);
+}
+
+.processing-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+  border: 1px solid var(--figma-color-gray-4);
+  border-radius: var(--figma-account-border-radius-md);
+}
+
+.processing-text {
+  font-size: var(--figma-font-size-body);
+  color: var(--figma-color-text-body);
+}

@@ -1,0 +1,83 @@
+# 积分使用记录 - 交互逻辑定义
+
+## 页面概述
+- **页面路由**: `/credits-record`
+- **页面名称**: 积分使用记录
+- **页面类型**: 列表筛选型页面
+
+## 页面结构
+
+### 1. 页面头部
+- 标题: "积分使用记录"
+
+### 2. 筛选区域
+- **筛选类型 Select**
+  - 选项: 全部类型 / 视频生成 / 图文生成
+  - 字段: `type`
+  - 默认值: `all`
+  
+- **时间范围 Select**
+  - 选项: 最近30天 / 最近7天 / 自定义
+  - 字段: `dateRange`
+  - 默认值: `last30days`
+  
+- **查询按钮**
+  - 触发刷新表格数据
+
+### 3. 表格区域
+- **表头列**:
+  1. 时间 - `createdAt`
+  2. 操作账号 - `accountName`
+  3. 内容类型 - `contentType` (视频生成/图文生成)
+  4. 质量/时长 - `quality` (如 "1080p" / "15秒")
+  5. 虚拟人物 - `virtualHuman`
+  6. 消耗 - `credits` (负数显示，试用显示0)
+  7. 是否试用 - `isTrial` (是/否)
+  8. 内容标题 - `contentTitle`
+
+### 4. 分页组件
+- 支持切换页码和每页条数
+
+## 交互流程
+
+### 查询流程
+```
+用户选择筛选条件 → 点击查询按钮 → 刷新表格数据
+```
+
+### 分页流程
+```
+用户切换页码/页数 → 自动刷新当前页数据
+```
+
+## 状态定义
+
+### 筛选表单状态
+```typescript
+interface FilterState {
+  type: 'all' | 'video' | 'image';
+  dateRange: 'last30days' | 'last7days' | 'custom';
+  customDateRange?: [Dayjs, Dayjs];
+}
+```
+
+### 表格数据状态
+```typescript
+interface CreditsRecord {
+  id: string;
+  createdAt: string;
+  accountName: string;
+  contentType: 'video' | 'image';
+  quality: string;
+  virtualHuman: string;
+  credits: number;  // 负数，试用为0
+  isTrial: boolean;
+  contentTitle: string;
+}
+```
+
+## API 接口（待定义）
+由于 OpenAPI 暂未提供，使用前端 mock 数据。
+
+## 组件清单
+- `CreditsRecordPage` - 页面容器组件

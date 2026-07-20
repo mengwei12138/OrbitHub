@@ -1,0 +1,40 @@
+version: "1.0"
+page: 积分与消耗
+interactions:
+  - id: view-balance
+    description: 查看积分池余额
+    actor: 用户
+    trigger:
+      - type: page_load
+        condition: 首次进入页面
+    steps:
+      - page-header: 渲染页面标题"积分与消耗"
+      - section: 积分池余额: 渲染渐变背景卡片（card-balance: 总积分, card-free: 可用积分）
+  - id: view-rules
+    description: 查看积分消耗规则
+    actor: 用户
+    trigger:
+      - type: user_action
+        action: 点击"积分消耗规则速查"区块
+    steps:
+      - section: 积分消耗规则速查: 展开规则列表
+      - tag: 视频生成: 显示视频生成消耗规则
+  - id: filter-consumption
+    description: 筛选消耗明细
+    actor: 用户
+    trigger:
+      - type: user_action
+        action: 选择筛选条件
+    steps:
+      - filter-row: 选择时间范围、账号、消耗类型等筛选条件
+      - table-card: 根据筛选条件刷新消耗明细表格
+      - pagination: 更新分页信息
+  - id: pagination
+    description: 分页浏览消耗明细
+    actor: 用户
+    trigger:
+      - type: user_action
+        action: 点击分页器
+    steps:
+      - pagination: 切换到指定页码
+      - table-card: 加载对应页的消耗明细数据

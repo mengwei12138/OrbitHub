@@ -1,0 +1,170 @@
+# 操作日志页面交互逻辑
+---
+# 日志列表 - 列表交互
+interaction:
+  type: list
+  name: 操作日志列表
+  trigger:
+    component: LogTable
+    action: onMount
+
+  mainFlow:
+    - step: 1
+      description: 加载操作日志列表
+      parallel:
+        - name: 调用 GET /api/v1/admin/operation-logs
+          api:
+            method: GET
+            url: /api/v1/admin/operation-logs
+            params:
+              page: 1
+              pageSize: 10
+              startDate: { startDate }
+              endDate: { endDate }
+              operationType: { operationType }
+              operatorId: { operatorId }
+              companyId: { companyId }
+        - name: 显示 loading
+          component: LogTable
+          action:
+            method: setLoading
+            props:
+              loading: true
+      onSuccess: step_2
+      onFail: step_3
+
+    - step: 2
+      description: 渲染日志列表
+      component: LogTable
+      action:
+        method: setData
+        props:
+          dataSource: { response.data.list }
+      onDone: step_4
+
+    - step: 3
+      description: 加载失败
+      component: LogTable
+      action:
+        method: setError
+        props:
+          error: { error.message }
+
+    - step: 4
+      description: 渲染分页
+      component: Pagination
+      action:
+        method: setPagination
+        props:
+          current: 1
+          pageSize: 10
+          total: { response.data.total }
+
+  randomEvents:
+    - trigger: 用户切换操作类型筛选
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        operationType: { operationType }
+
+    - trigger: 用户切换操作人筛选
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        operatorId: { operatorId }
+
+    - trigger: 用户切换公司筛选
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        companyId: { companyId }
+
+    - trigger: 用户切换日期范围
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        startDate: { startDate }
+        endDate: { endDate }
+
+    - trigger: 用户点击重置
+      name: 重置筛选条件并重新加载
+      component: FilterCard
+      action:
+        method: reset
+      onDone: step_1
+
+    - trigger: 用户点击查询
+      name: 按筛选条件重新加载
+      component: FilterCard
+      action:
+        method: search
+      onDone: step_1
+
+    - trigger: 用户切换分页
+      name: 重新加载数据
+      component: LogTable
+      action:
+        method: reload
+      params:
+        page: { pagination.current }
+        pageSize: { pagination.pageSize }
+
+---
+# 操作类型映射表
+operation_type_mapping:
+  CREATE_COMPANY: 新增公司
+  UPDATE_COMPANY: 更新公司
+  DELETE_COMPANY: 删除公司
+  DISABLE_COMPANY: 禁用公司
+  RECHARGE_POINTS: 手动充值
+  SET_ACCOUNT_LIMIT: 设置社交账号上限
+  CREATE_ADMIN: 新增管理员
+  UPDATE_ADMIN: 更新管理员
+  DELETE_ADMIN: 删除管理员
+  DISABLE_ADMIN: 禁用管理员
+
+---
+# 状态定义
+states:
+  - name: logs
+    type: array
+    default: []
+
+  - name: operation_type
+    type: string
+    default: ''
+
+  - name: operator_id
+    type: string
+    default: ''
+
+  - name: company_id
+    type: string
+    default: ''
+
+  - name: start_date
+    type: string
+    default: ''
+
+  - name: end_date
+    type: string
+    default: ''
+
+  - name: date_preset
+    type: string
+    default: 'last7days'
+
+  - name: pagination
+    type: object
+    default:
+      current: 1
+      pageSize: 10
+      total: 0

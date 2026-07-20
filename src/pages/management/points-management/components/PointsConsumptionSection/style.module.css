@@ -1,0 +1,49 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 24px 0;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: #1f1f1f;
+}
+
+.filter-row {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #595959;
+  white-space: nowrap;
+}
+
+.filter-select {
+  width: 160px;
+}
+
+.tenant-search {
+  width: 220px;
+}
+
+.table-card {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.hint {
+  padding: 16px 0;
+  font-size: 13px;
+  color: #8c8c8c;
+  text-align: center;
+}

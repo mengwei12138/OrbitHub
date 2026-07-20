@@ -1,0 +1,59 @@
+.wrapper {
+  padding: 0;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.filter-inputs {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-label {
+  font-size: 14px;
+  color: #595959;
+  white-space: nowrap;
+}
+
+.filter-select {
+  width: 120px;
+}
+
+.search-input {
+  width: 200px;
+}
+
+.search-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.filter-actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.comment-text {
+  font-size: 14px;
+  line-height: 1.57;
+  color: #262626;
+}
+
+.reply-text {
+  font-size: 14px;
+  line-height: 1.57;
+  color: #1677ff;
+}

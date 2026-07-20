@@ -1,0 +1,327 @@
+/**
+ * Figma Design System Variables
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 357-320 (UI 设计规范)
+ */
+
+@import url("./breadcrumb.css");
+@import url("./pro-table.css");
+@import url("./steps.css");
+
+:root {
+  /* ===== 品牌色 (Brand Colors) ===== */
+
+  /* fill_EMMUUT: 主按钮/链接/选中 */
+  --figma-color-primary: #1677ff;
+
+  /* fill_EMMUUT-HOVER: 主按钮 hover 背景 */
+  --figma-color-primary-hover: #0958d9;
+
+  /* fill_1HBVVD: 信息提示背景 */
+  --figma-color-primary-light: #e6f4ff;
+
+  /* fill_09G0VF: 侧边栏背景 */
+  --figma-color-sidebar-dark: #001529;
+
+  /* ===== 功能色 (Functional Colors) ===== */
+
+  /* fill_B57S27: 在线/成功状态 */
+  --figma-color-success: #52c41a;
+
+  /* fill_YUSJM3: 成功状态背景 */
+  --figma-color-success-light: #f6ffed;
+
+  /* fill_I63Y4P: 警告提示图标 */
+  --figma-color-warning: #faad14;
+
+  /* fill_YUSJM3: 警告状态背景 */
+  --figma-color-warning-light: #fffbe6;
+
+  /* fill_1KWC1O: 失效/危险/删除 */
+  --figma-color-error: #ff4d4f;
+
+  /* fill_KC2BK5: 错误状态背景 */
+  --figma-color-error-light: #fff2f0;
+
+  /* fill_KIV69T: 小红书品牌色 */
+  --figma-color-xhs-red: #ff2442;
+
+  /* ===== 扩展功能色 (Extended Colors) ===== */
+
+  /* fill_BQSH60: 启动标签 */
+  --figma-color-purple: #722ed1;
+
+  /* fill_U5AB7G: 启动标签背景 */
+  --figma-color-purple-light: #f9f0ff;
+
+  /* fill_8XFCR0: 停止标签 */
+  --figma-color-magenta: #eb2f96;
+
+  /* fill_JRVAN7: 停止标签背景 */
+  --figma-color-magenta-light: #fff0f6;
+
+  /* fill_XVKYVN: 内容删除标签 */
+  --figma-color-orange: #fa8c16;
+
+  /* fill_HUGZLL: 内容删除标签背景 */
+  --figma-color-orange-light: #fff7e6;
+
+  /* ===== 中性色 (Neutral Colors) ===== */
+
+  /* fill_EJSLUF: 卡片/输入框背景 */
+  --figma-color-white: #fff;
+
+  /* fill_9L50JJ: 表头背景 */
+  --figma-color-gray-1: #fafafa;
+
+  /* fill_7THSFV: 已停止标签背景 */
+  --figma-color-gray-2: #f5f5f5;
+
+  /* fill_GULBZS: 页面背景 */
+  --figma-color-gray-3: #f0f2f5;
+
+  /* fill_RMX2EV: 分割线/边框 */
+  --figma-color-gray-4: #f0f0f0;
+
+  /* fill_U2SQL3: 表格边框 */
+  --figma-color-gray-5: #e8e8e8;
+
+  /* fill_RZA6JP: 输入框边框/禁用 */
+  --figma-color-gray-6: #d9d9d9;
+
+  /* fill_7MKS4G: Placeholder文字 */
+  --figma-color-gray-7: #bfbfbf;
+
+  /* fill_NUVK7T: 辅助文字/次要信息 */
+  --figma-color-gray-8: #8c8c8c;
+
+  /* fill_J30RV8: 正文文字 */
+  --figma-color-gray-9: #595959;
+
+  /* fill_ATDSTJ: 标题文字 */
+  --figma-color-gray-10: #434343;
+
+  /* fill_KIV69T: 页面主标题 */
+  --figma-color-gray-11: #1f1f1f;
+
+  /* ===== 文字颜色 (Text Colors) ===== */
+
+  /* 页面主标题 */
+  --figma-color-text-heading: #1f1f1f;
+
+  /* 正文文字 */
+  --figma-color-text-body: #595959;
+
+  /* 辅助文字/次要信息 */
+  --figma-color-text-secondary: #8c8c8c;
+
+  /* Placeholder文字 */
+  --figma-color-text-placeholder: #bfbfbf;
+
+  /* 链接文字 */
+  --figma-color-text-link: #1677ff;
+
+  /* 白色文字（用于深色背景） */
+  --figma-color-text-inverse: #fff;
+
+  /* ===== 背景颜色 (Background Colors) ===== */
+
+  /* 页面背景 */
+  --figma-color-bg-page: #f0f2f5;
+
+  /* 侧边栏背景 */
+  --figma-color-bg-sidebar: #001529;
+
+  /* 卡片背景 */
+  --figma-color-bg-card: #fff;
+
+  /* 表头背景 */
+  --figma-color-bg-header: #fafafa;
+
+  /* 输入框背景 */
+  --figma-color-bg-input: #fff;
+
+  /* ===== 边框颜色 (Border Colors) ===== */
+
+  /* 输入框边框 */
+  --figma-color-border: #d9d9d9;
+
+  /* 分割线/边框 */
+  --figma-color-border-light: #f0f0f0;
+
+  /* 表格边框 */
+  --figma-color-border-strong: #e8e8e8;
+
+  /* ===== 间距 (Spacing) ===== */
+
+  /* 图标与文字间距、紧凑内边距 */
+  --figma-spacing-xs: 4px;
+
+  /* 按钮组间距、选项间距 */
+  --figma-spacing-sm: 8px;
+
+  /* 分组标题间距、图标按钮内边距 */
+  --figma-spacing-md: 12px;
+
+  /* 表格单元格左右内边距、卡片内组间距 */
+  --figma-spacing-lg: 16px;
+
+  /* 侧边栏图标左边距、筛选区左内边距 */
+  --figma-spacing-xl: 20px;
+
+  /* 页面边距、卡片间距 */
+  --figma-spacing-2xl: 24px;
+
+  /* ===== 字体 (Typography) ===== */
+
+  /* Noto Sans SC（思源黑体）— 覆盖 Regular / Medium / Bold 三个字重 */
+
+  /* 设计等效：PingFang SC（苹方），Figma 云端使用 Noto Sans SC 替代 */
+  --figma-font-family:
+    "Noto Sans SC", -apple-system, blinkmacsystemfont, "Segoe UI", roboto,
+    arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+
+  /* ===== Menu/Sidebar 组件变量 ===== */
+
+  /* 侧边栏背景 */
+  --figma-color-menu-bg: #001529;
+
+  /* 侧边栏菜单项 hover 背景（白色 8% 透明度） */
+  --figma-color-menu-bg-hover: rgb(255 255 255 / 8%);
+
+  /* 侧边栏菜单项 active/选中背景（蓝色 #1677FF） */
+  --figma-color-menu-bg-active: #1677ff;
+
+  /* 侧边栏菜单项默认文字（白色 65% 透明度） */
+  --figma-color-menu-text: rgb(255 255 255 / 65%);
+
+  /* 侧边栏菜单项 hover 文字（白色） */
+  --figma-color-menu-text-hover: #fff;
+
+  /* 侧边栏菜单项 active/选中文字（白色） */
+  --figma-color-menu-text-active: #fff;
+
+  /* 侧边栏菜单分割线（白色 8% 透明度） */
+  --figma-color-menu-divider: rgb(255 255 255 / 8%);
+
+  /* ===== 字体系统 (Typography) ===== */
+
+  /* 页面主标题 */
+  --figma-font-size-display: 20px;
+  --figma-font-weight-display: 700;
+  --figma-font-color-display: #1f1f1f;
+
+  /* 卡片/弹窗标题 */
+  --figma-font-size-h1: 18px;
+  --figma-font-weight-h1: 700;
+  --figma-font-color-h1: #1f1f1f;
+
+  /* 弹窗标题 */
+  --figma-font-size-h2: 16px;
+  --figma-font-weight-h2: 700;
+  --figma-font-color-h2: #1f1f1f;
+
+  /* Logo 文字 */
+  --figma-font-size-logo: 15px;
+  --figma-font-weight-logo: 700;
+  --figma-font-color-logo: #fff;
+
+  /* 表格标题/账号名/面包屑当前页 */
+  --figma-font-size-heading: 14px;
+  --figma-font-weight-heading: 500;
+  --figma-font-color-heading: #434343;
+
+  /* 正文/按钮/表单标签 */
+  --figma-font-size-body: 14px;
+  --figma-font-weight-body: 400;
+  --figma-font-color-body: #595959;
+
+  /* 面包屑上级/辅助文字 */
+  --figma-font-size-secondary: 14px;
+  --figma-font-weight-secondary: 400;
+  --figma-font-color-secondary: #8c8c8c;
+
+  /* Placeholder */
+  --figma-font-size-placeholder: 14px;
+  --figma-font-weight-placeholder: 400;
+  --figma-font-color-placeholder: #bfbfbf;
+
+  /* 次要正文/表格操作 */
+  --figma-font-size-small: 13px;
+  --figma-font-weight-small: 400;
+  --figma-font-color-small: #595959;
+
+  /* 页面描述/分页信息 */
+  --figma-font-size-caption: 13px;
+  --figma-font-weight-caption: 400;
+  --figma-font-color-caption: #8c8c8c;
+
+  /* 状态标签文字 */
+  --figma-font-size-tag: 12px;
+  --figma-font-weight-tag: 500;
+  --figma-font-color-tag: #52c41a;
+
+  /* 辅助说明/手机号 */
+  --figma-font-size-auxiliary: 12px;
+  --figma-font-weight-auxiliary: 400;
+  --figma-font-color-auxiliary: #8c8c8c;
+
+  /* ===== 圆角系统 (Border Radius) ===== */
+
+  /* 复选框 */
+  --figma-radius-checkbox: 2px;
+
+  /* 按钮、输入框、下拉选择器、标签 */
+  --figma-radius-sm: 4px;
+
+  /* Logo 图标、信息条 */
+  --figma-radius-md: 6px;
+
+  /* 卡片、弹窗、二维码框 */
+  --figma-radius-lg: 8px;
+
+  /* 状态徽章 */
+  --figma-radius-badge: 10px;
+
+  /* 状态标签（药丸形） */
+  --figma-radius-pill: 12px;
+
+  /* ===== 阴影系统 (Shadows) ===== */
+
+  /* 卡片投影 */
+  --figma-shadow-card: 0px 1px 6px -1px rgb(0 0 0 / 6%);
+
+  /* 弹窗投影 */
+  --figma-shadow-modal:
+    0px 6px 16px 0px rgb(0 0 0 / 8%), 0px 3px 6px -4px rgb(0 0 0 / 10%);
+
+  /* 二维码框投影 */
+  --figma-shadow-qr: 0px 2px 8px 0px rgb(0 0 0 / 6%);
+
+  /* ===== ProLayout 组件变量 ===== */
+
+  /* 顶部导航栏高度 */
+  --figma-pro-layout-header-height: 56px;
+
+  /* 面包屑高度 */
+  --figma-pro-layout-breadcrumb-height: 44px;
+
+  /* 侧边栏宽度 */
+  --figma-pro-layout-sider-width: 215px;
+
+  /* 侧边栏宽度（折叠状态） */
+  --figma-pro-layout-sider-width-collapsed: 48px;
+
+  /* 内容区内边距（左右） */
+  --figma-pro-layout-content-padding-inline: 24px;
+
+  /* 内容区上下边距 */
+  --figma-pro-layout-content-padding-block: 24px;
+
+  /* ===== 图标尺寸 ===== */
+
+  /* 侧边栏菜单图标尺寸 */
+  --figma-icon-menu-size: 16px;
+}

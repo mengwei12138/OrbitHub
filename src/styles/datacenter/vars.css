@@ -1,0 +1,70 @@
+/**
+ * Figma Design System Variables - 数据中心模块
+ * 从 Figma 设计稿自动生成
+ *
+ * Figma 链接: https://www.figma.com/design/h0gT5MlFnxNOmOIQVd1thT/
+ * Node ID: 1236-1144 (数据中心-UI设计稿)
+ */
+
+:root {
+  /* ===== 预警等级颜色 ===== */
+
+  /* fill_KUZSGE: 高风险-红色 */
+  --figma-datacenter-color-alert-red: #ff4d4f;
+
+  /* fill_1ZS8OY: 关注-橙色 */
+  --figma-datacenter-color-alert-orange: #ff7a45;
+
+  /* fill_XYEFOV: 正常-绿色 */
+  --figma-datacenter-color-alert-green: #52c41a;
+
+  /* ===== KPI 指标卡图标背景 ===== */
+
+  /* fill_7NAW2Z: 总播放量 */
+  --figma-datacenter-color-kpi-play-bg: #e6f7ff;
+
+  /* fill_QXNU6V: 总点赞量 */
+  --figma-datacenter-color-kpi-like-bg: #fff1f0;
+
+  /* fill_XIINS9: 总评论量 */
+  --figma-datacenter-color-kpi-comment-bg: #fff7e6;
+
+  /* fill_QXEEOD: 总转发量 */
+  --figma-datacenter-color-kpi-share-bg: #f4ffb8;
+
+  /* fill_ZTL3NZ: 新增粉丝 */
+  --figma-datacenter-color-kpi-follower-bg: #f9f0ff;
+
+  /* fill_7V5ZY7: 私信量 */
+  --figma-datacenter-color-kpi-dm-bg: #e6fff9;
+
+  /* ===== 增长率颜色 ===== */
+
+  /* 正增长-绿色 */
+  --figma-datacenter-color-growth-up: #52c41a;
+
+  /* 负增长-红色 */
+  --figma-datacenter-color-growth-down: #ff4d4f;
+
+  /* ===== 平台标签 ===== */
+
+  /* fill_EFFCFF: 抖音标签背景 */
+  --figma-datacenter-color-platform-douyin-bg: #effcff;
+
+  /* fill_00D1FF: 抖音标签文字 */
+  --figma-datacenter-color-platform-douyin-text: #00d1ff;
+
+  /* fill_FFF2F0: 小红书标签背景 */
+  --figma-datacenter-color-platform-xiaohongshu-bg: #fff2f0;
+
+  /* fill_FF7A45: 小红书标签文字 */
+  --figma-datacenter-color-platform-xiaohongshu-text: #ff7a45;
+
+  /* ===== 阴影 - 引用 common ===== */
+  --figma-datacenter-shadow-card: var(--figma-shadow-card);
+
+  /* ===== 圆角 - 引用 common ===== */
+  --figma-datacenter-border-radius-sm: var(--figma-radius-sm);
+  --figma-datacenter-border-radius-md: var(--figma-radius-md);
+  --figma-datacenter-border-radius-lg: var(--figma-radius-lg);
+}

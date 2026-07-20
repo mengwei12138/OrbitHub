@@ -1,0 +1,26 @@
+.wrapper {
+  display: flex;
+  gap: var(--figma-spacing-sm, 8px);
+  align-items: center;
+  height: 64px;
+  padding: 0 var(--figma-spacing-lg);
+  cursor: pointer;
+}
+
+.icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  background: var(--figma-color-primary);
+  border-radius: var(--figma-radius-md);
+}
+
+.text {
+  font-family: var(--figma-font-family);
+  font-size: var(--figma-font-size-logo);
+  font-weight: var(--figma-font-weight-logo);
+  color: var(--figma-color-text-inverse);
+}

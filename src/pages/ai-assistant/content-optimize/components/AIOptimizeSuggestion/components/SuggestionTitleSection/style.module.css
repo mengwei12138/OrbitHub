@@ -1,0 +1,80 @@
+.suggestion-title-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.label-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.icon {
+  color: var(--figma-color-primary);
+}
+
+.label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--figma-color-gray-10);
+}
+
+.hint {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--figma-color-gray-7);
+}
+
+.content {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input {
+  flex: 1;
+  height: 40px;
+  padding: 0 12px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--figma-color-gray-10);
+  outline: none;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-border);
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: var(--figma-color-primary);
+}
+
+.restore-btn {
+  height: 40px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--figma-color-gray-9);
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--figma-color-white);
+  border: 1px solid var(--figma-color-border);
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.restore-btn:disabled {
+  color: var(--figma-color-gray-6);
+  cursor: not-allowed;
+}
+
+.restore-btn:hover:not(:disabled) {
+  color: var(--figma-color-primary);
+  border-color: var(--figma-color-primary);
+}

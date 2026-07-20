@@ -1,0 +1,50 @@
+.wrapper {
+  display: inline-flex;
+  gap: var(--figma-spacing-sm);
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--figma-spacing-md);
+  background: var(--figma-color-primary-light);
+  border: 1px solid #91caff;
+  border-radius: 22px;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 8%);
+}
+
+.spinner {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 2px solid #b8dbff;
+  border-top-color: var(--figma-color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.text {
+  font-size: var(--figma-font-size-body);
+  font-weight: 500;
+  color: var(--figma-color-primary);
+  white-space: nowrap;
+}
+
+.separator {
+  flex-shrink: 0;
+  width: 1px;
+  height: 14px;
+  background: #b8dbff;
+}
+
+.link {
+  font-size: var(--figma-font-size-body);
+  font-weight: 500;
+  color: var(--figma-color-primary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

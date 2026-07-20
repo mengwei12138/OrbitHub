@@ -1,0 +1,113 @@
+/**
+ * MetricsGrid 样式
+ * 基于 Figma node-id 1753-1540
+ */
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+}
+
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 140px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 4%);
+}
+
+.card-header {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.icon-box {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+}
+
+.title {
+  flex-shrink: 0;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}
+
+.value {
+  flex-shrink: 0;
+  margin-top: 8px;
+  font-family: Inter, sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.21;
+  color: #1f1f1f;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+  margin-top: auto;
+}
+
+.arrow {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 10px;
+  height: 8px;
+}
+
+.arrow.up {
+  color: #52c41a;
+}
+
+.arrow.down {
+  color: #ff4d4f;
+}
+
+.delta {
+  flex-shrink: 0;
+  font-family: Inter, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.21;
+}
+
+.delta.up {
+  color: #52c41a;
+}
+
+.delta.down {
+  color: #ff4d4f;
+}
+
+.cmp {
+  flex-shrink: 0;
+  font-family: "Noto Sans SC", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: #8c8c8c;
+}

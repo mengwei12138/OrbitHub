@@ -1,0 +1,413 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 2200">
+  <title>数据中心主页 - 交互泳道图</title>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <marker id="arrowhead-success" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#52c41a"/>
+    </marker>
+    <marker id="arrowhead-error" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ff4d4f"/>
+    </marker>
+  </defs>
+
+  <!-- 背景 -->
+  <rect width="1000" height="2200" fill="#fafafa"/>
+
+  <!-- 标题 -->
+  <text x="500" y="25" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">数据中心主页 - 交互泳道图</text>
+
+  <!-- 泳道 -->
+  <!-- 用户 -->
+  <rect x="10" y="45" width="130" height="2145" fill="#e6f7ff" stroke="#1890ff" stroke-width="2"/>
+  <text x="75" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#1890ff">用户</text>
+
+  <!-- 前端组件 -->
+  <rect x="150" y="45" width="280" height="2145" fill="#f6ffed" stroke="#52c41a" stroke-width="2"/>
+  <text x="290" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#52c41a">前端组件</text>
+
+  <!-- 后端API -->
+  <rect x="440" y="45" width="240" height="2145" fill="#fff7e6" stroke="#fa8c16" stroke-width="2"/>
+  <text x="560" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#fa8c16">后端 API</text>
+
+  <!-- 状态管理 -->
+  <rect x="690" y="45" width="300" height="2145" fill="#f9f0ff" stroke="#722ed1" stroke-width="2"/>
+  <text x="840" y="65" text-anchor="middle" font-size="12" font-weight="bold" fill="#722ed1">状态管理</text>
+
+  <!-- ========== A. 数据中心主页加载 ========== -->
+  <line x1="10" y1="90" x2="990" y2="90" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="85" font-size="11" fill="#8c8c8c">A. 数据中心主页加载</text>
+
+  <!-- 步骤1: 页面挂载 -->
+  <circle cx="75" cy="120" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="125" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="105" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="125" text-anchor="middle" font-size="10">DataCentrePage</text>
+
+  <line x1="93" y1="120" x2="170" y2="120" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 并发加载 -->
+  <circle cx="75" cy="165" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="170" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="150" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="170" text-anchor="middle" font-size="10">并发请求</text>
+
+  <line x1="230" y1="135" x2="230" y2="150" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- API 调用 -->
+  <rect x="460" y="115" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="132" text-anchor="middle" font-size="9">GET /warnings</text>
+
+  <rect x="460" y="145" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="162" text-anchor="middle" font-size="9">GET /metrics/summary</text>
+
+  <rect x="460" y="175" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="192" text-anchor="middle" font-size="9">GET /accounts/{id}/trend</text>
+
+  <rect x="460" y="205" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="222" text-anchor="middle" font-size="9">GET /contents</text>
+
+  <line x1="290" y1="165" x2="460" y2="165" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 状态更新 -->
+  <rect x="710" y="145" width="140" height="25" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="162" text-anchor="middle" font-size="9">timeRange, platform</text>
+
+  <rect x="710" y="175" width="140" height="25" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="192" text-anchor="middle" font-size="9">granularity</text>
+
+  <!-- 步骤3-5: 渲染组件 -->
+  <circle cx="75" cy="280" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="75" y="285" text-anchor="middle" font-size="10" fill="white">3-5</text>
+
+  <rect x="170" y="265" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="285" text-anchor="middle" font-size="10">渲染组件</text>
+
+  <line x1="540" y1="235" x2="380" y2="280" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- 渲染详情 -->
+  <rect x="170" y="310" width="120" height="25" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="327" text-anchor="middle" font-size="9">WarningPanel</text>
+
+  <rect x="170" y="340" width="120" height="25" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="357" text-anchor="middle" font-size="9">MetricsGrid（环比随时间筛选）</text>
+
+  <rect x="170" y="370" width="120" height="25" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="387" text-anchor="middle" font-size="9">TrendChart</text>
+
+  <rect x="170" y="400" width="120" height="25" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="417" text-anchor="middle" font-size="9">ContentTable（播放量≥万/亿缩略）</text>
+
+  <line x1="230" y1="295" x2="230" y2="310" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== B. 手动刷新 ========== -->
+  <line x1="10" y1="460" x2="990" y2="460" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="455" font-size="11" fill="#8c8c8c">B. 手动刷新</text>
+
+  <!-- 步骤1: 点击刷新 -->
+  <circle cx="75" cy="490" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="495" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="475" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="230" y="495" text-anchor="middle" font-size="10">点击刷新</text>
+
+  <line x1="93" y1="490" x2="170" y2="490" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 按钮Loading -->
+  <circle cx="75" cy="535" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="540" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="520" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="540" text-anchor="middle" font-size="10">setLoading</text>
+
+  <line x1="230" y1="505" x2="230" y2="520" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 趋势图蒙层 -->
+  <rect x="170" y="560" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="230" y="580" text-anchor="middle" font-size="10">showOverlay</text>
+
+  <line x1="230" y1="550" x2="230" y2="560" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 并发刷新 -->
+  <circle cx="75" cy="620" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="625" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="170" y="605" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="625" text-anchor="middle" font-size="10">并发刷新</text>
+
+  <line x1="230" y1="590" x2="230" y2="605" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="605" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="622" text-anchor="middle" font-size="9">GET /warnings</text>
+
+  <rect x="460" y="635" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="652" text-anchor="middle" font-size="9">GET /metrics/summary</text>
+
+  <rect x="460" y="665" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="682" text-anchor="middle" font-size="9">GET /accounts/{id}/trend</text>
+
+  <rect x="460" y="695" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="712" text-anchor="middle" font-size="9">GET /contents</text>
+
+  <line x1="290" y1="620" x2="460" y2="620" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤4: 更新数据 -->
+  <circle cx="75" cy="760" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="75" y="765" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="170" y="745" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="765" text-anchor="middle" font-size="10">updateData</text>
+
+  <rect x="710" y="745" width="140" height="25" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="762" text-anchor="middle" font-size="9">lastRefreshTime</text>
+
+  <line x1="540" y1="725" x2="380" y2="760" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- 失败分支 -->
+  <rect x="460" y="760" width="160" height="25" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="1.5"/>
+  <text x="540" y="777" text-anchor="middle" font-size="9">失败 Toast</text>
+
+  <line x1="540" y1="725" x2="540" y2="760" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+
+  <rect x="170" y="785" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="230" y="805" text-anchor="middle" font-size="10">hideOverlay</text>
+
+  <line x1="540" y1="785" x2="380" y2="800" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+
+  <!-- ========== C. 自动刷新 ========== -->
+  <line x1="10" y1="870" x2="990" y2="870" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="865" font-size="11" fill="#8c8c8c">C. 自动刷新</text>
+
+  <!-- 步骤1: 检查可见性 -->
+  <circle cx="75" cy="900" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="905" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="885" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="905" text-anchor="middle" font-size="10">checkVisibility</text>
+
+  <line x1="93" y1="900" x2="170" y2="900" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 执行刷新 -->
+  <circle cx="75" cy="950" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="955" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="935" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="955" text-anchor="middle" font-size="10">执行刷新</text>
+
+  <line x1="230" y1="915" x2="230" y2="935" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="920" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="937" text-anchor="middle" font-size="9">GET /warnings</text>
+
+  <rect x="460" y="950" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="967" text-anchor="middle" font-size="9">GET /metrics/summary</text>
+
+  <line x1="290" y1="950" x2="460" y2="950" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 更新数据 -->
+  <circle cx="75" cy="1000" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="75" y="1005" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="170" y="985" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1005" text-anchor="middle" font-size="10">setData</text>
+
+  <line x1="540" y1="980" x2="380" y2="1000" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== D. 趋势图账号切换 ========== -->
+  <line x1="10" y1="1080" x2="990" y2="1080" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1075" font-size="11" fill="#8c8c8c">D. 趋势图账号切换</text>
+
+  <!-- 步骤1: 保存账号 -->
+  <circle cx="75" cy="1110" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1115" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="1095" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="230" y="1115" text-anchor="middle" font-size="10">saveSelectedAccount</text>
+
+  <line x1="93" y1="1110" x2="170" y2="1110" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="710" y="1095" width="140" height="25" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="780" y="1112" text-anchor="middle" font-size="9">localStorage</text>
+
+  <!-- 步骤2: 显示骨架屏 -->
+  <circle cx="75" cy="1155" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1160" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="1140" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1160" text-anchor="middle" font-size="10">showSkeleton</text>
+
+  <line x1="230" y1="1125" x2="230" y2="1140" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 加载数据 -->
+  <circle cx="75" cy="1200" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1205" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="170" y="1185" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1205" text-anchor="middle" font-size="10">reload</text>
+
+  <line x1="230" y1="1170" x2="230" y2="1185" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="1185" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="1202" text-anchor="middle" font-size="9">GET /accounts/{id}/trend</text>
+
+  <line x1="290" y1="1200" x2="460" y2="1200" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤4: 渲染新趋势图 -->
+  <circle cx="75" cy="1245" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="75" y="1250" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="170" y="1230" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1250" text-anchor="middle" font-size="10">setData</text>
+
+  <line x1="540" y1="1215" x2="380" y2="1245" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== E. 内容列表排序筛选 ========== -->
+  <line x1="10" y1="1320" x2="990" y2="1320" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1315" font-size="11" fill="#8c8c8c">E. 内容列表排序筛选</text>
+
+  <!-- 步骤1: 切换筛选 -->
+  <circle cx="75" cy="1350" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1355" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="1335" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="230" y="1355" text-anchor="middle" font-size="10">切换排序/类型</text>
+
+  <line x1="93" y1="1350" x2="170" y2="1350" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤2: 防抖 -->
+  <circle cx="75" cy="1395" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1400" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="1380" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="230" y="1400" text-anchor="middle" font-size="10">300ms防抖</text>
+
+  <line x1="230" y1="1365" x2="230" y2="1380" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤3: 重置页码 -->
+  <circle cx="75" cy="1440" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1445" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="170" y="1425" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1445" text-anchor="middle" font-size="10">resetPagination</text>
+
+  <line x1="230" y1="1415" x2="230" y2="1425" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤4: 加载数据 -->
+  <circle cx="75" cy="1485" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1490" text-anchor="middle" font-size="10" fill="white">4</text>
+
+  <rect x="170" y="1470" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1490" text-anchor="middle" font-size="10">reload</text>
+
+  <line x1="230" y1="1455" x2="230" y2="1470" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <rect x="460" y="1470" width="160" height="25" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="540" y="1487" text-anchor="middle" font-size="9">GET /contents</text>
+
+  <line x1="290" y1="1485" x2="460" y2="1485" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <!-- 步骤5: 渲染列表 -->
+  <circle cx="75" cy="1530" r="18" fill="#52c41a" stroke="#389e0d" stroke-width="2"/>
+  <text x="75" y="1535" text-anchor="middle" font-size="10" fill="white">5</text>
+
+  <rect x="170" y="1515" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1535" text-anchor="middle" font-size="10">setData</text>
+
+  <line x1="540" y1="1500" x2="380" y2="1530" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+
+  <!-- ========== F. 页面跳转 ========== -->
+  <line x1="10" y1="1600" x2="990" y2="1600" stroke="#d9d9d9" stroke-width="1" stroke-dasharray="5,5"/>
+  <text x="15" y="1595" font-size="11" fill="#8c8c8c">F. 页面跳转</text>
+
+  <!-- 跳转预警详情页 -->
+  <text x="180" y="1630" font-size="10" font-weight="bold" fill="#333">F1. 跳转预警详情页</text>
+
+  <circle cx="75" cy="1660" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1665" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="1645" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="230" y="1665" text-anchor="middle" font-size="10">点击查看全部</text>
+
+  <line x1="93" y1="1660" x2="170" y2="1660" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="75" cy="1705" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1710" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="1690" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1710" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="230" y1="1675" x2="230" y2="1690" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="320" y="1710" font-size="10" fill="#666">→ /datacenter/warnings</text>
+
+  <!-- 跳转账号详情页 -->
+  <text x="530" y="1630" font-size="10" font-weight="bold" fill="#333">F2. 跳转账号详情页</text>
+
+  <circle cx="420" cy="1660" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="420" y="1665" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="530" y="1645" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="590" y="1665" text-anchor="middle" font-size="10">点击账号名称</text>
+
+  <line x1="438" y1="1660" x2="530" y2="1660" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="420" cy="1705" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="420" y="1710" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="530" y="1690" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="590" y="1710" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="590" y1="1675" x2="590" y2="1690" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="660" y="1710" font-size="10" fill="#666">→ /datacenter/account/:id</text>
+
+  <!-- 去处理 -->
+  <text x="180" y="1790" font-size="10" font-weight="bold" fill="#333">F3. 去处理</text>
+
+  <circle cx="75" cy="1820" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1825" text-anchor="middle" font-size="10" fill="white">1</text>
+
+  <rect x="170" y="1805" width="120" height="30" rx="5" fill="#ffccc7" stroke="#ff4d4f" stroke-width="2"/>
+  <text x="230" y="1825" text-anchor="middle" font-size="10">点击去处理</text>
+
+  <line x1="93" y1="1820" x2="170" y2="1820" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="75" cy="1865" r="18" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="75" y="1870" text-anchor="middle" font-size="10" fill="white">2</text>
+
+  <rect x="170" y="1850" width="120" height="30" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="2"/>
+  <text x="230" y="1870" text-anchor="middle" font-size="10">getHandlePath</text>
+
+  <line x1="230" y1="1835" x2="230" y2="1850" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <circle cx="75" cy="1910" r="18" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="75" y="1915" text-anchor="middle" font-size="10" fill="white">3</text>
+
+  <rect x="170" y="1895" width="120" height="30" rx="5" fill="#b7eb8f" stroke="#52c41a" stroke-width="2"/>
+  <text x="230" y="1915" text-anchor="middle" font-size="10">router.push</text>
+
+  <line x1="230" y1="1875" x2="230" y2="1895" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+  <text x="320" y="1915" font-size="10" fill="#666">→ 处理页面</text>
+
+  <!-- ========== 图例 ========== -->
+  <rect x="10" y="1980" width="980" height="55" fill="#fafafa" stroke="#d9d9d9" rx="5"/>
+  <text x="25" y="1998" font-size="10" font-weight="bold">图例</text>
+  <circle cx="50" cy="2018" r="8" fill="#1890ff" stroke="#096dd9" stroke-width="2"/>
+  <text x="65" y="2022" font-size="9">步骤</text>
+  <line x1="110" y1="2018" x2="140" y2="2018" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+  <text x="150" y="2022" font-size="9">正常流程</text>
+  <line x1="210" y1="2018" x2="240" y2="2018" stroke="#52c41a" stroke-width="1.5" marker-end="url(#arrowhead-success)"/>
+  <text x="250" y="2022" font-size="9">成功流程</text>
+  <line x1="310" y1="2018" x2="340" y2="2018" stroke="#ff4d4f" stroke-width="1.5" marker-end="url(#arrowhead-error)"/>
+  <text x="350" y="2022" font-size="9">失败流程</text>
+  <polygon points="440,2008 455,2018 440,2028 425,2018" fill="#fff" stroke="#1890ff" stroke-width="1.5"/>
+  <text x="465" y="2022" font-size="9">决策判断</text>
+  <rect x="560" y="2008" width="80" height="20" rx="5" fill="#ffd591" stroke="#fa8c16" stroke-width="1.5"/>
+  <text x="600" y="2022" text-anchor="middle" font-size="9">API</text>
+  <rect x="660" y="2008" width="80" height="20" rx="5" fill="#d9d7fb" stroke="#722ed1" stroke-width="1.5"/>
+  <text x="700" y="2022" text-anchor="middle" font-size="9">状态</text>
+</svg>
